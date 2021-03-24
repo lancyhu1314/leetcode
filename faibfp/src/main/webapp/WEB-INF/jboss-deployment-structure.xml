@@ -1,0 +1,15 @@
+<jboss-deployment-structure>
+	<deployment>
+		<!-- Exclusions allow you to prevent the server from automatically adding 
+			some dependencies -->
+		<exclusions>
+            <!-- Exclude slf4j 1.6.1, we provide 1.7.2 -->
+            <module name="org.apache.commons.logging" />
+            <module name="org.slf4j" />
+            <module name="org.slf4j.ext" />
+            <!-- Exclude slf4j-jboss-logmanager -->
+            <module name="org.slf4j.impl" />
+            <module name="org.apache.log4j" />
+		</exclusions>
+	</deployment>
+</jboss-deployment-structure>
