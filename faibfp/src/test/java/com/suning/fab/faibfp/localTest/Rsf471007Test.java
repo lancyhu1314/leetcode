@@ -26,7 +26,7 @@ public class Rsf471007Test extends TestUtil {
     public void test() {
 
         Map<String, Object> input = new HashMap<String, Object>();
-        input.put("serialNo", "SERIALNO20210322094822");
+        input.put("serialNo", "SERIALNO20210325094830");
         input.put("routeId", "huyi2");
         input.put("tranCode", "471007");
         input.put("brc", "51030000");
@@ -37,7 +37,7 @@ public class Rsf471007Test extends TestUtil {
         input.put("repayAcctNo", "huyi2");
         input.put("ccy", "CNY");
         input.put("cashFlag", "2");
-        input.put("repayAmt", 10000);
+        input.put("repayAmt", 1000);
         input.put("feeAmt", 0.00);
         input.put("repayChannel", "2");
         input.put("memo", "");
