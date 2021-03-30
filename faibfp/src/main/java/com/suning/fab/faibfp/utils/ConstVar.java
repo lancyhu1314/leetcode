@@ -40,6 +40,22 @@ public class ConstVar {
         }
     }
 
+    public static final class PARAMETER{
+
+        public static final String PRODUCTCODE = "productCode";
+
+        public static final String RECEIPTNO = "receiptNo";
+
+        public static final String ACCTNO = "acctNo";
+
+        public static final String ROUTEID = "routeId";
+
+        public static final String REPAYACCTNO = "repayAcctNo";
+
+        public static final String CUSTOMID = "customId";
+        private PARAMETER(){}
+    }
+
 
     private ConstVar() {
     }

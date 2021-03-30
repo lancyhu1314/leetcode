@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  */
 public class AcctnoPrdnoMapping {
 
-    private String acctNo;
+    private String receiptNo;
 
     private String productCode;
 
@@ -24,25 +24,25 @@ public class AcctnoPrdnoMapping {
     public AcctnoPrdnoMapping() {
     }
 
-    public AcctnoPrdnoMapping(String acctNo, String productCode, Timestamp createTime, Timestamp updateTime) {
-        this.acctNo = acctNo;
+    public AcctnoPrdnoMapping(String receiptNo, String productCode, Timestamp createTime, Timestamp updateTime) {
+        this.receiptNo = receiptNo;
         this.productCode = productCode;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
     /**
-     * @return the acctNo
+     * @return the receiptNo
      */
-    public String getAcctNo() {
-        return acctNo;
+    public String getreceiptNo() {
+        return receiptNo;
     }
 
     /**
-     * @param acctNo to set
+     * @param receiptNo to set
      */
-    public void setAcctNo(String acctNo) {
-        this.acctNo = acctNo;
+    public void setreceiptNo(String receiptNo) {
+        this.receiptNo = receiptNo;
     }
 
     /**

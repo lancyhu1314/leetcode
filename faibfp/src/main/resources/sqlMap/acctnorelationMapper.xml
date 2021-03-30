@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ACCTNORELATION">
+
+    <select id="selectByKey" parameterType="map" resultType="com.suning.fab.faibfp.bean.AcctnoRelation">
+
+        select routeid,acctno,receiptno
+        from ACCTNORELATION
+        where routeId = #{routeId}
+    </select>
+
+</mapper>

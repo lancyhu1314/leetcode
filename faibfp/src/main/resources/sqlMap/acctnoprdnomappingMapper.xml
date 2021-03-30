@@ -3,14 +3,14 @@
 <mapper namespace="ACCTNOPRDNOMAPPING">
 
     <insert id="insert" parameterType="com.suning.fab.faibfp.bean.AcctnoPrdnoMapping">
-        insert into ACCTNOPRDNOMAPPING(acctno,productcode,createtime,updatetime)
-            values (#{acctNo},#{productCode},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+        insert into ACCTNOPRDNOMAPPING(receiptNo,productcode,createtime,updatetime)
+            values (#{receiptNo},#{productCode},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
     </insert>
 
     <select id="selectByKey" parameterType="map" resultType="com.suning.fab.faibfp.bean.AcctnoPrdnoMapping">
-        select acctno,productcode
+        select receiptNo,productcode
         from ACCTNOPRDNOMAPPING
-        where acctno = #{acctNo}
+        where acctno = #{receiptNo}
     </select>
 
 
