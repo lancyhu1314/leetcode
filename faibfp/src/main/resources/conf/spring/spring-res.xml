@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <!-- JNDI数据源 -->
+    <jee:jndi-lookup id="dataSource" jndi-name="java:jboss/faibfp"
+                     proxy-interface="javax.sql.DataSource" lookup-on-startup="false"/>
+    <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+        <property name="url" value="jdbc:db2://10.47.191.244:60006/FACCDB:currentSchema=FALQBUSR;" />
+        <property name="username" value="faccusr" />
+        <property name="password" value="Hi2HrFWY4GGz" />
+        <property name="initialSize" value="10" />
+        <property name="maxActive" value="60" />
+        <property name="maxWait" value="10000" />
+    </bean>	 -->
+
+</beans>

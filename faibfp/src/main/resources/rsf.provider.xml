@@ -1,0 +1,16 @@
+<provider>
+    <!--是否与中央仓库连通，在开发环境下，如果想脱离中央仓库，可以选择false，SIT/PRE/PRD请选择true-->
+   <!-- <repository connect="false" upload="false"/>-->
+    <repository connect="true" upload="true"/>
+    <!--服务可以以如下协议对外提供访问，如果不与中央仓库连通，则服务启动时以如下配置为准。否则，会与中央仓库的配置进行增量合并，如果有冲突，以中央仓库中的配置为准。-->
+    <communications>
+        <!--指定为default的协议，会被采用为服务自动注册时的默认协议-->
+        <communication default="true" name="TCP" serialization="HESSIAN" loadBalance="ROUND_ROBIN"
+                       tcpPort="10001" connectTimeout="5000"/>
+    </communications>
+    <!--服务执行资源池配置，如果不与中央仓库连通，则以如下配置为准。否则，会与中央仓库的配置进行增量合并，如果有冲突，以中央仓库中的配置为准。-->
+    <executorPools>
+        <poolSize value="100"/>
+        <poolQueueSize value="300"/>
+    </executorPools>
+</provider>

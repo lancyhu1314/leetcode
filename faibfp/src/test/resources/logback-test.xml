@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration scan="true" debug="true">
+	<!-- 日志文件目录 -->
+	<property name="log.path" value="/opt/logs" />
+
+	<!-- 应用日志级别 -->
+	<property name="log.level" value="debug" />
+
+	<!-- ssf/rsf日志级别 -->
+	<property name="3rd.loglevel" value="WARN" />
+
+	<!-- 日志消息格式 -->
+	<property name="log.format" value="%date |%Q| %-5level %logger{64} - %msg%n" />
+
+	<!-- 自定义输出线程串号 -->
+	<conversionRule conversionWord="Q"
+		converterClass="com.suning.fab.mulssyn.utils.LogbackMDCConverter" />
+
+	<!-- 控制台输出日志 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${log.format}</pattern>
+		</layout>
+	</appender>
+
+	<!-- 普通日志 -->
+	<appender name="FABFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/fab.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.path}/fab.%i.log</FileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.format}</pattern>
+		</encoder>
+	</appender>
+	<appender name="async_FABFILE" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1024</queueSize>
+		<appender-ref ref="FABFILE" />
+	</appender>
+
+	<!-- monitor日志 -->
+	<appender name="FABMONITOR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/monitor.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.path}/monitor.%i.log</FileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%date |%Q| %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="async_FABMONITOR" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1024</queueSize>
+		<appender-ref ref="FABMONITOR" />
+	</appender>
+
+	<!-- 错误日志 -->
+	<appender name="FABERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<file>${log.path}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.path}/error.%i.log</FileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.format}</pattern>
+		</encoder>
+	</appender>
+	<appender name="async_FABERROR" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1024</queueSize>
+		<appender-ref ref="FABERROR" />
+	</appender>
+
+	<appender name="rsf"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${3rd.loglevel}</level>
+		</filter>
+		<file>${log.path}/rsf/rsf.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.path}/rsf/rsf.%i.log</FileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.format}</pattern>
+		</encoder>
+	</appender>
+	<appender name="async_rsf" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1024</queueSize>
+		<appender-ref ref="rsf" />
+	</appender>
+
+	<appender name="snf"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${3rd.loglevel}</level>
+		</filter>
+		<file>${log.path}/rsf/snf.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.path}/rsf/snf.%i.log</FileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>200MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${log.format}</pattern>
+		</encoder>
+	</appender>
+	<appender name="async_snf" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>1024</queueSize>
+		<appender-ref ref="snf" />
+	</appender>
+
+	<!-- <logger name="com.suning.framework" level="${3rd.loglevel}" additivity="false"> 
+		<appender-ref ref="snf" /> </logger> -->
+
+	<logger name="com.suning.dtf" level="error" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="com.suning.rsf" level="${3rd.loglevel}"
+		additivity="false">
+		<appender-ref ref="rsf" />
+	</logger>
+
+	<logger name="MONITOR" level="${log.level}" additivity="false">
+		<appender-ref ref="FABMONITOR" />
+	</logger>
+
+	<root level="${log.level}">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FABERROR" />
+		<appender-ref ref="FABFILE" />
+	</root>
+</configuration>
