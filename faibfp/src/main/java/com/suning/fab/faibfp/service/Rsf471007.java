@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.api.rsf.service.ApiRemoteMapService;
+import com.suning.fab.faibfp.service.template.FaloanMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
 import com.suning.fab.mulssyn.bean.TransDetail;
 import com.suning.rsf.provider.annotation.Implement;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-repay")
+@Implement(contract = FaloanMapService.class, implCode = "faloan-repay")
 public class Rsf471007 extends RsfServiceTemplate {
 
     @Override

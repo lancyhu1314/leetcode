@@ -1,5 +1,6 @@
 package com.suning.fab.faibfp.service.template;
 
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.bean.AcctnoPrdnoMapping;
 import com.suning.fab.faibfp.bean.AcctnoRelation;
 import com.suning.fab.faibfp.bean.CustomerRelation;
@@ -28,7 +29,7 @@ import java.util.*;
  * @Date 2021/3/26
  * @Version 1.0
  */
-public abstract class RsfServiceTemplate extends ServiceTemplate {
+public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiRemoteMapService {
 
     @Override
     public Map<String, Object> execute(Map<String, Object> reqMsg) {
