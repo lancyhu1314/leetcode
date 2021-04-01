@@ -4,6 +4,7 @@ import com.suning.fab.mulssyn.utils.VarChecker;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,18 +24,17 @@ public class SubTableCreateSql {
 
     public static void main(String[] args) {
 
-//        String path = "F:/需求文档/FABDOC/2_文档汇总/170207_贷款_苏宁小贷账务核心2.0/产品开发测试/新模型开发/金融账务核心-贷款系统表结构.xlsx";
         String path = "F:/需求文档/FABDOC/2_文档汇总/170207_贷款_苏宁小贷账务核心2.0/产品开发测试/贷款预处理系统/贷款预处理系统表结构.xlsx";
         // 从哪张表开始【
         int startTables = 1;
         // 到哪张表结束）
-        int tableNums = 5;
-        String schema = "FALOAUSR";
+        int tableNums = 8;
+        String schema = "faibfpdb";
 
         List<Table> tableInfo = readTableFrom(path, tableNums, startTables);
 
-//        makeCreateSql(tableInfo, schema);
-        makeSingleCreateSql(tableInfo, schema);
+        makeCreateSql(tableInfo, schema);
+//        makeSingleCreateSql(tableInfo, schema);
 
         // 统一刷新关闭流
         for (FileWriter writer : writerMap.values()) {
@@ -48,7 +48,7 @@ public class SubTableCreateSql {
 
     }
 
-    private static void makeSingleCreateSql(List<Table> tableInfo, String schema){
+    private static void makeSingleCreateSql(List<Table> tableInfo, String schema) {
 
         for (Table table : tableInfo) {
             // 获取索引sql
@@ -72,16 +72,94 @@ public class SubTableCreateSql {
 
         for (Table table : tableInfo) {
             for (int i = 0; i < 512; i++) {
-                // 获取索引sql
-                StringBuilder queueBuilder = getIndexSql(schema, table, String.valueOf(i));
-                // 建表sql()
-                StringBuilder sql = createSql(schema, table, String.valueOf(i));
-                sql.append(queueBuilder);
 
+                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
 //                StringBuilder sql = getDropSql(schema, table, i);
                 outputToFile(i, sql);
             }
         }
+    }
+
+
+    public static StringBuilder makeMySql(String schema, Table table, String tableNum) {
+        StringBuilder builder = new StringBuilder("CREATE TABLE ");
+        builder.append(schema + "." + table.getTableName() + tableNum);
+        builder.append("(");
+
+        for (TableStructure structure : table.getStructures()) {
+            builder.append(" " + structure.getFieldName() + " " + structure.getFieldType()+" ");
+            if (!VarChecker.isEmpty(structure.getFieldLong())) {
+                builder.append("(" + structure.getFieldLong() + ") ");
+            }
+            if (!structure.isNullFlag()) {
+                builder.append("not null ");
+            }
+            if ("id".equals(structure.getFieldName())) {
+                builder.append("auto_increment ");
+            }
+            builder.append("comment ");
+            builder.append("'" + structure.getFieldComment() + "',");
+        }
+        builder.append("PRIMARY KEY (id),");
+        int i = 0;
+        if (!CollectionUtils.isEmpty(table.getUniqueFields())) {
+            builder.append("unique index idx(");
+            i++;
+            for (String unique : table.getUniqueFields()) {
+                builder.append(unique + ",");
+            }
+            builder.deleteCharAt(builder.length() - 1);
+            builder.append("),");
+        }
+
+        if (!CollectionUtils.isEmpty(table.getQueueFields())) {
+            for (List<String> fieldsList : table.getQueueFields()) {
+                builder.append("index idx" + i);
+                builder.append(" (");
+                i++;
+                for (String que : fieldsList) {
+                    builder.append(que + ",");
+                }
+                builder.deleteCharAt(builder.length() - 1);
+                builder.append("),");
+            }
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append(")engine=InnoDB DEFAULT CHARSET=utf8mb4;");
+        return builder;
+    }
+
+    private static StringBuilder createSql(String schema, Table table, String tableNum) {
+        // CREATE TABLE Persons(Id_P int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City
+        // varchar(255))
+        StringBuilder builder = new StringBuilder("CREATE TABLE ");
+        builder.append(schema + "." + table.getTableName() + tableNum);
+        builder.append("(");
+
+        StringBuilder commentBuilder = new StringBuilder("COMMENT ON TABLE ");
+        commentBuilder.append(schema + "." + table.getTableName() + tableNum);
+        commentBuilder.append(" IS '" + table.getTableName_CH() + "';\r\n");
+
+        for (TableStructure structure : table.getStructures()) {
+
+            builder.append(" " + structure.getFieldName() + " " + structure.getFieldType());
+            if (VarChecker.isEmpty(structure.getFieldLong())) {
+                builder.append(",");
+            } else {
+                builder.append("(" + structure.getFieldLong() + "),");
+            }
+            commentBuilder.append("COMMENT ON COLUMN ");
+            commentBuilder.append(schema + "." + table.getTableName() + tableNum);
+            commentBuilder.append("." + structure.getFieldName());
+            commentBuilder.append(" IS " + "'" + structure.getFieldComment() + "'" + ";\r\n");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append(")");
+        builder.append(" in " + table.getTableSpace() + " INDEX IN TBS_IDX;");
+        builder.append("\r\n");
+        builder.append(commentBuilder);
+        // System.out.println(builder.toString());
+        return builder;
     }
 
     private static StringBuilder getDropSql(String schema, Table table, int tableNum) {
@@ -142,43 +220,11 @@ public class SubTableCreateSql {
         }*/
 
         /*** 2个库算法 ****/
-//         int j = tableId % 2 + 1;
+        int j = tableId % 2 + 1;
 
-        return 1;
+        return j;
     }
 
-    private static StringBuilder createSql(String schema, Table table, String tableNum) {
-        // CREATE TABLE Persons(Id_P int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City
-        // varchar(255))
-        StringBuilder builder = new StringBuilder("CREATE TABLE ");
-        builder.append(schema + "." + table.getTableName() + tableNum);
-        builder.append("(");
-
-        StringBuilder commentBuilder = new StringBuilder("COMMENT ON TABLE ");
-        commentBuilder.append(schema + "." + table.getTableName() + tableNum);
-        commentBuilder.append(" IS '" + table.getTableName_CH() + "';\r\n");
-
-        for (TableStructure structure : table.getStructures()) {
-
-            builder.append(" " + structure.getFieldName() + " " + structure.getFieldType());
-            if (VarChecker.isEmpty(structure.getFieldLong())) {
-                builder.append(",");
-            } else {
-                builder.append("(" + structure.getFieldLong() + "),");
-            }
-            commentBuilder.append("COMMENT ON COLUMN ");
-            commentBuilder.append(schema + "." + table.getTableName() + tableNum);
-            commentBuilder.append("." + structure.getFieldName());
-            commentBuilder.append(" IS " + "'" + structure.getFieldComment() + "'" + ";\r\n");
-        }
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append(")");
-        builder.append(" in " + table.getTableSpace() + " INDEX IN TBS_IDX;");
-        builder.append("\r\n");
-        builder.append(commentBuilder);
-        // System.out.println(builder.toString());
-        return builder;
-    }
 
     /**
      * 创建索引

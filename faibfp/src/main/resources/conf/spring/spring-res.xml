@@ -6,7 +6,7 @@
    	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 
     <!-- JNDI数据源 -->
-    <jee:jndi-lookup id="dataSource" jndi-name="java:jboss/faloan"
+    <jee:jndi-lookup id="dataSource" jndi-name="java:jboss/faibfp"
                      proxy-interface="javax.sql.DataSource" lookup-on-startup="false"/>
     <!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
