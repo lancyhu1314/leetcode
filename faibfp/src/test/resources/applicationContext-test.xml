@@ -14,7 +14,7 @@
 	</bean>
 
 	<!-- 	dev -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		  destroy-method="close">
 		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
 		<property name="url"
@@ -24,18 +24,18 @@
 		<property name="initialSize" value="50" />
 		<property name="maxActive" value="100" />
 		<property name="maxWait" value="10000" />
-	</bean>
+	</bean>-->
 	<!--mycat-sit-v2-->
-	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-				  value="jdbc:mysql://10.57.81.223:8066/FALOADB?useServerPrepStmts=true" />
+				  value="jdbc:mysql://10.237.37.208:8066/FAIBFPDB?useServerPrepStmts=true" />
 		<property name="username" value="root" />
-		<property name="password" value="123456" />
+		<property name="password" value="2Ui6JsnRSq23" />
 		<property name="initialSize" value="10" />
 		<property name="maxActive" value="20" />
 		<property name="maxWait" value="1000" />
-	</bean>-->
+	</bean>
 
 	<!--mycat-xzpre-v2-->
 	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -99,6 +99,8 @@
 		<property name="maxActive" value="100" />
 		<property name="maxWait" value="10000" />
 	</bean>-->
+
+
 
 
 	<import resource="classpath*:conf/spring/spring-plat.xml" />

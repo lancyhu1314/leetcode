@@ -1,17 +1,15 @@
 package com.suning.fab.faibfp.service.template;
 
-import com.suning.api.rsf.service.ApiRemoteMapService;
-import com.suning.fab.faibfp.bean.AcctnoPrdnoMapping;
 import com.suning.fab.faibfp.bean.AcctnoRelation;
 import com.suning.fab.faibfp.bean.CustomerRelation;
-import com.suning.fab.faibfp.dbhandler.AcctnoPrdnoMappingHandler;
+import com.suning.fab.faibfp.bean.ProductMapping;
 import com.suning.fab.faibfp.dbhandler.AcctnoRelationHandler;
 import com.suning.fab.faibfp.dbhandler.CustomerRelationHandler;
+import com.suning.fab.faibfp.dbhandler.ProductMappingHandler;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.faibfp.utils.OldServiceAgentHelper;
-import com.suning.fab.mulssyn.bean.Protoreg;
 import com.suning.fab.mulssyn.bean.TransDetail;
-import com.suning.fab.mulssyn.db.ProtoregHandler;
+import com.suning.fab.mulssyn.ctx.LocalTranCtx;
 import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.service.ServiceTemplate;
@@ -29,7 +27,7 @@ import java.util.*;
  * @Date 2021/3/26
  * @Version 1.0
  */
-public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiRemoteMapService {
+public abstract class RsfServiceTemplate extends ServiceTemplate {
 
     @Override
     public Map<String, Object> execute(Map<String, Object> reqMsg) {
@@ -61,26 +59,31 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
         if (VarChecker.asList("473004", "473005", "473007").contains(reqMsg.get(PlatConstant.PARAMETER.TRANCODE))) {
             // 开户类产品直接由入口报文查出
             productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-            AcctnoPrdnoMappingHandler mappingHandler = new AcctnoPrdnoMappingHandler();
+
+            ProductMappingHandler mappingHandler = new ProductMappingHandler();
             // 考虑到服务调用失败的情况，对应关系可能已经存在与映射表中，防止主键冲突错误，先查询，再插入
             if (null == mappingHandler.load(receiptNo)) {
                 // 将产品和借据号（贷款账号）的关系存入到映射表中
-                mappingHandler.save(receiptNo, productCode);
+                mappingHandler.save(receiptNo, receiptNo, productCode);
             }
         } else {
             // 说明传的是acctNo
             if (VarChecker.isEmpty(receiptNo)) {
                 // 去贷款账号和借据号关系对应表，查询出receiptno
                 String routeId = (String) reqMsg.get(ConstVar.PARAMETER.ACCTNO);
-                AcctnoRelation load = new AcctnoRelationHandler().load(routeId);
+                AcctnoRelation load = null;
+                if (!VarChecker.isEmpty(routeId)) {
+                    load = new AcctnoRelationHandler().load(routeId);
+                }
                 receiptNo = null == load ? routeId : load.getReceiptNo();
             }
         }
 
         // 通过产品代码是否为空，再次判断是否开户类接口。
         if (VarChecker.isEmpty(productCode)) {
-            // 查询借据号和产品映射表
-            AcctnoPrdnoMapping prdMapping = new AcctnoPrdnoMappingHandler().load(receiptNo);
+
+            // 查询通过路由字段查询与产品映射表
+            ProductMapping prdMapping = new ProductMappingHandler().load(getRouteId(receiptNo, reqMsg));
             if (null == prdMapping) {
                 LoggerUtil.info("借据【{}】未找到对应的产品======", receiptNo);
                 throw new FabException("");
@@ -111,7 +114,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
                 reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
             }
             // 是否需要跨库事务
-            if (isNeedSpliteTransation()) {
+            if (isNeedSpliteTransation(reqMsg)) {
                 // 调用跨库事务
                 ret = executeEntry(reqMsg, startInterval);
             } else {
@@ -122,6 +125,18 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
         return ret;
     }
 
+    /**
+     * 获取与产品映射关系表的路由字段
+     * 部分接口不传acctNo和receiptNo，所以路由字段可能是其他字段，比如放款冲销的errSerSeq
+     * 默认返回借据号
+     *
+     * @param receiptNo
+     * @param reqMsg
+     * @return
+     */
+    public String getRouteId(String receiptNo, Map<String, Object> reqMsg) {
+        return receiptNo;
+    }
 
     /**
      * 参数透传 直接调用
@@ -133,20 +148,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
      */
     public Map<String, Object> transparentExecute(Map<String, Object> param, boolean migrated, long startInterval) {
 
-
-        String serseqNo = GuidUtil.getUuidSequence();
+        // 创建上线文
+        createLocalTranCtx();
+        LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
+        ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
+        ctx.setTranCode((String) param.get(PlatConstant.PARAMETER.TRANCODE));
         // 返回报文
         Map<String, Object> result = null;
         try {
             // 登记入口报文
-            Protoreg protoreg = new Protoreg();
-            protoreg.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
-            protoreg.setTranCode((String) param.get(PlatConstant.PARAMETER.TRANCODE));
-            protoreg.setSerseqNo(serseqNo);
-            protoreg.setRequest(param);
-            ProtoregHandler protoregHandler = new ProtoregHandler();
-            protoregHandler.setProtoreg(protoreg);
-            protoregHandler.save();
+            onProtoReg(param, null);
 
             ServiceAgent agent;
             if (migrated) {
@@ -160,8 +171,19 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
 
         } catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + param.get(PlatConstant.PARAMETER.TRANCODE), e.getMessage());
-            result = ResponseHelper.createDefaultErrorRespone(serseqNo, new Date());
+            result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
+            // 将开户接口成功的返回
+            if (PlatConstant.RSPCODE.OK.equals(result.get(PlatConstant.PARAMETER.RSPCODE))
+                    && VarChecker.asList("473004", "473005", "473007").contains(param.get(PlatConstant.PARAMETER.TRANCODE))) {
+                ProductMappingHandler mappingHandler = new ProductMappingHandler();
+                // 预防开户多次幂等返回，先查询一下
+                if (null == mappingHandler.load((String) result.get(PlatConstant.PARAMETER.SERSEQNO))) {
+                    // 保存开户核心流水号和产品的关系
+                    mappingHandler.save((String) result.get(PlatConstant.PARAMETER.SERSEQNO),
+                            (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE));
+                }
+            }
             // 登记返回报文
             doFinish(param, startInterval, result);
         }
@@ -175,7 +197,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate implements ApiR
      *
      * @return
      */
-    public boolean isNeedSpliteTransation() {
+    public boolean isNeedSpliteTransation(Map<String, Object> reqMsg) {
         return false;
     }
 

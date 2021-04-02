@@ -10,7 +10,9 @@ import java.sql.Timestamp;
  * @Date 2021/3/26
  * @Version 1.0
  */
-public class AcctnoPrdnoMapping {
+public class ProductMapping {
+
+    private String routeId;
 
     private String receiptNo;
 
@@ -21,10 +23,11 @@ public class AcctnoPrdnoMapping {
     private Timestamp updateTime;
 
 
-    public AcctnoPrdnoMapping() {
+    public ProductMapping() {
     }
 
-    public AcctnoPrdnoMapping(String receiptNo, String productCode, Timestamp createTime, Timestamp updateTime) {
+    public ProductMapping(String routeId, String receiptNo, String productCode, Timestamp createTime, Timestamp updateTime) {
+        this.routeId = routeId;
         this.receiptNo = receiptNo;
         this.productCode = productCode;
         this.createTime = createTime;
@@ -32,16 +35,30 @@ public class AcctnoPrdnoMapping {
     }
 
     /**
+     * @return the routeId
+     */
+    public String getRouteId() {
+        return routeId;
+    }
+
+    /**
+     * @param routeId to set
+     */
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
+    }
+
+    /**
      * @return the receiptNo
      */
-    public String getreceiptNo() {
+    public String getReceiptNo() {
         return receiptNo;
     }
 
     /**
      * @param receiptNo to set
      */
-    public void setreceiptNo(String receiptNo) {
+    public void setReceiptNo(String receiptNo) {
         this.receiptNo = receiptNo;
     }
 

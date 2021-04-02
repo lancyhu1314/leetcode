@@ -2,6 +2,7 @@ package com.suning.fab.faibfp.service;
 
 import com.suning.fab.faibfp.service.template.FaloanMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.bean.TransDetail;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈功能详细描述〉还款
  *
  * @Author 19043955
  * @Date 2021/3/18
@@ -55,5 +56,23 @@ public class Rsf471007 extends RsfServiceTemplate {
     protected Map<String, Object> rspHandle(Map<String, Map<String, Object>> resps) {
 
         return resps.get("471007");
+    }
+
+    /**
+     * 调用新模型的时候，判断是否需要走跨库事务
+     *
+     * @param reqMsg
+     * @return
+     */
+    @Override
+    public boolean isNeedSpliteTransation(Map<String, Object> reqMsg) {
+
+        // 从参数中获取还款渠道
+        String repayChannel = (String) reqMsg.get(ConstVar.PARAMETER.REPAYCHANNEL);
+        // 渠道为2的时候，表示过预收，需要扣减预收户，需要跨库事务
+        if ("2".equals(repayChannel)) {
+            return true;
+        }
+        return false;
     }
 }
