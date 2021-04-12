@@ -8,7 +8,7 @@
  * <author>      <time>      <version>    <desc>
  * 修改人姓名             修改时间            版本号                  描述
  */
-package com.suning.fab.faibfp.service.template;
+package com.suning.fab.faibfp.intf;
 
 import com.suning.rsf.provider.annotation.Contract;
 import com.suning.rsf.provider.annotation.Method;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@Contract(name = "suning.api.remote.map.service", internal = false, description = "贷款账务核心契约")
+@Contract(name = "com.suning.fab.loan.mapService", internal = false, description = "贷款账务核心契约")
 public interface FaloanMapService {
 
     /**

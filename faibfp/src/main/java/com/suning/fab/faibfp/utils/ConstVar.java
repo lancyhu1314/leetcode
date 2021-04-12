@@ -53,6 +53,12 @@ public class ConstVar {
         public static final String REPAYACCTNO = "repayAcctNo";
 
         public static final String CUSTOMID = "customId";
+
+        public static final String REPAYCHANNEL = "repayChannel";
+
+        public static final String CHANNELTYPE = "channelType";
+
+        public static final String PKGLIST = "pkgList";
         private PARAMETER(){}
     }
 

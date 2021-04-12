@@ -73,8 +73,8 @@ public class SubTableCreateSql {
         for (Table table : tableInfo) {
             for (int i = 0; i < 512; i++) {
 
-                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
-//                StringBuilder sql = getDropSql(schema, table, i);
+//                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
+                StringBuilder sql = getDropSql(schema, table, i);
                 outputToFile(i, sql);
             }
         }
