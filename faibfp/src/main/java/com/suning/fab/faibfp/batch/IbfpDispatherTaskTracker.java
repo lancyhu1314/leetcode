@@ -22,7 +22,7 @@ import com.suning.rsf.provider.annotation.Implement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
@@ -41,10 +41,10 @@ import static com.suning.fab.faibfp.utils.TaskConstant.*;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@Component("dispatherTaskTracker")
+@Service
 @Implement(contract = DispatherTrackerIntf.class, implCode = "FAIBFP-pendingExecute")
-public class DispatherTaskTracker extends ApplicationObjectSupport implements DispatherTrackerIntf {
-    Logger logger = LoggerFactory.getLogger(DispatherTaskTracker.class);
+public class IbfpDispatherTaskTracker extends ApplicationObjectSupport implements DispatherTrackerIntf {
+    Logger logger = LoggerFactory.getLogger(IbfpDispatherTaskTracker.class);
 
     public void dispather(final Map<String, Object> requestMap) {
         logger.info("线程池收到报文......");

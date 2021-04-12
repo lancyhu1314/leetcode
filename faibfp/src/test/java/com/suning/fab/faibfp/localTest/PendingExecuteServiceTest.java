@@ -17,7 +17,7 @@ public class PendingExecuteServiceTest extends TestUtil {
 
     @Test
     public void test() {
-        new PendingExecuteService().execute();
+        new PendingExecuteService().execute(null);
     }
 
 }
