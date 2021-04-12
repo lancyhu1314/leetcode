@@ -16,6 +16,7 @@ import com.suning.fab.mulssyn.service.ServiceTemplate;
 import com.suning.fab.mulssyn.utils.*;
 import com.suning.rsf.consumer.ServiceAgent;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -181,11 +182,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
 
         } catch (Exception e) {
-            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e.getMessage());
+            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
             // 将开户接口成功的返回
-            if (PlatConstant.RSPCODE.OK.equals(result.get(PlatConstant.PARAMETER.RSPCODE))
+            if (!CollectionUtils.isEmpty(result)
+                    && PlatConstant.RSPCODE.OK.equals(result.get(PlatConstant.PARAMETER.RSPCODE))
                     && VarChecker.asList("473004", "473005", "473007").contains(getTranCode())) {
                 ProductMappingHandler mappingHandler = new ProductMappingHandler();
                 // 预防开户多次幂等返回，先查询一下
