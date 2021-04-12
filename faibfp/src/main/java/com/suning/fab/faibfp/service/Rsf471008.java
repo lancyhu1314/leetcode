@@ -13,16 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 功能描述: <br>
- * 〈功能详细描述〉还款
+ * 〈一句话功能简述〉<br>
+ * 指定类型还款
  *
- * @Author 19043955
- * @Date 2021/3/18
- * @Version 1.0
+ * @author 19043955
+ * @see [相关类/方法]（可选）
+ * @since [产品/模块版本] （可选）
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-repay")
-public class Rsf471007 extends RsfServiceTemplate {
+@Implement(contract = FaloanMapService.class, implCode = "faloan-specialRepay")
+public class Rsf471008 extends RsfServiceTemplate {
 
     @Override
     protected List<TransDetail> paramSplite(Map<String, Object> param) {
@@ -36,11 +36,11 @@ public class Rsf471007 extends RsfServiceTemplate {
         param_176001.put("repayAcctNo", param.get("repayAcctNo"));
         param_176001.put("ccy", param.get("ccy"));
         param_176001.put("amt", param.get("repayAmt"));
-        param_176001.put("receiptNo", param.get("acctNo"));
+        param_176001.put("receiptNo", param.get("acctNO"));
         param_176001.put("pkgList", param.get("pkgList"));
 
         TransDetail detail_17 = new TransDetail("176011", "176012", param_176001, 1);
-        TransDetail detail = new TransDetail("471007", "", param, 2);
+        TransDetail detail = new TransDetail("471008", "", param, 2);
         List<TransDetail> list = new ArrayList<>();
         list.add(detail_17);
         list.add(detail);
@@ -50,12 +50,12 @@ public class Rsf471007 extends RsfServiceTemplate {
     @Override
     protected Map<String, Object> rspHandle(Map<String, Map<String, Object>> resps) {
 
-        return resps.get("471007");
+        return resps.get("471008");
     }
 
     @Override
     protected String getTranCode() {
-        return "471007";
+        return "471008";
     }
 
     /**
@@ -75,4 +75,5 @@ public class Rsf471007 extends RsfServiceTemplate {
         }
         return false;
     }
+
 }

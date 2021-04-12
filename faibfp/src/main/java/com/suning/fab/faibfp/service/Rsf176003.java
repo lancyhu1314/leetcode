@@ -1,21 +1,21 @@
 package com.suning.fab.faibfp.service;
 
 import com.suning.fab.faibfp.intf.FaloanMapService;
-import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
 
 /**
- * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈一句话功能简述〉<br>
+ * 预收账户余额查询
  *
- * @Author 19043955
- * @Date 2021/4/2
- * @Version 1.0
+ * @author 19043955
+ * @see [相关类/方法]（可选）
+ * @since [产品/模块版本] （可选）
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-advanceAccountCharge")
-public class Rsf176002 extends RsfServiceTemplate {
+@Implement(contract = FaloanMapService.class, implCode = "faloan-queryAdvanceAccountBlanace")
+public class Rsf176003 extends RsfQuerServiceTemplate {
 
     /**
      * 预收户不迁移，暂时只调用老系统
@@ -30,6 +30,6 @@ public class Rsf176002 extends RsfServiceTemplate {
 
     @Override
     protected String getTranCode() {
-        return "176002";
+        return "176003";
     }
 }

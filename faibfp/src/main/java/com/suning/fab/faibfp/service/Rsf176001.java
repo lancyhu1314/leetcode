@@ -6,16 +6,17 @@ import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
 
 /**
- * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈一句话功能简述〉<br>
+ * 预收账户充退
  *
- * @Author 19043955
- * @Date 2021/4/2
- * @Version 1.0
+ * @author 19043955
+ * @see [相关类/方法]（可选）
+ * @since [产品/模块版本] （可选）
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-advanceAccountCharge")
-public class Rsf176002 extends RsfServiceTemplate {
+@Implement(contract = FaloanMapService.class, implCode = "faloan-advanceAccountRefund")
+public class Rsf176001 extends RsfServiceTemplate {
+
 
     /**
      * 预收户不迁移，暂时只调用老系统
@@ -30,6 +31,6 @@ public class Rsf176002 extends RsfServiceTemplate {
 
     @Override
     protected String getTranCode() {
-        return "176002";
+        return "176001";
     }
 }

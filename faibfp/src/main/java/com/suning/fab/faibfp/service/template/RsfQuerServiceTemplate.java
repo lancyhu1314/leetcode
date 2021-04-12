@@ -10,7 +10,7 @@ import java.util.Map;
  * @Date 2021/4/2
  * @Version 1.0
  */
-public class RsfQuerServiceTemplate extends RsfServiceTemplate {
+public abstract class RsfQuerServiceTemplate extends RsfServiceTemplate {
 
     @Override
     public void onProtoReg(Map<String, Object> in, Map<String, Object> out) {

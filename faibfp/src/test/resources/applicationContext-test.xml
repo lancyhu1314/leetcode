@@ -101,10 +101,6 @@
 	</bean>-->
 
 
-
-
 	<import resource="classpath*:conf/spring/spring-plat.xml" />
-	<import resource="classpath*:conf/spring/spring-product.xml" />
-	<import resource="classpath*:conf/product/*.xml" />
 
 </beans>

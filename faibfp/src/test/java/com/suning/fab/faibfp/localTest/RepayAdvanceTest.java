@@ -18,13 +18,13 @@ import java.util.Map;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈功能详细描述〉还款过预收测试
  *
  * @Author 19043955
  * @Date 2021/4/1
  * @Version 1.0
  */
-public class SceneTest extends TestUtil {
+public class RepayAdvanceTest extends TestUtil {
 
     @Autowired
     Rsf473004 rsf473004;
@@ -38,8 +38,8 @@ public class SceneTest extends TestUtil {
     @Test
     public void test() {
 
-//        test473004_1("2017-01-01", "2412610");
-//        test176002("2017-01-01", 120000.00);
+        test473004_1("2017-01-01", "2412610");
+        test176002("2017-01-01", 120000.00);
         Test471007("", "2017-01-01", 100.00);
 
     }
@@ -100,6 +100,67 @@ public class SceneTest extends TestUtil {
         System.out.println("=============" + ret);
     }
 
+    public void test473004_new(String date, Double tranamt, String exAcctno) {
+
+        TranDateCutUtil.setTranDate(date, "new_receiptNo00000IBFP", "IBFP");
+
+        Map<String, Object> input = new HashMap<String, Object>();
+        SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        input.put("routeId", "huyi10");
+        input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
+        input.put("outSerialNo", "outSerialNo000000");
+        input.put("ccy", "CNY");
+        input.put("contractAmt", tranamt);
+        input.put("contractNo", "contractNo000000");
+        input.put("merchantNo", "huyi10");
+        input.put("customName", "customName000000");
+        input.put("customType", "1");
+        input.put("endDate", "2021-12-11");
+        input.put("feeAmt", 0.00);
+        input.put("feeRate", 0.00); //10.00
+        input.put("repayDate", "10");
+        input.put("intPerUnit", "M");
+        input.put("periodNum", 1);
+        input.put("periodType", "M");
+        input.put("normalRate", 0.00);
+        input.put("overdueRate", 15.00);
+        input.put("compoundRate", 15.00);
+        input.put("normalRateType", "Y");
+        input.put("overdueRateType", "Y");
+        input.put("compoundRateType", "Y");
+        input.put("channelType", "E");    //放款渠道 1银行 2易付宝 3任性付
+        input.put("loanType", "1");
+        input.put("discountFlag", "1");
+        input.put("receiptNo", "new_receiptNo00000IBFP");
+        input.put("graceDays", 5);
+        input.put("openBrc", "51030000");
+        input.put("openDate", "2021-01-15");
+        input.put("fundChannel", "fundChannel000000");
+        input.put("productCode", "2412610");
+        input.put("repayWay", "10");
+        input.put("startIntDate", date); //2021-01-01
+        input.put("discountAmt", 0);    //扣息金额
+        input.put("cashFlag", "2");
+        input.put("investee", "");
+        input.put("tranCode", "473004");
+        input.put("brc", "51030000");
+        input.put("termDate", df1.format(new Date()));
+        input.put("termTime", df2.format(new Date()));
+        input.put("channelId", "66");
+
+        input.put("exAcctno", exAcctno);
+        input.put("exBrc", "51030000");
+        input.put("switchloanType", "1");
+        input.put("memo", "JXHJ");
+
+        input.put("promotionID", "UNKNOWN");
+        input.put("fundingModel", "UNKNOWN");
+        Map<String, Object> ret = rsf473004.execute(input);
+        System.out.println("=============" + ret);
+    }
+
     public Map<String, Object> Test471007(String serialNo, String date, Double amt) {
 
         TranDateCutUtil.setTranDate(date, null, null);
@@ -129,7 +190,6 @@ public class SceneTest extends TestUtil {
 
     public void test176002(String date, Double amt) {
 
-        TranDateCutUtil.setTranDate(date, null, "IBFP");
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("tranCode", "176002");
         input.put("termDate", "2017-01-01");
@@ -142,6 +202,7 @@ public class SceneTest extends TestUtil {
         input.put("outSerialNo", "bankNo000002");
         input.put("receiptNo", "receiptNo00000IBFP");
         input.put("channelType", "123");
+        input.put("customType", "1");
         DateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
         input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
         Map<String, Object> ret = rsf176002.execute(input);

@@ -50,6 +50,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     }
 
     public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
+
         Map<String, Object> ret;
         // 借据号
         String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
@@ -82,18 +83,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         // 通过产品代码是否为空，再次判断是否开户类接口。
         if (VarChecker.isEmpty(productCode)) {
 
-            // 查询通过路由字段查询与产品映射表
-            ProductMapping prdMapping = new ProductMappingHandler().load(getRouteId(receiptNo, reqMsg));
+            // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
+            ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
             if (null == prdMapping) {
                 LoggerUtil.info("借据【{}】未找到对应的产品======", receiptNo);
                 throw new FabException("");
             }
             productCode = prdMapping.getProductCode();
         }
-        // 查询借据产品映射表，根据scm配置的产品，判断是调用新系统还是老系统。
-        String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
-
-        if (VarChecker.isEmpty(value) && !Arrays.asList(value.split(",")).contains(productCode)) {
+        // 判断是否调用老系统
+        if (isCallOldSystem(productCode)) {
             // 数据未迁移 调用老系统
             ret = transparentExecute(reqMsg, false, startInterval);
         } else {
@@ -126,6 +125,18 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     }
 
     /**
+     * 根据产品判断调用新系统还是老系统
+     *
+     * @param productCode
+     * @return
+     */
+    protected boolean isCallOldSystem(String productCode) {
+        // 查询借据产品映射表，根据scm配置的产品，判断是调用新系统还是老系统。
+        String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
+        return VarChecker.isEmpty(value) && !Arrays.asList(value.split(",")).contains(productCode);
+    }
+
+    /**
      * 获取与产品映射关系表的路由字段
      * 部分接口不传acctNo和receiptNo，所以路由字段可能是其他字段，比如放款冲销的errSerSeq
      * 默认返回借据号
@@ -134,7 +145,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      * @param reqMsg
      * @return
      */
-    public String getRouteId(String receiptNo, Map<String, Object> reqMsg) {
+    public String getProductMapRouteId(String receiptNo, Map<String, Object> reqMsg) {
         return receiptNo;
     }
 
@@ -152,7 +163,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         createLocalTranCtx();
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
         ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
-        ctx.setTranCode((String) param.get(PlatConstant.PARAMETER.TRANCODE));
+        ctx.setTranCode(getTranCode());
         // 返回报文
         Map<String, Object> result = null;
         try {
@@ -162,20 +173,20 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             ServiceAgent agent;
             if (migrated) {
                 // 已迁移：调用新系统
-                agent = ServiceAgentHelper.getAgent((String) param.get(PlatConstant.PARAMETER.TRANCODE));
+                agent = ServiceAgentHelper.getAgent(getTranCode());
             } else {
-                agent = OldServiceAgentHelper.getAgent((String) param.get(PlatConstant.PARAMETER.TRANCODE));
+                agent = OldServiceAgentHelper.getAgent(getTranCode());
             }
             result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
 
 
         } catch (Exception e) {
-            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + param.get(PlatConstant.PARAMETER.TRANCODE), e.getMessage());
+            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e.getMessage());
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
             // 将开户接口成功的返回
             if (PlatConstant.RSPCODE.OK.equals(result.get(PlatConstant.PARAMETER.RSPCODE))
-                    && VarChecker.asList("473004", "473005", "473007").contains(param.get(PlatConstant.PARAMETER.TRANCODE))) {
+                    && VarChecker.asList("473004", "473005", "473007").contains(getTranCode())) {
                 ProductMappingHandler mappingHandler = new ProductMappingHandler();
                 // 预防开户多次幂等返回，先查询一下
                 if (null == mappingHandler.load((String) result.get(PlatConstant.PARAMETER.SERSEQNO))) {
