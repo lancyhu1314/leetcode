@@ -12,8 +12,6 @@ import java.util.Date;
 
 public class DateUtils {
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
     private DateUtils() {
     }
 
@@ -33,7 +31,7 @@ public class DateUtils {
 
     public static Date stringToDate(String str) {
         try {
-            return null == str ? null : format.parse(str);
+            return null == str ? null : new SimpleDateFormat("yyyy-MM-dd").parse(str);
         } catch (ParseException var2) {
             throw new FabRuntimeException(var2, "TUP100", new Object[0]);
         }
@@ -43,7 +41,7 @@ public class DateUtils {
         if (null == date) {
             return null;
         }
-        return format.format(date);
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     public static boolean isSameDay(Date date1, Date date2) throws FabException {

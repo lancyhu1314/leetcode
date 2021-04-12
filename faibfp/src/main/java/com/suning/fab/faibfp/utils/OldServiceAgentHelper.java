@@ -26,7 +26,7 @@ public class OldServiceAgentHelper {
     /**
      * 存放rsf服务的agent
      */
-    public static Map<String, ServiceAgent> agentMap = new HashMap<>();
+    private static Map<String, ServiceAgent> agentMap = new HashMap<>();
 
     /**
      * 根据trancode对应接口的rsf的Agent
