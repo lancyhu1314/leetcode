@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class TranDateCutUtil {
 
-    public static void setTranDate(String date, String acctNo, String customId) {
+    public static void setTranDateAndInite(String date, String acctNo, String customId) {
 
         Map<String, Object> param = new HashMap<>();
         param.put("cutDate", date);

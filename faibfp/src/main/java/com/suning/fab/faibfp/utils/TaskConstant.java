@@ -102,5 +102,6 @@ public class TaskConstant {
   * 批处理系统异步调用
   */
     public final static String  CALLASY="asy";
-	
+
+    private TaskConstant(){}
 }
