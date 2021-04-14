@@ -3,6 +3,7 @@ package com.suning.fab.faibfp.localTest;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.mulssyn.service.PendingExecuteService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 功能描述: <br>
@@ -14,10 +15,12 @@ import org.junit.Test;
  */
 public class PendingExecuteServiceTest extends TestUtil {
 
+    @Autowired
+    PendingExecuteService pendingExecuteService;
 
     @Test
     public void test() {
-        new PendingExecuteService().execute(null);
+        pendingExecuteService.execute(null);
     }
 
 }

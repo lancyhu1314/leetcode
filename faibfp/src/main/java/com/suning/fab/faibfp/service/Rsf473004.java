@@ -23,7 +23,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-repay")
+@Implement(contract = FaloanMapService.class, implCode = "faloan-createAcctAndLoan")
 public class Rsf473004 extends RsfServiceTemplate {
 
 
