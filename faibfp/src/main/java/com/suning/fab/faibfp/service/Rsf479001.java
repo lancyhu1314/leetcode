@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Implement(contract = FaloanMapService.class, implCode = "faloan-interestTentativeCalculation")
 public class Rsf479001 extends RsfServiceTemplate {
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "479001";
     }
 }
