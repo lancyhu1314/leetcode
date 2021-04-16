@@ -1,7 +1,7 @@
 package com.suning.fab.faibfp.localTest;
 
 import com.alibaba.fastjson.JSON;
-import com.suning.fab.faibfp.service.Rsf176002;
+import com.suning.fab.faibfp.service.Rsf176012;
 import com.suning.fab.faibfp.service.Rsf471007;
 import com.suning.fab.faibfp.service.Rsf473004;
 import com.suning.fab.faibfp.utils.TestUtil;
@@ -33,14 +33,15 @@ public class RepayAdvanceTest extends TestUtil {
     Rsf471007 rsf471007;
 
     @Autowired
-    Rsf176002 rsf176002;
+    Rsf176012 rsf176012;
 
     @Test
     public void test() {
 
-        test473004_1("2017-01-01", "2412610");
-        test176002("2017-01-01", 120000.00);
-        Test471007("", "2017-01-01", 100.00);
+        test473004_1("2017-01-01", "2412611");
+        // 开户开在了新系统，预收充值得使用176012，去除了借据号是否存在的判断
+        test176012("2017-01-01", 120000.00);
+        Test471007("", "2017-01-01", 120000.00);
 
     }
 
@@ -128,7 +129,7 @@ public class RepayAdvanceTest extends TestUtil {
         return ret;
     }
 
-    public void test176002(String date, Double amt) {
+    public void test176012(String date, Double amt) {
 
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("tranCode", "176002");
@@ -145,7 +146,7 @@ public class RepayAdvanceTest extends TestUtil {
         input.put("customType", "1");
         DateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
         input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
-        Map<String, Object> ret = rsf176002.execute(input);
+        Map<String, Object> ret = rsf176012.execute(input);
         System.out.println(JSON.toJSONString(ret));
     }
 }

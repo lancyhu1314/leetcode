@@ -42,6 +42,9 @@ public class Rsf473004 extends RsfServiceTemplate {
             detParam.put("channelId", param.get("channelId"));
             detParam.put("brc", param.get("brc"));
             detParam.put("receiptNo", param.get("receiptNo"));
+            detParam.put("amt", param.get("contractAmt"));
+//            detParam.put("amt", "0.00");
+            detParam.put("customType", param.get("customType"));
             detParam.put("pkgList", param.get(ConstVar.PARAMETER.PKGLIST));
             TransDetail detail = new TransDetail("176012", "176011", detParam, seq++);
             detailList.add(detail);
