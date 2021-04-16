@@ -19,7 +19,7 @@ public class Rsf472005 extends RsfServiceTemplate {
 
 
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "472005";
     }
 }

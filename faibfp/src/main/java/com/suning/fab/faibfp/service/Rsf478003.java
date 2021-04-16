@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Implement(contract = FaloanMapService.class, implCode = "faloan-nonIntterestDeduction")
 public class Rsf478003 extends RsfServiceTemplate {
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "478003";
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Implement(contract = FaloanMapService.class, implCode = "faloan-repaymentQueryDetail")
 public class Rsf470025 extends RsfQuerServiceTemplate {
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "470025";
     }
 }

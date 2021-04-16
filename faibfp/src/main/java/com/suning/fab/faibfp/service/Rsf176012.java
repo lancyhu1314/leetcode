@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class Rsf176012 extends RsfServiceTemplate {
 
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "176012";
     }
 }

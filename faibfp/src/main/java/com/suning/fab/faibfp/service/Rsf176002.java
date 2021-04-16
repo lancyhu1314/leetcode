@@ -29,7 +29,7 @@ public class Rsf176002 extends RsfServiceTemplate {
     }
 
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "176002";
     }
 }

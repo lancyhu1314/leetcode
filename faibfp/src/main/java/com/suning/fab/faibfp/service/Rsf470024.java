@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Implement(contract = FaloanMapService.class, implCode = "faloan-adjustAmortize")
 public class Rsf470024 extends RsfServiceTemplate {
     @Override
-    protected String getTranCode() {
+    public String getTranCode() {
         return "470024";
     }
 }
