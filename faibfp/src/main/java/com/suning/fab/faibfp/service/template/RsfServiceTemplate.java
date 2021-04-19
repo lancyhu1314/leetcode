@@ -1,5 +1,6 @@
 package com.suning.fab.faibfp.service.template;
 
+import com.alibaba.fastjson.JSON;
 import com.suning.fab.faibfp.bean.AcctnoRelation;
 import com.suning.fab.faibfp.bean.CustomerRelation;
 import com.suning.fab.faibfp.bean.ProductMapping;
@@ -134,7 +135,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     protected boolean isCallOldSystem(String productCode) {
         // 查询借据产品映射表，根据scm配置的产品，判断是调用新系统还是老系统。
         String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
-        return VarChecker.isEmpty(value) && !Arrays.asList(value.split(",")).contains(productCode);
+        return VarChecker.isEmpty(value) || !Arrays.asList(value.split(",")).contains(productCode);
     }
 
     /**
@@ -160,6 +161,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      */
     public Map<String, Object> transparentExecute(Map<String, Object> param, boolean migrated, long startInterval) {
 
+        LoggerUtil.info("入口报文 | ServiceName:{} |SerialNo【{}】| reqMap={}，调用老系统：{}", this.getClass().getSimpleName(), param.get("serialNo"), JSON.toJSONString(param), migrated);
         // 创建上线文
         createLocalTranCtx();
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
