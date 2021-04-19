@@ -59,6 +59,8 @@ public class ConstVar {
         public static final String CHANNELTYPE = "channelType";
 
         public static final String PKGLIST = "pkgList";
+
+        public static final String ERRSERSEQ = "errSerSeq";
         private PARAMETER(){}
     }
 
