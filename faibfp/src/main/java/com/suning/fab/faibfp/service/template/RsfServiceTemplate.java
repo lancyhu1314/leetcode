@@ -12,6 +12,7 @@ import com.suning.fab.faibfp.utils.OldServiceAgentHelper;
 import com.suning.fab.mulssyn.bean.TransDetail;
 import com.suning.fab.mulssyn.ctx.LocalTranCtx;
 import com.suning.fab.mulssyn.exception.FabException;
+import com.suning.fab.mulssyn.exception.FabRuntimeException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.service.ServiceTemplate;
 import com.suning.fab.mulssyn.utils.*;
@@ -167,6 +168,10 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
         ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
         ctx.setTranCode(getTranCode());
+
+        if (VarChecker.isEmpty(ctx.getSerialNo()) && !(this instanceof RsfQuerServiceTemplate)) {
+            throw new FabRuntimeException("IBF400", "seriaNo");
+        }
         // 返回报文
         Map<String, Object> result = null;
         try {
@@ -183,7 +188,13 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
 
 
-        } catch (Exception e) {
+        }catch (FabRuntimeException e){
+            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
+            result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
+            result.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
+            result.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
+
+        }catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
