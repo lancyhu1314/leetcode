@@ -40,6 +40,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         Long startInterval = System.currentTimeMillis();
 
         try {
+            // 设置交易码
+            ThreadLocalUtil.set(PlatConstant.PARAMETER.TRANCODE, this.getTranCode());
             ret = dataDistribute(reqMsg, startInterval);
         } catch (FabRuntimeException e) {
             LoggerUtil.error("数据分发错误，错误信息：{}", e);
