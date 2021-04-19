@@ -1,7 +1,7 @@
 package com.suning.fab.faibfp.service;
 
 import com.suning.fab.faibfp.intf.FaloanMapService;
-import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Implement(contract = FaloanMapService.class, implCode = "faloan-interestTentativeCalculation")
-public class Rsf479001 extends RsfServiceTemplate {
+public class Rsf479001 extends RsfQuerServiceTemplate {
     @Override
     public String getTranCode() {
         return "479001";
