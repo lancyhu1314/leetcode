@@ -2,8 +2,11 @@ package com.suning.fab.faibfp.service;
 
 import com.suning.fab.faibfp.intf.FaloanMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * 功能描述: <br>
@@ -21,5 +24,10 @@ public class Rsf472004 extends RsfServiceTemplate {
     @Override
     public String getTranCode() {
         return "472004";
+    }
+
+    @Override
+    public String getProductMapRouteId(String receiptNo, Map<String, Object> reqMsg) {
+        return (String) reqMsg.get(ConstVar.PARAMETER.ERRSERSEQ);
     }
 }
