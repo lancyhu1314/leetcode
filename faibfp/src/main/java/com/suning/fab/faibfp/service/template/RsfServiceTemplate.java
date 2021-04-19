@@ -43,7 +43,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             ret = dataDistribute(reqMsg, startInterval);
         } catch (FabRuntimeException e) {
             LoggerUtil.error("数据分发错误，错误信息：{}", e);
-            ret = ResponseHelper.createDefaultErrorRespone("UNKNOWN", new Date());
+            ret = new HashMap<>();
+            ret.put(PlatConstant.PARAMETER.SERSEQNO, null == CtxUtil.getCtx() ? "UNKNOWN" : CtxUtil.getCtx().getBid());
+            ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
+            ret.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
+            ret.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
+        } catch (FabException e) {
+            LoggerUtil.error("数据分发错误，错误信息：{}", e);
+            ret = new HashMap<>();
+            ret.put(PlatConstant.PARAMETER.SERSEQNO, null == CtxUtil.getCtx() ? "UNKNOWN" : CtxUtil.getCtx().getBid());
+            ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
             ret.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
             ret.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
         } catch (Exception e) {
