@@ -193,9 +193,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                     && VarChecker.asList("473004", "473005", "473007").contains(getTranCode())) {
                 ProductMappingHandler mappingHandler = new ProductMappingHandler();
                 // 预防开户多次幂等返回，先查询一下
-                if (null == mappingHandler.load((String) result.get(PlatConstant.PARAMETER.SERSEQNO))) {
+                if (null == mappingHandler.load(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)))) {
                     // 保存开户核心流水号和产品的关系
-                    mappingHandler.save((String) result.get(PlatConstant.PARAMETER.SERSEQNO),
+                    mappingHandler.save(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)),
                             (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE));
                 }
             }
