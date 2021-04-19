@@ -33,7 +33,7 @@ public class DateUtils {
         try {
             return null == str ? null : new SimpleDateFormat("yyyy-MM-dd").parse(str);
         } catch (ParseException var2) {
-            throw new FabRuntimeException(var2, "TUP100", new Object[0]);
+            throw new FabRuntimeException(var2, "MUL100", new Object[0]);
         }
     }
 
