@@ -41,6 +41,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
         try {
             ret = dataDistribute(reqMsg, startInterval);
+        } catch (FabRuntimeException e) {
+            LoggerUtil.error("数据分发错误，错误信息：{}", e);
+            ret = ResponseHelper.createDefaultErrorRespone("UNKNOWN", new Date());
+            ret.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
+            ret.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
         } catch (Exception e) {
             LoggerUtil.error("数据分发错误，错误信息：{}", e);
             ret = new HashMap<>();
@@ -89,8 +94,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
             ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
             if (null == prdMapping) {
-                LoggerUtil.info("借据【{}】未找到对应的产品======", receiptNo);
-                throw new FabException("");
+                LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
+                throw new FabException("IBF402", receiptNo);
             }
             productCode = prdMapping.getProductCode();
         }
@@ -162,7 +167,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      */
     public Map<String, Object> transparentExecute(Map<String, Object> param, boolean migrated, long startInterval) {
 
-        LoggerUtil.info("入口报文 | ServiceName:{} |SerialNo【{}】| reqMap={}，调用老系统：{}", this.getClass().getSimpleName(), param.get("serialNo"), JSON.toJSONString(param), migrated);
+        LoggerUtil.info("透传调用入口报文 | ServiceName:{} |SerialNo【{}】| reqMap={}，是否迁移：{}", this.getClass().getSimpleName(), param.get("serialNo"), JSON.toJSONString(param), migrated);
         // 创建上线文
         createLocalTranCtx();
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
@@ -188,13 +193,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
 
 
-        }catch (FabRuntimeException e){
-            LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
-            result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
-            result.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
-            result.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
-
-        }catch (Exception e) {
+        } catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
