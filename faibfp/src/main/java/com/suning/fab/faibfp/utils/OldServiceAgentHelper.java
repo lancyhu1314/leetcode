@@ -3,8 +3,6 @@ package com.suning.fab.faibfp.utils;
 import com.suning.fab.mulssyn.exception.FabRuntimeException;
 import com.suning.fab.mulssyn.utils.GetPropUtil;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
-import com.suning.fab.mulssyn.utils.PlatConstant;
-import com.suning.fab.mulssyn.utils.VarChecker;
 import com.suning.rsf.consumer.ServiceAgent;
 import com.suning.rsf.consumer.ServiceLocator;
 import org.springframework.stereotype.Component;
@@ -38,14 +36,7 @@ public class OldServiceAgentHelper {
      */
     public static ServiceAgent getAgent(String tranCode) {
         ServiceAgent agent = agentMap.get(tranCode);
-        if (null == agent) {
-            String propertyStr = GetPropUtil.getProperty(PlatConstant.PROPERFILENAME.RSF_ELEMENTS + "." + tranCode);
-            if (VarChecker.isEmpty(propertyStr))
-                throw new FabRuntimeException("IBF401", tranCode);
-            String[] property = propertyStr.split("@");
-            agent = ServiceLocator.getService(property[0], property[1]);
-            agentMap.put(tranCode, agent);
-        }
+        if (null == agent) throw new FabRuntimeException("IBF401", tranCode);
         return agent;
     }
 
