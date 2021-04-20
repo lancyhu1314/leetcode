@@ -1,4 +1,4 @@
-package com.suning.fab.faibfp.localTest;
+package com.suning.fab.faibfp.localTest.forcoverage;
 
 import com.suning.fab.faibfp.service.*;
 import com.suning.fab.faibfp.utils.TestUtil;

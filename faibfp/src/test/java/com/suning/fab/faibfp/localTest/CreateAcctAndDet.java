@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈功能详细描述〉开户放款过债务公司
  *
  * @Author 19043955
  * @Date 2021/4/14
@@ -28,7 +28,7 @@ public class CreateAcctAndDet extends TestUtil {
 
         TranDateCutUtil.setTranDateAndInite("", "receiptNo0000det", "");
 
-        test473004("2021-01-01", "TESTSERIALNO210415161819");
+        test473004("2021-01-01", "");
 
     }
 

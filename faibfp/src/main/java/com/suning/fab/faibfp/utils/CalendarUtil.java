@@ -504,28 +504,6 @@ public class CalendarUtil {
 
 
     /**
-     * add 20180712
-     *
-     * @param stime1 第二个日期段开始日期
-     * @param etime1 第二个日期段结束日期
-     * @param stime2 节日日期段开始日期
-     * @param etime2 节日日期段结束日期
-     * @return
-     */
-    public static Date getTimeInterval(Date stime1, Date etime1, Date stime2, Date etime2) {
-        int differDays;
-        if ((before(stime1, stime2) && afterAlsoEqual(etime1, stime2))) {
-            differDays = actualDaysBetween(stime2, etime2) + 1;
-            return nDaysAfter(etime1, differDays).toDate();
-        } else if ((afterAlsoEqual(stime1, stime2) && after(etime1, stime2))
-                || (beforeAlsoEqual(stime2, stime1) && afterAlsoEqual(etime2, etime1))) {
-            differDays = actualDaysBetween(stime1, etime1);
-            return nDaysAfter(etime2, differDays).toDate();
-        }
-        return etime1;
-    }
-
-    /**
      * 判断几月几号是今年第几天
      *
      * @param dateStr
