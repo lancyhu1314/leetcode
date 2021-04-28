@@ -110,6 +110,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }
             productCode = prdMapping.getProductCode();
         }
+        // 将产品添加到参数中
+        reqMsg.put(ConstVar.PARAMETER.PRODUCTCODE, productCode);
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
             // 数据未迁移 调用老系统
