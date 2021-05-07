@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service.template;
 
-import java.util.Map;
+import com.suning.fab.mulssyn.ctx.LocalTranCtx;
 
 /**
  * 功能描述: <br>
@@ -12,8 +12,15 @@ import java.util.Map;
  */
 public abstract class RsfQuerServiceTemplate extends RsfServiceTemplate {
 
-    @Override
+    /*@Override
     public void onProtoReg(Map<String, Object> in, Map<String, Object> out) {
         // 查询接口不登记报文
+    }*/
+
+    @Override
+    protected LocalTranCtx createLocalTranCtx() {
+        LocalTranCtx localTranCtx = super.createLocalTranCtx();
+        localTranCtx.setSerialNo(localTranCtx.getBid());
+        return localTranCtx;
     }
 }

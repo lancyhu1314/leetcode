@@ -18,6 +18,8 @@ public class ProductMapping {
 
     private String productCode;
 
+    private String dataFlag;
+
     private Timestamp createTime;
 
     private Timestamp updateTime;
@@ -26,12 +28,27 @@ public class ProductMapping {
     public ProductMapping() {
     }
 
-    public ProductMapping(String routeId, String receiptNo, String productCode, Timestamp createTime, Timestamp updateTime) {
+    public ProductMapping(String routeId, String receiptNo, String productCode, String dataFlag, Timestamp createTime, Timestamp updateTime) {
         this.routeId = routeId;
         this.receiptNo = receiptNo;
         this.productCode = productCode;
+        this.dataFlag = dataFlag;
         this.createTime = createTime;
         this.updateTime = updateTime;
+    }
+
+    /**
+     * @return the dataFlag
+     */
+    public String getDataFlag() {
+        return dataFlag;
+    }
+
+    /**
+     * @param dataFlag to set
+     */
+    public void setDataFlag(String dataFlag) {
+        this.dataFlag = dataFlag;
     }
 
     /**
