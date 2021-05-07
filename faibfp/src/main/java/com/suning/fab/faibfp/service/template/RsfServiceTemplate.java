@@ -84,7 +84,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 考虑到服务调用失败的情况，对应关系可能已经存在与映射表中，防止主键冲突错误，先查询，再插入
             if (null == mappingHandler.load(receiptNo)) {
                 // 将产品和借据号（贷款账号）的关系存入到映射表中
-                mappingHandler.save(receiptNo, receiptNo, productCode);
+                mappingHandler.save(receiptNo, receiptNo, productCode, isCallOldSystem(productCode) ? "O" : "N");
             }
         } else {
             // 说明传的是acctNo
@@ -109,7 +109,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 throw new FabException("IBF402", receiptNo);
             }
             productCode = prdMapping.getProductCode();
+            // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
+            reqMsg.put("dataFlag", prdMapping.getDataFlag());
         }
+        // 将产品添加到参数中
+        reqMsg.put(ConstVar.PARAMETER.PRODUCTCODE, productCode);
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
             // 数据未迁移 调用老系统
@@ -182,7 +186,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         // 创建上线文
         createLocalTranCtx();
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
-        ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
+        if (!VarChecker.isEmpty(param.get(PlatConstant.PARAMETER.SERIALNO)))
+            ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
         ctx.setTranCode(getTranCode());
 
         if (VarChecker.isEmpty(ctx.getSerialNo()) && !(this instanceof RsfQuerServiceTemplate)) {
@@ -217,7 +222,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 if (null == mappingHandler.load(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)))) {
                     // 保存开户核心流水号和产品的关系
                     mappingHandler.save(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)),
-                            (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE));
+                            (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE), migrated ? "N" : "O");
                 }
             }
             // 登记返回报文

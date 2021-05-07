@@ -212,15 +212,15 @@ public class SubTableCreateSql {
     public static int getDataBaseByTableId(int tableId) {
         /*** 9个库算法 ****/
 
-        /*int j;
+        int j;
         if (tableId == 255 || tableId == 511) {
             j = 9;
         } else {
             j = tableId % 8 + 1; // 计算放在那个库里
-        }*/
+        }
 
         /*** 2个库算法 ****/
-        int j = tableId % 2 + 1;
+//        int j = tableId % 2 + 1;
 
         return j;
     }
