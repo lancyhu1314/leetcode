@@ -206,8 +206,18 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             } else {
                 agent = OldServiceAgentHelper.getAgent(getTranCode());
             }
-            result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
-
+            //增加挡板开关，默认no
+            String baffleSwitch = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "baffleSwitch", "no");
+            if ("yes".equals(baffleSwitch)) {
+                result = new HashMap<>();
+                result.put("rspCode", "000000");
+                result.put("rspMsg", "请求成功！挡板开关=yes");
+                result.put("tranDate", "unknown");
+                result.put("tranTime", "unknown");
+                result.put("serSeqNo", "unknown");
+            } else {
+                result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+            }
 
         } catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
