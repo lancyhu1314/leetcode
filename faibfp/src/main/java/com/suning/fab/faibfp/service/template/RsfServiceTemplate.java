@@ -117,6 +117,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
             // 数据未迁移 调用老系统
+            // 报文里面添加调用老系统的组别
+            reqMsg.put("sysGroup", "FALOAN");
             ret = transparentExecute(reqMsg, false, startInterval);
         } else {
             // 数据已迁移，调用新系统
