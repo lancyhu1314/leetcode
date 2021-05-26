@@ -87,7 +87,7 @@ public class SubTableCreateSql {
         builder.append("(");
 
         for (TableStructure structure : table.getStructures()) {
-            builder.append(" " + structure.getFieldName() + " " + structure.getFieldType()+" ");
+            builder.append(" " + structure.getFieldName() + " " + structure.getFieldType() + " ");
             if (!VarChecker.isEmpty(structure.getFieldLong())) {
                 builder.append("(" + structure.getFieldLong() + ") ");
             }
@@ -100,7 +100,7 @@ public class SubTableCreateSql {
             builder.append("comment ");
             builder.append("'" + structure.getFieldComment() + "',");
         }
-        builder.append("PRIMARY KEY (id),");
+        builder.append(" PRIMARY KEY (id),");
         int i = 0;
         if (!CollectionUtils.isEmpty(table.getUniqueFields())) {
             builder.append("unique index idx(");
@@ -164,8 +164,8 @@ public class SubTableCreateSql {
 
     private static StringBuilder getDropSql(String schema, Table table, int tableNum) {
 
-        StringBuilder builder = new StringBuilder("DROP TABLE ");
-        builder.append(schema + "." + table.getTableName() + tableNum);
+        StringBuilder builder = new StringBuilder("DROP TABLE IF EXISTS ");
+        builder.append(schema + table.getTableName() + tableNum);
         builder.append(";");
         return builder;
 
