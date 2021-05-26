@@ -45,6 +45,8 @@ public class Rsf473004 extends RsfServiceTemplate {
             detParam.put("amt", param.get("contractAmt"));
             detParam.put("customType", param.get("customType"));
             detParam.put("pkgList", param.get(ConstVar.PARAMETER.PKGLIST));
+            // 添加路由字段为老系统：预收方面暂时都调用老系统
+            detParam.put("sysGroup", "FALOAN");
             TransDetail detail = new TransDetail("176012", "176011", detParam, seq++);
             detailList.add(detail);
         }

@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-feeDataMigration")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-feeDataMigration")
 public class Rsf479016 extends RsfServiceTemplate {
     @Override
     public String getTranCode() {

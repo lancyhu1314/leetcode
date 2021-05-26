@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.bean.TransDetail;
@@ -21,25 +21,27 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-repay")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-repay")
 public class Rsf471007 extends RsfServiceTemplate {
 
     @Override
     protected List<TransDetail> paramSplite(Map<String, Object> param) {
 
-        Map<String, Object> param_176001 = new HashMap<>();
-        param_176001.put("tranCode", "176011");
-        param_176001.put("termDate", param.get("termDate"));
-        param_176001.put("termTime", param.get("termTime"));
-        param_176001.put("channelId", param.get("channelId"));
-        param_176001.put("brc", param.get("brc"));
-        param_176001.put("repayAcctNo", param.get("repayAcctNo"));
-        param_176001.put("ccy", param.get("ccy"));
-        param_176001.put("amt", param.get("repayAmt"));
-        param_176001.put("receiptNo", param.get("acctNo"));
-        param_176001.put("pkgList", param.get("pkgList"));
+        Map<String, Object> param_1760011 = new HashMap<>();
+        param_1760011.put("tranCode", "176011");
+        param_1760011.put("termDate", param.get("termDate"));
+        param_1760011.put("termTime", param.get("termTime"));
+        param_1760011.put("channelId", param.get("channelId"));
+        param_1760011.put("brc", param.get("brc"));
+        param_1760011.put("repayAcctNo", param.get("repayAcctNo"));
+        param_1760011.put("ccy", param.get("ccy"));
+        param_1760011.put("amt", param.get("repayAmt"));
+        param_1760011.put("receiptNo", param.get("acctNo"));
+        param_1760011.put("pkgList", param.get("pkgList"));
+        // 添加路由字段为老系统：预收方面暂时都调用老系统
+        param_1760011.put("sysGroup", "FALOAN");
 
-        TransDetail detail_17 = new TransDetail("176011", "176012", param_176001, 1);
+        TransDetail detail_17 = new TransDetail("176011", "176012", param_1760011, 1);
         TransDetail detail = new TransDetail("471007", "", param, 2);
         List<TransDetail> list = new ArrayList<>();
         list.add(detail_17);

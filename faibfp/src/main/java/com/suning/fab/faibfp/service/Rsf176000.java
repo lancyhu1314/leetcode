@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
  * @since [产品/模块版本] （可选）
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-advanceAccountQuery")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-advanceAccountQuery")
 public class Rsf176000 extends RsfQuerServiceTemplate {
 
 
     /**
      * 预收户不迁移，暂时只调用老系统
+     *
      * @param productCode
      * @return
      */

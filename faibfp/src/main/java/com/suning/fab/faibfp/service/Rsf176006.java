@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,21 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-carAdvanceAccountBlanace")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-carAdvanceAccountBlanace")
 public class Rsf176006 extends RsfQuerServiceTemplate {
     @Override
     public String getTranCode() {
         return "176006";
+    }
+
+    /**
+     * 预收户不迁移，暂时只调用老系统
+     *
+     * @param productCode
+     * @return
+     */
+    @Override
+    protected boolean isCallOldSystem(String productCode) {
+        return true;
     }
 }

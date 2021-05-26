@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.rsf.provider.annotation.Implement;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-nonWriteOff")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-nonWriteOff")
 public class Rsf472004 extends RsfServiceTemplate {
 
 
