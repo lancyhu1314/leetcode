@@ -1,6 +1,6 @@
 package com.suning.fab.faibfp.service;
 
-import com.suning.fab.faibfp.intf.FaloanMapService;
+import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  */
 @Service
-@Implement(contract = FaloanMapService.class, implCode = "faloan-carRepay")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-carRepay")
 public class Rsf471012 extends RsfServiceTemplate {
     @Override
     public String getTranCode() {
