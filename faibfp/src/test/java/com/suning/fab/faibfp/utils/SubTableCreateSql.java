@@ -29,7 +29,7 @@ public class SubTableCreateSql {
         int startTables = 1;
         // 到哪张表结束）
         int tableNums = 8;
-        String schema = "faibfpdb";
+        String schema = "";
 
         List<Table> tableInfo = readTableFrom(path, tableNums, startTables);
 
@@ -73,8 +73,8 @@ public class SubTableCreateSql {
         for (Table table : tableInfo) {
             for (int i = 0; i < 512; i++) {
 
-//                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
-                StringBuilder sql = getDropSql(schema, table, i);
+                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
+//                StringBuilder sql = getDropSql(schema, table, i);
                 outputToFile(i, sql);
             }
         }
@@ -83,7 +83,7 @@ public class SubTableCreateSql {
 
     public static StringBuilder makeMySql(String schema, Table table, String tableNum) {
         StringBuilder builder = new StringBuilder("CREATE TABLE ");
-        builder.append(schema + "." + table.getTableName() + tableNum);
+        builder.append(schema + table.getTableName() + tableNum);
         builder.append("(");
 
         for (TableStructure structure : table.getStructures()) {
@@ -133,11 +133,11 @@ public class SubTableCreateSql {
         // CREATE TABLE Persons(Id_P int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City
         // varchar(255))
         StringBuilder builder = new StringBuilder("CREATE TABLE ");
-        builder.append(schema + "." + table.getTableName() + tableNum);
+        builder.append(schema + table.getTableName() + tableNum);
         builder.append("(");
 
         StringBuilder commentBuilder = new StringBuilder("COMMENT ON TABLE ");
-        commentBuilder.append(schema + "." + table.getTableName() + tableNum);
+        commentBuilder.append(schema + table.getTableName() + tableNum);
         commentBuilder.append(" IS '" + table.getTableName_CH() + "';\r\n");
 
         for (TableStructure structure : table.getStructures()) {
@@ -149,7 +149,7 @@ public class SubTableCreateSql {
                 builder.append("(" + structure.getFieldLong() + "),");
             }
             commentBuilder.append("COMMENT ON COLUMN ");
-            commentBuilder.append(schema + "." + table.getTableName() + tableNum);
+            commentBuilder.append(schema + table.getTableName() + tableNum);
             commentBuilder.append("." + structure.getFieldName());
             commentBuilder.append(" IS " + "'" + structure.getFieldComment() + "'" + ";\r\n");
         }
@@ -212,15 +212,15 @@ public class SubTableCreateSql {
     public static int getDataBaseByTableId(int tableId) {
         /*** 9个库算法 ****/
 
-        int j;
+        /*int j;
         if (tableId == 255 || tableId == 511) {
             j = 9;
         } else {
             j = tableId % 8 + 1; // 计算放在那个库里
-        }
+        }*/
 
         /*** 2个库算法 ****/
-//        int j = tableId % 2 + 1;
+        int j = tableId % 2 + 1;
 
         return j;
     }
@@ -235,8 +235,8 @@ public class SubTableCreateSql {
      */
     private static StringBuilder getIndexSql(String schema, Table table, String tableNum) {
         StringBuilder queueBuilder = new StringBuilder("CREATE UNIQUE INDEX ");
-        queueBuilder.append(schema + "." + table.getTableName() + tableNum);
-        queueBuilder.append("_IDX ON " + schema + "." + table.getTableName() + tableNum);
+        queueBuilder.append(schema + table.getTableName() + tableNum);
+        queueBuilder.append("_IDX ON " + schema + table.getTableName() + tableNum);
         queueBuilder.append("(");
         for (String key : table.getUniqueFields()) {
             queueBuilder.append(" " + key + ",");
@@ -250,8 +250,8 @@ public class SubTableCreateSql {
             }
             i++;
             queueBuilder.append("CREATE INDEX ");
-            queueBuilder.append(schema + "." + table.getTableName() + tableNum);
-            queueBuilder.append("_IDX" + i + " ON " + schema + "." + table.getTableName() + tableNum);
+            queueBuilder.append(schema + table.getTableName() + tableNum);
+            queueBuilder.append("_IDX" + i + " ON " + schema + table.getTableName() + tableNum);
             queueBuilder.append("(");
             for (String key : queList) {
                 queueBuilder.append(" " + key + ",");
