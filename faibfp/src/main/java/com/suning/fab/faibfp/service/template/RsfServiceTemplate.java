@@ -113,9 +113,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 }
             } else {
                 productCode = prdMapping.getProductCode();
+                // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
+                reqMsg.put("dataFlag", prdMapping.getDataFlag());
             }
-            // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
-            reqMsg.put("dataFlag", prdMapping.getDataFlag());
         }
         // 将产品添加到参数中
         reqMsg.put(ConstVar.PARAMETER.PRODUCTCODE, productCode);
