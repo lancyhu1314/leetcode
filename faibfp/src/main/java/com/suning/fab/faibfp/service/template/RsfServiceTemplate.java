@@ -105,10 +105,15 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
             ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
             if (null == prdMapping) {
-                LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
-                throw new FabException("IBF402", receiptNo);
+                // 考虑到利息试算的时候未开户，未产生产品映射关系，试着取报文里面的产品编码字段
+                productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
+                if (VarChecker.isEmpty(productCode)) {
+                    LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
+                    throw new FabException("IBF402", receiptNo);
+                }
+            } else {
+                productCode = prdMapping.getProductCode();
             }
-            productCode = prdMapping.getProductCode();
             // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
             reqMsg.put("dataFlag", prdMapping.getDataFlag());
         }
