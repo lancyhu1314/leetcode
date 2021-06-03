@@ -107,10 +107,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             if (null == prdMapping) {
                 // 考虑到利息试算的时候未开户，未产生产品映射关系，试着取报文里面的产品编码字段
                 productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-                if (VarChecker.isEmpty(productCode)) {
+                // TODO:给测试环境用，去除校验：因为暂时没空开发贷款前置数据迁移任务
+                /*if (VarChecker.isEmpty(productCode)) {
                     LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
                     throw new FabException("IBF402", receiptNo);
-                }
+                }*/
             } else {
                 productCode = prdMapping.getProductCode();
                 // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
