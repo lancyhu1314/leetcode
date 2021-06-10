@@ -40,9 +40,10 @@ public class ConstVar {
         }
     }
 
-    public static final class PARAMETER{
+    public static final class PARAMETER {
 
         public static final String PRODUCTCODE = "productCode";
+        public static final String SYSPRDCODE = "sysPrdCode";
 
         public static final String RECEIPTNO = "receiptNo";
 
@@ -61,7 +62,25 @@ public class ConstVar {
         public static final String PKGLIST = "pkgList";
 
         public static final String ERRSERSEQ = "errSerSeq";
-        private PARAMETER(){}
+
+        public static final String TRANDATE = "tranDate";
+
+        private PARAMETER() {
+        }
+    }
+
+    public static final class ROUTETYPE{
+
+        /**
+         * 贷款账号
+         */
+        public static final String RECEIPTNO = "0";
+        /**
+         * 放款返回的流水号+trandate
+         */
+        public static final String SERSEQNO = "1";
+
+        private ROUTETYPE(){}
     }
 
 

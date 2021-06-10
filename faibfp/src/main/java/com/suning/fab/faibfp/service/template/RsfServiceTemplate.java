@@ -43,27 +43,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 设置交易码
             ThreadLocalUtil.set(PlatConstant.PARAMETER.TRANCODE, this.getTranCode());
             ret = dataDistribute(reqMsg, startInterval);
-        } catch (FabRuntimeException e) {
-            LoggerUtil.error("数据分发错误，错误信息：{}", e);
-            ret = new HashMap<>();
-            ret.put(PlatConstant.PARAMETER.SERSEQNO, null == CtxUtil.getCtx() ? "UNKNOWN" : CtxUtil.getCtx().getBid());
-            ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
-            ret.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
-            ret.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
-        } catch (FabException e) {
-            LoggerUtil.error("数据分发错误，错误信息：{}", e);
-            ret = new HashMap<>();
-            ret.put(PlatConstant.PARAMETER.SERSEQNO, null == CtxUtil.getCtx() ? "UNKNOWN" : CtxUtil.getCtx().getBid());
-            ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
-            ret.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
-            ret.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
         } catch (Exception e) {
-            LoggerUtil.error("数据分发错误，错误信息：{}", e);
+            Pair<String, String> pair = LoggerUtil.logException((String) reqMsg.get("serialNo")
+                    , this.getClass().getSimpleName(), e, reqMsg);
             ret = new HashMap<>();
-            ret.put(PlatConstant.PARAMETER.SERSEQNO, "UNKNOWN");
+            ret.put(PlatConstant.PARAMETER.SERSEQNO, null == CtxUtil.getCtx() ? "UNKNOWN" : CtxUtil.getCtx().getBid());
             ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
-            ret.put(PlatConstant.PARAMETER.RSPCODE, PlatConstant.RSPCODE.UNKNOWN);
-            ret.put(PlatConstant.PARAMETER.RSPMSG, PlatConstant.RSPMSG.UNKNOWN);
+            ret.put(PlatConstant.PARAMETER.RSPCODE, pair.getFirst());
+            ret.put(PlatConstant.PARAMETER.RSPMSG, pair.getSecond());
+        } finally {
+            this.onClean();
         }
         return ret;
     }
@@ -73,53 +62,56 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         Map<String, Object> ret;
         // 借据号
         String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
-        String productCode = "";
+        String productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
         String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
-        // "473004", "473005", "473007" 为开户类接口，需要向映射表插入贷款账号和产品代码的映射关系
-        if (VarChecker.asList("473004", "473005", "473007").contains(reqMsg.get(PlatConstant.PARAMETER.TRANCODE))) {
+        // "473004", "473005", "473007" "479000" 为开户类接口，需要向映射表插入贷款账号和产品代码的映射关系
+        if (isOpenAcctTranCode(getTranCode())) {
             // 开户类产品直接由入口报文查出
-            productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-
             ProductMappingHandler mappingHandler = new ProductMappingHandler();
             // 考虑到服务调用失败的情况，对应关系可能已经存在与映射表中，防止主键冲突错误，先查询，再插入
             if (null == mappingHandler.load(receiptNo)) {
                 // 将产品和借据号（贷款账号）的关系存入到映射表中
-                mappingHandler.save(receiptNo, receiptNo, productCode, isCallOldSystem(productCode) ? "O" : "N");
+                mappingHandler.save(receiptNo, receiptNo, productCode, ConstVar.ROUTETYPE.RECEIPTNO);
+            } else {
+                mappingHandler.update(receiptNo, receiptNo, productCode, ConstVar.ROUTETYPE.RECEIPTNO);
             }
         } else {
-            // 说明传的是acctNo
-            if (VarChecker.isEmpty(receiptNo)) {
-                // 去贷款账号和借据号关系对应表，查询出receiptno
-                String routeId = (String) reqMsg.get(ConstVar.PARAMETER.ACCTNO);
-                AcctnoRelation load = null;
-                if (!VarChecker.isEmpty(routeId)) {
-                    load = new AcctnoRelationHandler().load(routeId);
+
+            String routeId = (String) reqMsg.get(ConstVar.PARAMETER.ACCTNO);
+            // acctno不为空，且为C系统老数据
+            if (!VarChecker.isEmpty(routeId) && isCsystemData(routeId)) {
+                // 去借据号关系表找对应关系
+                AcctnoRelation load = new AcctnoRelationHandler().load(routeId);
+                if (null == load) {
+                    throw new FabException("IBF403", routeId);
                 }
-                receiptNo = null == load ? routeId : load.getReceiptNo();
+                receiptNo = load.getReceiptNo();
+            }else{
+                if(VarChecker.isEmpty(receiptNo)){
+                    receiptNo = routeId;
+                }
             }
+
         }
 
-        // 通过产品代码是否为空，再次判断是否开户类接口。
-        if (VarChecker.isEmpty(productCode)) {
+        // 如果不是放款类或者不是试算类的接口，需要去产品映射关系表中查询产品代码
+        if (!(isOpenAcctTranCode(getTranCode())
+                || VarChecker.asList("470022", "476001", "476002", "476003", "476004").contains(getTranCode()))) {
 
             // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
             ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
             if (null == prdMapping) {
-                // 考虑到利息试算的时候未开户，未产生产品映射关系，试着取报文里面的产品编码字段
-                productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-                // TODO:给测试环境用，去除校验：因为暂时没空开发贷款前置数据迁移任务
+                // TODO:去除校验，后续需要打开
                 /*if (VarChecker.isEmpty(productCode)) {
                     LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
                     throw new FabException("IBF402", receiptNo);
                 }*/
             } else {
                 productCode = prdMapping.getProductCode();
-                // 在报文中添加数据标记，判断是新数据还是老数据 新数据：N 老数据：O
-                reqMsg.put("dataFlag", prdMapping.getDataFlag());
             }
         }
         // 将产品添加到参数中
-        reqMsg.put(ConstVar.PARAMETER.PRODUCTCODE, productCode);
+        reqMsg.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
             // 数据未迁移 调用老系统
@@ -168,6 +160,26 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     }
 
     /**
+     * 判断是否为C系统的老数据
+     *
+     * @param data
+     * @return
+     */
+    private boolean isCsystemData(String data) {
+        return data.startsWith("5103") || data.startsWith("5105");
+    }
+
+    /**
+     * 判断是否为开户类接口
+     *
+     * @param tranCode
+     * @return
+     */
+    protected boolean isOpenAcctTranCode(String tranCode) {
+        return VarChecker.asList("473004", "473005", "473006", "473007", "479000").contains(tranCode);
+    }
+
+    /**
      * 获取与产品映射关系表的路由字段
      * 部分接口不传acctNo和receiptNo，所以路由字段可能是其他字段，比如放款冲销的errSerSeq
      * 默认返回借据号
@@ -198,6 +210,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
         ctx.setTranCode(getTranCode());
 
+        // 查询类接口可以不传流水号，其他类接口必传流水号
         if (VarChecker.isEmpty(ctx.getSerialNo()) && !(this instanceof RsfQuerServiceTemplate)) {
             throw new FabRuntimeException("IBF400", "seriaNo");
         }
@@ -214,9 +227,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             } else {
                 agent = OldServiceAgentHelper.getAgent(getTranCode());
             }
-            //增加挡板开关，默认no
+            //增加挡板开关，默认no TODO:压测的时候用的
             String baffleSwitch = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "baffleSwitch", "no");
-            if ("yes".equals(baffleSwitch)) {
+            if ("yes".equalsIgnoreCase(baffleSwitch)) {
                 result = new HashMap<>();
                 result.put("rspCode", "000000");
                 result.put("rspMsg", "请求成功！挡板开关=yes");
@@ -231,16 +244,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
         } finally {
-            // 将开户接口成功的返回
+            // 将开户接口成功的返回 TODO:判断是否开户交易封装下
             if (!CollectionUtils.isEmpty(result)
                     && PlatConstant.RSPCODE.OK.equals(result.get(PlatConstant.PARAMETER.RSPCODE))
-                    && VarChecker.asList("473004", "473005", "473007").contains(getTranCode())) {
+                    && isOpenAcctTranCode(getTranCode())) {
                 ProductMappingHandler mappingHandler = new ProductMappingHandler();
                 // 预防开户多次幂等返回，先查询一下
                 if (null == mappingHandler.load(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)))) {
-                    // 保存开户核心流水号和产品的关系
-                    mappingHandler.save(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)),
-                            (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE), migrated ? "N" : "O");
+                    // 保存开户核心流水号和产品的关系，为了冲销使用
+                    mappingHandler.save(String.valueOf(result.get(PlatConstant.PARAMETER.SERSEQNO)).trim() + result.get(ConstVar.PARAMETER.TRANDATE),
+                            (String) param.get(ConstVar.PARAMETER.RECEIPTNO), (String) param.get(ConstVar.PARAMETER.PRODUCTCODE), ConstVar.ROUTETYPE.SERSEQNO);
                 }
             }
             // 登记返回报文
