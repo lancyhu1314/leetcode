@@ -36,13 +36,29 @@ public class ProductMappingHandler extends AbstractBaseDao {
      * @param receiptNo
      * @param productCode
      */
-    public void save(String routeId, String receiptNo, String productCode, String dateFlag) {
+    public void save(String routeId, String receiptNo, String productCode, String routeType) {
         ProductMapping mapping = new ProductMapping();
         mapping.setRouteId(routeId);
         mapping.setReceiptNo(receiptNo);
         mapping.setProductCode(productCode);
-        mapping.setDataFlag(dateFlag);
+        mapping.setRouteType(routeType);
         this.insert("PRODUCTMAPPING.insert", mapping);
+    }
+
+    /**
+     * 更新源数据
+     *
+     * @param routeId
+     * @param receiptNo
+     * @param productCode
+     */
+    public void update(String routeId, String receiptNo, String productCode, String routeType) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("routeId", routeId);
+        param.put("receiptNo", receiptNo);
+        param.put("productCode", productCode);
+        param.put("routeType", routeType);
+        this.update("PRODUCTMAPPING.update", param);
     }
 
 

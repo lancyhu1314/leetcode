@@ -18,7 +18,7 @@ public class ProductMapping {
 
     private String productCode;
 
-    private String dataFlag;
+    private String routeType;
 
     private Timestamp createTime;
 
@@ -28,27 +28,13 @@ public class ProductMapping {
     public ProductMapping() {
     }
 
-    public ProductMapping(String routeId, String receiptNo, String productCode, String dataFlag, Timestamp createTime, Timestamp updateTime) {
+    public ProductMapping(String routeId, String receiptNo, String productCode, String routeType, Timestamp createTime, Timestamp updateTime) {
         this.routeId = routeId;
         this.receiptNo = receiptNo;
         this.productCode = productCode;
-        this.dataFlag = dataFlag;
+        this.routeType = routeType;
         this.createTime = createTime;
         this.updateTime = updateTime;
-    }
-
-    /**
-     * @return the dataFlag
-     */
-    public String getDataFlag() {
-        return dataFlag;
-    }
-
-    /**
-     * @param dataFlag to set
-     */
-    public void setDataFlag(String dataFlag) {
-        this.dataFlag = dataFlag;
     }
 
     /**
@@ -91,6 +77,20 @@ public class ProductMapping {
      */
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    /**
+     * @return the routeType
+     */
+    public String getRouteType() {
+        return routeType;
+    }
+
+    /**
+     * @param routeType to set
+     */
+    public void setRouteType(String routeType) {
+        this.routeType = routeType;
     }
 
     /**
