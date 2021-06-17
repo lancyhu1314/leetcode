@@ -1,7 +1,7 @@
 package com.suning.fab.faibfp.service;
 
 import com.suning.api.rsf.service.ApiRemoteMapService;
-import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Implement(contract = ApiRemoteMapService.class, implCode = "faloan-interestCalculate")
-public class Rsf470022 extends RsfServiceTemplate {
+public class Rsf470022 extends RsfQuerServiceTemplate {
 
 
     @Override
