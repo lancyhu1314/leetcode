@@ -59,6 +59,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
     public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
 
+        LoggerUtil.info("前置系统入口报文：{}| ServiceName:{} |SerialNo【{}】", JSON.toJSONString(reqMsg), this.getClass().getSimpleName(), reqMsg.get("serialNo"));
+
         Map<String, Object> ret;
         // 借据号
         String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
@@ -66,6 +68,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
         // "473004", "473005", "473007" "479000" 为开户类接口，需要向映射表插入贷款账号和产品代码的映射关系
         if (isOpenAcctTranCode(getTranCode())) {
+            if (VarChecker.isEmpty(receiptNo)) {
+                throw new FabException("IBF400", "开户借据号");
+            }
             // 开户类产品直接由入口报文查出
             ProductMappingHandler mappingHandler = new ProductMappingHandler();
             // 考虑到服务调用失败的情况，对应关系可能已经存在与映射表中，防止主键冲突错误，先查询，再插入
@@ -86,8 +91,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                     throw new FabException("IBF403", routeId);
                 }
                 receiptNo = load.getReceiptNo();
-            }else{
-                if(VarChecker.isEmpty(receiptNo)){
+            } else {
+                if (VarChecker.isEmpty(receiptNo)) {
                     receiptNo = routeId;
                 }
             }
@@ -119,6 +124,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             reqMsg.put("sysGroup", "FALOAN");
             ret = transparentExecute(reqMsg, false, startInterval);
         } else {
+
+            // 1、预收户走老系统
+
             // 数据已迁移，调用新系统
             if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.ACCTNO))) {
                 reqMsg.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
@@ -202,7 +210,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      */
     public Map<String, Object> transparentExecute(Map<String, Object> param, boolean migrated, long startInterval) {
 
-        LoggerUtil.info("透传调用入口报文 | ServiceName:{} |SerialNo【{}】| reqMap={}，是否迁移：{}", this.getClass().getSimpleName(), param.get("serialNo"), JSON.toJSONString(param), migrated);
+        LoggerUtil.info("透传调用| ServiceName:{} |SerialNo【{}】|产品：{} |是否迁移：{}", this.getClass().getSimpleName(), param.get("serialNo"), param.get(ConstVar.PARAMETER.SYSPRDCODE), migrated);
         // 创建上线文
         createLocalTranCtx();
         LocalTranCtx ctx = (LocalTranCtx) CtxUtil.getCtx();
