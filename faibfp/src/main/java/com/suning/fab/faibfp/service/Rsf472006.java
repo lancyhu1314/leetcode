@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉还款冲销
+ * 〈功能详细描述〉贷款核销
  *
  * @Author 19043955
  * @Date 2021/1/20
  * @Version 1.0
  */
 @Service
-@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-repaymentWriteOff")
+@Implement(contract = ApiRemoteMapService.class, implCode = "faloan-loanCancellation")
 public class Rsf472006 extends RsfServiceTemplate {
 
     @Override
