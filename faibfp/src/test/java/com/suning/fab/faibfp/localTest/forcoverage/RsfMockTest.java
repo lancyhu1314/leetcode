@@ -5,6 +5,9 @@ import com.suning.fab.faibfp.utils.TestUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 功能描述: <br>
  * 〈功能详细描述〉
@@ -179,6 +182,8 @@ public class RsfMockTest extends TestUtil {
     @Test
     public void test() {
 
+        Map<String, Object> map = new HashMap<>();
+
         rsf000001.getTranCode();
         rsf176000.getTranCode();
         rsf176001.getTranCode();
@@ -221,9 +226,13 @@ public class RsfMockTest extends TestUtil {
         rsf471013.getTranCode();
         rsf471014.getTranCode();
         rsf472002.getTranCode();
+        rsf472002.getProductMapRouteId("", map);
         rsf472003.getTranCode();
+        rsf472003.getProductMapRouteId("", map);
         rsf472004.getTranCode();
+        rsf472004.getProductMapRouteId("", map);
         rsf472005.getTranCode();
+        rsf472005.getProductMapRouteId("", map);
         rsf472006.getTranCode();
         rsf473004.getTranCode();
         rsf473005.getTranCode();
