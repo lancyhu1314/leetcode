@@ -8,6 +8,10 @@
 			classpath:conf/spring/spring-plat.xml
 		</param-value>
   </context-param>
+  <context-param>
+    <param-name>logConfigPath</param-name>
+    <param-value>/log_ibfp.config</param-value>
+  </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
