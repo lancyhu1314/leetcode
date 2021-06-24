@@ -70,6 +70,17 @@ public class CalendarUtilTest {
         CalendarUtil.yearsBetween(dateStr1, dateStr1);
 
 
+        DateUtils.stringToDate("2020-05-21");
+        DateUtils.before(new Date(), new Date());
+        DateUtils.isSameDay(DateUtils.stringToDate("2020-05-21"), DateUtils.stringToDate("2020-05-22"));
+        DateUtils.dateToString(new Date());
+        DateUtils.getAfterDate(new Date(), new Date());
+        DateUtils.getBeforeDate(new Date(), new Date());
+        DateUtils.getBeforeDate(null, new Date());
+        DateUtils.getAfterDate(null, new Date());
+        DateUtils.getAfterDate(new Date(), null);
+        DateUtils.getAfterDate(new Date(), null);
+        DateUtils.getOtherDate(new Date(), 5);
     }
 
 }

@@ -186,14 +186,23 @@ public class RsfMockTest extends TestUtil {
 
         rsf000001.getTranCode();
         rsf176000.getTranCode();
+        rsf176000.getProductMapRouteId("", map);
         rsf176001.getTranCode();
+        rsf176001.getProductMapRouteId("", map);
         rsf176002.getTranCode();
+        rsf176002.getProductMapRouteId("", map);
         rsf176003.getTranCode();
+        rsf176003.getProductMapRouteId("", map);
         rsf176004.getTranCode();
+        rsf176004.getProductMapRouteId("", map);
         rsf176005.getTranCode();
+        rsf176005.getProductMapRouteId("", map);
         rsf176006.getTranCode();
+        rsf176006.getProductMapRouteId("", map);
         rsf176011.getTranCode();
+        rsf176011.getProductMapRouteId("", map);
         rsf176012.getTranCode();
+        rsf176012.getProductMapRouteId("", map);
         rsf470000.getTranCode();
         rsf470001.getTranCode();
         rsf470002.getTranCode();
