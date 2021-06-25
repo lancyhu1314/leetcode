@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="propertyConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/main-setting.properties</value>
+			</list>
+		</property>
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+	</bean>
+
+	<!-- 	dev -->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		  destroy-method="close">
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="url"
+				  value="jdbc:db2://10.47.155.204:60006/FALOADB1:currentSchema=FALOAUSR;" />
+		<property name="username" value="faloains" />
+		<property name="password" value="suning" />
+		<property name="initialSize" value="50" />
+		<property name="maxActive" value="100" />
+		<property name="maxWait" value="10000" />
+	</bean>-->
+	<!--mycat-sit-v2-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.237.37.208:8066/FAIBFPDB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="2Ui6JsnRSq23" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>
+
+	<!--mycat-xzpre-v2-->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.57.81.86:8066/FALOADB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>-->
+
+	<!--mycat-xgpre-v2-->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.242.45.181:8066/FALOADB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>-->
+
+	<!-- 	sit -->
+	  	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+            destroy-method="close">
+            <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+            <property name="url"
+                value="jdbc:db2://10.27.205.154:60004/loandb:currentSchema=FALOAN;" />
+            <property name="username" value="loanusr" />
+            <property name="password" value="WOl8NQiad3Ep" />
+            <property name="initialSize" value="50" />
+            <property name="maxActive" value="100" />
+            <property name="maxWait" value="10000" />
+            </bean>-->
+	<!-- 	pst -->
+	<!--
+          <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+            destroy-method="close">
+            <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+            <property name="url"
+                value="jdbc:db2://10.244.218.199:60006/FALOADB:currentSchema=FALOAN;" />
+            <property name="username" value="faloausr" />
+            <property name="password" value="suning" />
+            <property name="initialSize" value="50" />
+            <property name="maxActive" value="100" />
+            <property name="maxWait" value="10000" />
+        </bean>
+    -->
+
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		  destroy-method="close">
+		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="url"
+				  value="jdbc:db2://10.27.127.135:60004/loandb:currentSchema=FALOAN;" />
+		<property name="username" value="yunwei" />
+		<property name="password" value="M3nGsyLcdakH" />
+		<property name="initialSize" value="50" />
+		<property name="maxActive" value="100" />
+		<property name="maxWait" value="10000" />
+	</bean>-->
+
+
+	<import resource="classpath*:conf/spring/spring-plat.xml" />
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="falqb" version="2.5">
+  <display-name>Archetype Created Web Application</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			classpath:conf/spring/spring-res.xml,
+			classpath:conf/spring/spring-plat.xml
+		</param-value>
+  </context-param>
+  <context-param>
+    <param-name>logConfigPath</param-name>
+    <param-value>/log_ibfp.config</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.suning.framework.log.LogContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.suning.rsf.provider.ProviderContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.suning.rsf.consumer.ConsumerContextListener</listener-class>
+  </listener>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
