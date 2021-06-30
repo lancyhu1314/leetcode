@@ -51,6 +51,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             ret.put(PlatConstant.PARAMETER.TRANDATE, DateFormatUtils.format(new Date(), "yyy-MM-dd"));
             ret.put(PlatConstant.PARAMETER.RSPCODE, pair.getFirst());
             ret.put(PlatConstant.PARAMETER.RSPMSG, pair.getSecond());
+            // 打印monitor日志
+            LoggerUtil.logMonitor(this.getClass().getSimpleName(), (String) reqMsg.get("serialNo"),
+                    (String) ret.get("serSeqNo"), (String) reqMsg.get("channelId"), (String) ret.get("rspCode"), (String) ret.get("rspMsg"), startInterval);
         } finally {
             this.onClean();
         }
