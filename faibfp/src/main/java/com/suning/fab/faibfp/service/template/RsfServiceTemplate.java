@@ -84,39 +84,15 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 mappingHandler.update(receiptNo, receiptNo, productCode, ConstVar.ROUTETYPE.RECEIPTNO);
             }
         } else {
-
-            String routeId = (String) reqMsg.get(ConstVar.PARAMETER.ACCTNO);
-            // acctno不为空，且为C系统老数据
-            if (!VarChecker.isEmpty(routeId) && isCsystemData(routeId)) {
-                // 去借据号关系表找对应关系
-                AcctnoRelation load = new AcctnoRelationHandler().load(routeId);
-                if (null == load) {
-                    throw new FabException("IBF403", routeId);
-                }
-                receiptNo = load.getReceiptNo();
-            } else {
-                if (VarChecker.isEmpty(receiptNo)) {
-                    receiptNo = routeId;
-                }
-            }
-
+            receiptNo = compatibleWithCAcctno(reqMsg);
         }
 
         // 如果不是放款类或者不是试算类的接口，需要去产品映射关系表中查询产品代码
         if (!(isOpenAcctTranCode(getTranCode())
                 || VarChecker.asList("470022", "476001", "476002", "476003", "476004").contains(getTranCode()))) {
+            // 从产品映射表中获取产品
+            productCode = getMappintProductCode(reqMsg, receiptNo);
 
-            // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
-            ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
-            if (null == prdMapping) {
-                // TODO:去除校验，后续需要打开
-                /*if (VarChecker.isEmpty(productCode)) {
-                    LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
-                    throw new FabException("IBF402", receiptNo);
-                }*/
-            } else {
-                productCode = prdMapping.getProductCode();
-            }
         }
         // 将产品添加到参数中
         reqMsg.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
@@ -156,6 +132,57 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
         }
         return ret;
+    }
+
+    /**
+     * 从产品映射表中获取借据号对应的产品
+     *
+     * @param reqMsg
+     * @param receiptNo
+     * @return
+     */
+    public String getMappintProductCode(Map<String, Object> reqMsg, String receiptNo) {
+
+        String productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
+        // 查询通过路由字段查询与产品映射表:产品关系表的路由字段取值为：errserseqnO或者receiptNo
+        ProductMapping prdMapping = new ProductMappingHandler().load(getProductMapRouteId(receiptNo, reqMsg));
+        if (null == prdMapping) {
+            // TODO:去除校验，后续需要打开
+            /*if (VarChecker.isEmpty(productCode)) {
+                LoggerUtil.error("借据【{}】未找到对应的产品======", receiptNo);
+                throw new FabException("IBF402", receiptNo);
+            }*/
+        } else {
+            productCode = prdMapping.getProductCode();
+        }
+        return productCode;
+    }
+
+    /**
+     * 查询借据号与贷款账号关系表，兼容C系统贷款账号与借据号不一致的老数据
+     *
+     * @param reqMsg
+     * @return
+     * @throws FabException
+     */
+    public String compatibleWithCAcctno(Map<String, Object> reqMsg) throws FabException {
+
+        String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
+        String routeId = (String) reqMsg.get(ConstVar.PARAMETER.ACCTNO);
+        // acctno不为空，且为C系统老数据
+        if (!VarChecker.isEmpty(routeId) && isCsystemData(routeId)) {
+            // 去借据号关系表找对应关系
+            AcctnoRelation load = new AcctnoRelationHandler().load(routeId);
+            if (null == load) {
+                throw new FabException("IBF403", routeId);
+            }
+            receiptNo = load.getReceiptNo();
+        } else {
+            if (VarChecker.isEmpty(receiptNo)) {
+                receiptNo = routeId;
+            }
+        }
+        return receiptNo;
     }
 
     /**
