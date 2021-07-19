@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class RsfMockTest extends TestUtil {
     @Autowired
-    Rsf000001 rsf000001;
-    @Autowired
     Rsf176000 rsf176000;
     @Autowired
     Rsf176001 rsf176001;
@@ -39,12 +37,6 @@ public class RsfMockTest extends TestUtil {
     Rsf176012 rsf176012;
     @Autowired
     Rsf470000 rsf470000;
-    @Autowired
-    Rsf470001 rsf470001;
-    @Autowired
-    Rsf470002 rsf470002;
-    @Autowired
-    Rsf470006 rsf470006;
     @Autowired
     Rsf470007 rsf470007;
     @Autowired
@@ -82,8 +74,6 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf470026 rsf470026;
     @Autowired
-    Rsf470027 rsf470027;
-    @Autowired
     Rsf471007 rsf471007;
     @Autowired
     Rsf471008 rsf471008;
@@ -95,8 +85,6 @@ public class RsfMockTest extends TestUtil {
     Rsf471011 rsf471011;
     @Autowired
     Rsf471012 rsf471012;
-    @Autowired
-    Rsf471013 rsf471013;
     @Autowired
     Rsf471014 rsf471014;
     @Autowired
@@ -118,8 +106,6 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf473007 rsf473007;
     @Autowired
-    Rsf473008 rsf473008;
-    @Autowired
     Rsf475001 rsf475001;
     @Autowired
     Rsf475002 rsf475002;
@@ -138,8 +124,6 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf475009 rsf475009;
     @Autowired
-    Rsf475010 rsf475010;
-    @Autowired
     Rsf476001 rsf476001;
     @Autowired
     Rsf476002 rsf476002;
@@ -147,10 +131,6 @@ public class RsfMockTest extends TestUtil {
     Rsf476003 rsf476003;
     @Autowired
     Rsf476004 rsf476004;
-    @Autowired
-    Rsf476005 rsf476005;
-    @Autowired
-    Rsf477015 rsf477015;
     @Autowired
     Rsf477016 rsf477016;
     @Autowired
@@ -175,8 +155,6 @@ public class RsfMockTest extends TestUtil {
     Rsf479009 rsf479009;
     @Autowired
     Rsf479010 rsf479010;
-    @Autowired
-    Rsf479016 rsf479016;
 
 
     @Test
@@ -184,7 +162,6 @@ public class RsfMockTest extends TestUtil {
 
         Map<String, Object> map = new HashMap<>();
 
-        rsf000001.getTranCode();
         rsf176000.getTranCode();
         rsf176000.getProductMapRouteId("", map);
         rsf176001.getTranCode();
@@ -204,9 +181,6 @@ public class RsfMockTest extends TestUtil {
         rsf176012.getTranCode();
         rsf176012.getProductMapRouteId("", map);
         rsf470000.getTranCode();
-        rsf470001.getTranCode();
-        rsf470002.getTranCode();
-        rsf470006.getTranCode();
         rsf470007.getTranCode();
         rsf470008.getTranCode();
         rsf470009.getTranCode();
@@ -225,14 +199,12 @@ public class RsfMockTest extends TestUtil {
         rsf470024.getTranCode();
         rsf470025.getTranCode();
         rsf470026.getTranCode();
-        rsf470027.getTranCode();
         rsf471007.getTranCode();
         rsf471008.getTranCode();
         rsf471009.getTranCode();
         rsf471010.getTranCode();
         rsf471011.getTranCode();
         rsf471012.getTranCode();
-        rsf471013.getTranCode();
         rsf471014.getTranCode();
         rsf472002.getTranCode();
         rsf472002.getProductMapRouteId("", map);
@@ -247,7 +219,6 @@ public class RsfMockTest extends TestUtil {
         rsf473005.getTranCode();
         rsf473006.getTranCode();
         rsf473007.getTranCode();
-        rsf473008.getTranCode();
         rsf475001.getTranCode();
         rsf475002.getTranCode();
         rsf475003.getTranCode();
@@ -257,13 +228,10 @@ public class RsfMockTest extends TestUtil {
         rsf475007.getTranCode();
         rsf475008.getTranCode();
         rsf475009.getTranCode();
-        rsf475010.getTranCode();
         rsf476001.getTranCode();
         rsf476002.getTranCode();
         rsf476003.getTranCode();
         rsf476004.getTranCode();
-        rsf476005.getTranCode();
-        rsf477015.getTranCode();
         rsf477016.getTranCode();
         rsf477017.getTranCode();
         rsf477018.getTranCode();
@@ -276,7 +244,6 @@ public class RsfMockTest extends TestUtil {
         rsf479002.getTranCode();
         rsf479009.getTranCode();
         rsf479010.getTranCode();
-        rsf479016.getTranCode();
     }
 
 }
