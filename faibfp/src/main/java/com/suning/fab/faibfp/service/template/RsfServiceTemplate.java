@@ -104,9 +104,8 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             ret = transparentExecute(reqMsg, false, startInterval);
         } else {
 
-            // 1、预收户走老系统
-
-            // 数据已迁移，调用新系统
+            // 数据已迁移，调用新系统，新模型中只存在receiptno(接口字段命名为acctno)，
+            // 所以，调用新系统的都是借据号，一般acctno和receiptno一样，C系统在上文已转换。
             if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.ACCTNO))) {
                 reqMsg.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
             }
@@ -122,6 +121,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 // 将repayacctno覆盖
                 reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
             }
+
+            // 如果是开户类接口，将repayacctno字段添加到报文中传给新系统
+            if (isOpenAcctTranCode(getTranCode())) {
+                // 查询预收账号和客户号关系
+                CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.MERCHANTNO));
+                // 报文增加repayAcctNo字段
+                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, null == load ? (String) reqMsg.get(ConstVar.PARAMETER.MERCHANTNO) : load.getRepayacctNo());
+            }
+
+
             // 是否需要跨库事务
             if (isNeedSpliteTransation(reqMsg)) {
                 // 调用跨库事务
