@@ -1,9 +1,11 @@
 package com.suning.fab.faibfp.service;
 
 import com.suning.api.rsf.service.ApiRemoteMapService;
-import com.suning.fab.faibfp.service.template.RsfServiceTemplate;
+import com.suning.fab.faibfp.service.template.RsfAccountOpenIntfTemplate;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -15,11 +17,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Implement(contract = ApiRemoteMapService.class, implCode = "faloan-nonstdCreateAcctAndLoan")
-public class Rsf473005 extends RsfServiceTemplate {
+public class Rsf473005 extends RsfAccountOpenIntfTemplate {
 
 
     @Override
     public String getTranCode() {
         return "473005";
     }
+
+    @Override
+    protected Map<String, Object> rspHandle(Map<String, Map<String, Object>> resps) {
+        return resps.get("473005");
+    }
+
 }

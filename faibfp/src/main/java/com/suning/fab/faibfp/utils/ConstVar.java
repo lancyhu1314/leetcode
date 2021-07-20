@@ -65,6 +65,8 @@ public class ConstVar {
 
         public static final String TRANDATE = "tranDate";
 
+        public static final String MERCHANTNO = "merchantNo";
+
         private PARAMETER() {
         }
     }
