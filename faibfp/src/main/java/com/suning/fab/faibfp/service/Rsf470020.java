@@ -67,6 +67,7 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
             Map<String, Object> req_old = new HashMap<>();
             req_old.putAll(reqMsg);
             req_old.put("pkgList", unMigrated);
+            req_old.put("sysGroup", "FALOAN");
             ret_old = transparentExecute(req_old, false, startInterval);
         }
 
