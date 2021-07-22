@@ -91,7 +91,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         if (!(isOpenAcctTranCode(getTranCode())
                 || VarChecker.asList("470022", "476001", "476002", "476003", "476004").contains(getTranCode()))) {
             // 从产品映射表中获取产品
-            productCode = getMappintProductCode(reqMsg, receiptNo);
+            productCode = getMappintProductCode(reqMsg, getProductMapRouteId(receiptNo, reqMsg));
 
         }
         // 将产品添加到参数中

@@ -28,6 +28,6 @@ public class Rsf472003 extends RsfServiceTemplate {
 
     @Override
     public String getProductMapRouteId(String receiptNo, Map<String, Object> reqMsg) {
-        return (String) reqMsg.get(ConstVar.PARAMETER.ERRSERSEQ);
+        return (String) reqMsg.get(ConstVar.PARAMETER.ERRSERSEQ) + reqMsg.get(ConstVar.PARAMETER.ERRDATE);
     }
 }
