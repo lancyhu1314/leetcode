@@ -4,7 +4,7 @@
 
     <insert id="insert" parameterType="com.suning.fab.faibfp.bean.ProductMapping">
         insert into PRODUCTMAPPING(routeId,receiptNo,productcode,routetype,createtime,updatetime)
-            values (#{routeId},#{receiptNo},#{productCode},#{routeType},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+            values (#{routeId},#{receiptNo},#{productCode},#{routeType},CURRENT_TIMESTAMP(6),CURRENT_TIMESTAMP(6))
     </insert>
 
     <select id="selectByKey" parameterType="map" resultType="com.suning.fab.faibfp.bean.ProductMapping">
@@ -18,7 +18,7 @@
         set receiptNo = #{receiptNo},
             productcode = #{productCode},
             routetype = #{routeType},
-            updatetime = CURRENT_TIMESTAMP
+            updatetime = CURRENT_TIMESTAMP(6)
         where routeid = #{routeId}
     </update>
 
