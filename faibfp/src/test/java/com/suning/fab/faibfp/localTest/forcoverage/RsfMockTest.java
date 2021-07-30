@@ -140,8 +140,6 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf477019 rsf477019;
     @Autowired
-    Rsf478000 rsf478000;
-    @Autowired
     Rsf478001 rsf478001;
     @Autowired
     Rsf478003 rsf478003;
@@ -236,7 +234,6 @@ public class RsfMockTest extends TestUtil {
         rsf477017.getTranCode();
         rsf477018.getTranCode();
         rsf477019.getTranCode();
-        rsf478000.getTranCode();
         rsf478001.getTranCode();
         rsf478003.getTranCode();
         rsf479000.getTranCode();

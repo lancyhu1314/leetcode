@@ -48,17 +48,7 @@ public class SubTableCreateSql {
 
     }
 
-    private static void makeSingleCreateSql(List<Table> tableInfo, String schema) {
 
-        for (Table table : tableInfo) {
-            // 获取索引sql
-            StringBuilder queueBuilder = getIndexSql(schema, table, "");
-            // 建表sql()
-            StringBuilder sql = createSql(schema, table, "");
-            sql.append(queueBuilder);
-            outputToFile(1, sql);
-        }
-    }
 
     /**
      * 创建sql及comment
@@ -75,11 +65,32 @@ public class SubTableCreateSql {
 
                 StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
 //                StringBuilder sql = getDropSql(schema, table, i);
+//                StringBuilder sql = getAlterTimestampSql(schema, table, i);
                 outputToFile(i, sql);
             }
         }
     }
 
+    private static void makeSingleCreateSql(List<Table> tableInfo, String schema) {
+
+        for (Table table : tableInfo) {
+            // 获取索引sql
+            StringBuilder queueBuilder = getIndexSql(schema, table, "");
+            // 建表sql()
+            StringBuilder sql = createSql(schema, table, "");
+            sql.append(queueBuilder);
+            outputToFile(1, sql);
+        }
+    }
+
+    private static StringBuilder getAlterTimestampSql(String schema, Table table, int tableNum) {
+        //alter table user modify column createtime timestamp(6), modify column updatetime timestamp(6);
+        StringBuilder builder = new StringBuilder("ALTER TABLE ");
+        builder.append(table.getTableName() + tableNum);
+        builder.append(" modify column createtime timestamp(6), ");
+        builder.append(" modify column updatetime timestamp(6);");
+        return builder;
+    }
 
     public static StringBuilder makeMySql(String schema, Table table, String tableNum) {
         StringBuilder builder = new StringBuilder("CREATE TABLE ");
@@ -212,15 +223,15 @@ public class SubTableCreateSql {
     public static int getDataBaseByTableId(int tableId) {
         /*** 9个库算法 ****/
 
-        /*int j;
+        int j;
         if (tableId == 255 || tableId == 511) {
             j = 9;
         } else {
             j = tableId % 8 + 1; // 计算放在那个库里
-        }*/
+        }
 
         /*** 2个库算法 ****/
-        int j = tableId % 2 + 1;
+//        int j = tableId % 2 + 1;
 
         return j;
     }

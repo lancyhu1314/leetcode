@@ -2,12 +2,13 @@ package com.suning.fab.faibfp.service;
 
 import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
+import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈功能详细描述〉批量预约还款接口
  *
  * @Author 19043955
  * @Date 2021/4/16
@@ -20,4 +21,74 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
     public String getTranCode() {
         return "470020";
     }
+
+    /**
+     * @param reqMsg
+     * @param startInterval
+     * @return
+     * @throws FabException
+     */
+    /*@Override
+    public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
+
+        // 将报文重新拆分
+        List<Map<String, Object>> reqs = (List<Map<String, Object>>) reqMsg.get("pkgList");
+        // 未迁移报文
+        List<Map<String, Object>> unMigrated = new ArrayList<>();
+        // 已迁移报文
+        List<Map<String, Object>> migrated = new ArrayList<>();
+        for (Map<String, Object> req : reqs) {
+            // 获取借据号
+            String receiptNo = compatibleWithCAcctno(req);
+            // 获取产品编码
+            String productCode = getMappintProductCode(req, receiptNo);
+            // 将产品添加到参数中
+            req.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
+            // 判断是否迁移，将报文分类
+            if (isCallOldSystem(productCode)) {
+                unMigrated.add(req);
+            } else {
+                migrated.add(req);
+            }
+        }
+
+        Map<String, Object> ret_old = null;
+        // 调用老系统
+        if (!CollectionUtils.isEmpty(unMigrated)) {
+            Map<String, Object> req_old = new HashMap<>();
+            req_old.putAll(reqMsg);
+            req_old.put("pkgList", unMigrated);
+            req_old.put("sysGroup", "FALOAN");
+            ret_old = transparentExecute(req_old, false, startInterval);
+        }
+
+        Map<String, Object> ret_new = null;
+        // 调用新系统
+        if (!CollectionUtils.isEmpty(migrated)) {
+            Map<String, Object> req_new = new HashMap<>();
+            req_new.putAll(reqMsg);
+            req_new.put("pkgList", migrated);
+            ret_new = transparentExecute(req_new, true, startInterval);
+        }
+
+        // 两次调用有一个报错直接返回报错
+        if (null != ret_old && !PlatConstant.RSPCODE.OK.equals(ret_old.get("rspCode")))
+            return ret_old;
+        if (null != ret_new && !PlatConstant.RSPCODE.OK.equals(ret_new.get("rspCode")))
+            return ret_new;
+
+        if (null != ret_new) {
+            List<Map> pk_new = JSON.parseArray((String) ret_new.get("pkgList1"), Map.class);
+
+            if (null != ret_old) {
+                List<Map> pk_old = JSON.parseArray((String) ret_old.get("pkgList1"), Map.class);
+                pk_new.addAll(pk_old);
+            }
+            ret_new.put("pkgList1", JSON.toJSONString(pk_new));
+            return ret_new;
+
+        } else {
+            return ret_old;
+        }
+    }*/
 }

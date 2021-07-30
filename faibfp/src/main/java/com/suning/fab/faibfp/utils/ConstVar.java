@@ -63,7 +63,11 @@ public class ConstVar {
 
         public static final String ERRSERSEQ = "errSerSeq";
 
+        public static final String ERRDATE = "errDate";
+
         public static final String TRANDATE = "tranDate";
+
+        public static final String MERCHANTNO = "merchantNo";
 
         private PARAMETER() {
         }

@@ -13,7 +13,7 @@
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
 	</bean>
 
-	<!-- 	dev -->
+	<!-- 	dev ibfp-->
 	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		  destroy-method="close">
 		<property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
@@ -25,7 +25,7 @@
 		<property name="maxActive" value="100" />
 		<property name="maxWait" value="10000" />
 	</bean>-->
-	<!--mycat-sit-v2-->
+	<!--mycat-sit-ibfp-->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
@@ -37,19 +37,19 @@
 		<property name="maxWait" value="1000" />
 	</bean>
 
-	<!--mycat-xzpre-v2-->
+	<!--mycat-xzpre-ibfp-->
 	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-				  value="jdbc:mysql://10.57.81.86:8066/FALOADB?useServerPrepStmts=true" />
+				  value="jdbc:mysql://10.237.3.113:8066/FAIBFPDB?useServerPrepStmts=true" />
 		<property name="username" value="root" />
-		<property name="password" value="123456" />
+		<property name="password" value="2Ui6JsnRSq23" />
 		<property name="initialSize" value="10" />
 		<property name="maxActive" value="20" />
 		<property name="maxWait" value="1000" />
 	</bean>-->
 
-	<!--mycat-xgpre-v2-->
+	<!--mycat-xgpre-ibfp-->
 	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
