@@ -1,10 +1,19 @@
 package com.suning.fab.faibfp.service;
 
+import com.alibaba.fastjson.JSON;
 import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
+import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.exception.FabException;
+import com.suning.fab.mulssyn.utils.PlatConstant;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能描述: <br>
@@ -28,7 +37,7 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
      * @return
      * @throws FabException
      */
-    /*@Override
+    @Override
     public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
 
         // 将报文重新拆分
@@ -90,5 +99,5 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
         } else {
             return ret_old;
         }
-    }*/
+    }
 }
