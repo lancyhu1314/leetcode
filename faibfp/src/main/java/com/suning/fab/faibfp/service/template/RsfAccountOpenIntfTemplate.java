@@ -46,6 +46,7 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
         if (VarChecker.asList("E").contains(param.get(ConstVar.PARAMETER.CHANNELTYPE))) {
             Map<String, Object> repayParam = new HashMap<>();
             repayParam.put("tranCode", "471007");
+            repayParam.put("switchloanType", param.get("switchloanType"));
             repayParam.put("termDate", param.get("termDate"));
             repayParam.put("termTime", param.get("termTime"));
             repayParam.put("channelId", param.get("channelId"));
