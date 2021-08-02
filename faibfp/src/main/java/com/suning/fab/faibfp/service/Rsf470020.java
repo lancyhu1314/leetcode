@@ -5,6 +5,7 @@ import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.exception.FabException;
+import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.fab.mulssyn.utils.PlatConstant;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,10 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
             // 判断是否迁移，将报文分类
             if (isCallOldSystem(productCode)) {
                 unMigrated.add(req);
+                LoggerUtil.info("前置拆分调用老系统：借据号：{}，产品：{}", receiptNo, productCode);
             } else {
                 migrated.add(req);
+                LoggerUtil.info("前置拆分调用新模型：借据号：{}，产品：{}", receiptNo, productCode);
             }
         }
 
