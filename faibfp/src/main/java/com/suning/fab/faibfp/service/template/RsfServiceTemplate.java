@@ -174,6 +174,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }*/
         } else {
             productCode = prdMapping.getProductCode();
+            // 如果原报文中借据号不存在，将借据号存入报文(sysReceiptNo)
+            if (VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.RECEIPTNO)))
+                reqMsg.put(ConstVar.PARAMETER.SYSRECEIPTNO, prdMapping.getReceiptNo());
         }
         return productCode;
     }

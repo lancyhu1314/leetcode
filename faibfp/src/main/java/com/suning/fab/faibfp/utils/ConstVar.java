@@ -47,6 +47,8 @@ public class ConstVar {
 
         public static final String RECEIPTNO = "receiptNo";
 
+        public static final String SYSRECEIPTNO = "sysReceiptNo";
+
         public static final String ACCTNO = "acctNo";
 
         public static final String ROUTEID = "routeId";
