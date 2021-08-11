@@ -218,7 +218,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      * @param productCode
      * @return
      */
-    protected boolean isCallOldSystem(String productCode) {
+    public boolean isCallOldSystem(String productCode) {
         // 查询借据产品映射表，根据scm配置的产品，判断是调用新系统还是老系统。
         String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
         return VarChecker.isEmpty(value) || !Arrays.asList(value.split(",")).contains(productCode);
