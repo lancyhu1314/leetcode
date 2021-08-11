@@ -67,7 +67,7 @@ public class CreateAcctAndDet extends TestUtil {
         input.put("openBrc", "51030000");
         input.put("openDate", "2021-01-01");
         input.put("fundChannel", "fundChannel000000");
-        input.put("productCode", "2412610");
+        input.put("productCode", "2412611");
         input.put("repayWay", "10");
         input.put("startIntDate", date); //2021-01-01
         input.put("discountAmt", 0);    //扣息金额
