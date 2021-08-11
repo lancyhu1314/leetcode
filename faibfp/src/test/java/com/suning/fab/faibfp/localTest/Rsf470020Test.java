@@ -18,7 +18,7 @@ import java.util.*;
  * @Date 2021/7/19
  * @Version 1.0
  */
-public class Rsf470020T extends TestUtil {
+public class Rsf470020Test extends TestUtil {
 
     @Autowired
     Rsf470020 rsf470020;
