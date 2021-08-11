@@ -1,7 +1,6 @@
 package com.suning.fab.faibfp.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.suning.fab.mulssyn.utils.ServiceAgentHelper;
 import com.suning.rsf.consumer.ServiceAgent;
 
 import java.util.HashMap;
@@ -23,10 +22,20 @@ public class TranDateCutUtil {
         param.put("cutDate", date);
         param.put("acctNo", acctNo);
         param.put("customId", customId);
-        ServiceAgent agent = ServiceAgentHelper.getAgent("479999");
+        ServiceAgent agent = OldServiceAgentHelper.getAgent("479999");
         Map<String, Object> result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
-        System.out.println(JSON.toJSONString(result));
+        System.out.println("新模型切切日期：" + JSON.toJSONString(result));
+    }
 
+    public static void setOldSystemTrandate(String trandate) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("flag", "TEST");
+        param.put("termeDate", trandate);
+        param.put("termDate", "2020-01-01");
+        param.put("sysGroup", "faloan");
+        ServiceAgent agent = OldServiceAgentHelper.getAgent("479998");
+        Map<String, Object> result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+        System.out.println("老系统切日期：" + JSON.toJSONString(result));
     }
 
 }
