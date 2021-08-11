@@ -198,9 +198,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 去借据号关系表找对应关系
             AcctnoRelation load = new AcctnoRelationHandler().load(routeId);
             if (null == load) {
-                throw new FabException("IBF403", routeId);
+                LoggerUtil.info("【前置系统】C系统老数据{}在借据号关系表中不存在", routeId);
+                if (VarChecker.isEmpty(receiptNo))
+                    receiptNo = routeId;
+            } else {
+                receiptNo = load.getReceiptNo();
             }
-            receiptNo = load.getReceiptNo();
         } else {
             if (VarChecker.isEmpty(receiptNo)) {
                 receiptNo = routeId;
