@@ -108,7 +108,7 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
                 return ret_old;
             }
         } else {
-            return this.dataDistribute(reqMsg, startInterval);
+            return super.dataDistribute(reqMsg, startInterval);
         }
     }
 }
