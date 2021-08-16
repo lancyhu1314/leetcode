@@ -1,9 +1,9 @@
 package com.suning.fab.faibfp.localTest;
 
+import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf473004;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.faibfp.utils.TranDateCutUtil;
-import com.suning.fab.mulssyn.utils.VarChecker;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,34 +12,67 @@ import java.util.*;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉开户放款过债务公司
+ * 〈功能详细描述〉
  *
  * @Author 19043955
- * @Date 2021/4/14
+ * @Date 2021/7/19
  * @Version 1.0
  */
-public class CreateAcctAndDet extends TestUtil {
+public class Rsf470020Test extends TestUtil {
+
+    @Autowired
+    Rsf470020 rsf470020;
+
     @Autowired
     Rsf473004 rsf473004;
-
 
     @Test
     public void test() {
 
-        TranDateCutUtil.setTranDateAndInite("", "receiptNo0000det", "");
-
-        test473004("2021-01-01", "");
+        // 在新模型和老模型各开一个户
+        String receiptno_old = "O11187867193819" + System.currentTimeMillis();
+        String receiptno_new = "N11187867193819" + System.currentTimeMillis();
+        TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
+        TranDateCutUtil.setOldSystemTrandate("2021-01-01");
+        // 开老系统户
+        test473004(receiptno_old, "2412620");
+        // 开新模型户
+        test473004(receiptno_new, "2412611");
+        // 批量预约还款计划查询
+        test470020(receiptno_old, receiptno_new);
 
     }
 
-    public void test473004(String date, String serialNo) {
-        TranDateCutUtil.setTranDateAndInite(date, "", "");
+
+    public void test470020(String receiptno_old, String receiptno_new) {
+
+        Map<String, Object> param = new HashMap<>();
+
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("acctNo", receiptno_old);
+        map1.put("enCode", "51030000");
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("acctNo", receiptno_new);
+        map2.put("enCode", "51030000");
+        List<Map> list = new ArrayList<>();
+        list.add(map1);
+        list.add(map2);
+        param.put("pkgList", list);
+        param.put("brc", "51030000");
+        param.put("tranCode", "470020");
+        param.put("termDate", "2021-01-01");
+        param.put("channelId", "66");
+        Map<String, Object> execute = rsf470020.execute(param);
+        System.out.println(execute);
+    }
+
+    public void test473004(String receiptno, String productCode) {
 
         Map<String, Object> input = new HashMap<String, Object>();
         SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");
         SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
-        input.put("serialNo", VarChecker.isEmpty(serialNo) ? "TESTSERIALNO" + df.format(new Date()) : serialNo);
+        input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
         input.put("outSerialNo", "outSerialNo000000");
         input.put("ccy", "CNY");
         input.put("contractAmt", 120000);
@@ -62,14 +95,14 @@ public class CreateAcctAndDet extends TestUtil {
         input.put("channelType", "5");    //放款渠道 1银行 2易付宝 3任性付
         input.put("loanType", "2");
         input.put("discountFlag", "1");
-        input.put("receiptNo", "receiptNo0000det");
+        input.put("receiptNo", receiptno);
         input.put("graceDays", 5);
         input.put("openBrc", "51030000");
         input.put("openDate", "2021-01-01");
         input.put("fundChannel", "fundChannel000000");
-        input.put("productCode", "2412611");
+        input.put("productCode", productCode);
         input.put("repayWay", "10");
-        input.put("startIntDate", date); //2021-01-01
+        input.put("startIntDate", "2021-01-01"); //2021-01-01
         input.put("discountAmt", 0);    //扣息金额
         input.put("cashFlag", "2");
         input.put("investee", "");
@@ -80,21 +113,6 @@ public class CreateAcctAndDet extends TestUtil {
         input.put("channelId", "66");
         input.put("promotionID", "UNKNOWN");
         input.put("fundingModel", "UNKNOWN");
-
-        List<Map<String, Object>> pkgList = new ArrayList<>();
-        Map<String, Object> det1 = new HashMap<>();
-        det1.put("debtCompany", "5400");
-        det1.put("debtAmt", 60000.00);
-        Map<String, Object> det2 = new HashMap<>();
-        det2.put("debtCompany", "5410");
-        det2.put("debtAmt", 20000.00);
-        Map<String, Object> det3 = new HashMap<>();
-        det3.put("debtCompany", "5430");
-        det3.put("debtAmt", 40000.00);
-        pkgList.add(det1);
-        pkgList.add(det2);
-        pkgList.add(det3);
-        input.put("pkgList", pkgList);
 
         Map<String, Object> ret = rsf473004.execute(input);
         System.out.println("=============" + ret);

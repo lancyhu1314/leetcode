@@ -28,7 +28,7 @@ public class Rsf176005 extends RsfServiceTemplate {
      * @return
      */
     @Override
-    protected boolean isCallOldSystem(String productCode) {
+    public boolean isCallOldSystem(String productCode) {
         return true;
     }
 }

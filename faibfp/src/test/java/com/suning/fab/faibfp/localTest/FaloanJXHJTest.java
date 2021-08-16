@@ -41,7 +41,7 @@ public class FaloanJXHJTest extends TestUtil {
     @Autowired
     Rsf471007 rsf471007;
     @Autowired
-    Rsf477018 rsf477018;
+    Rsf477016 rsf477018;
     @Autowired
     Rsf471014 rsf471014;
     @Autowired

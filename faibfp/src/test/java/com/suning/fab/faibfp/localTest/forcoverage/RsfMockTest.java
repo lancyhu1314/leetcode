@@ -36,8 +36,6 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf176012 rsf176012;
     @Autowired
-    Rsf470000 rsf470000;
-    @Autowired
     Rsf470007 rsf470007;
     @Autowired
     Rsf470008 rsf470008;
@@ -161,24 +159,33 @@ public class RsfMockTest extends TestUtil {
         Map<String, Object> map = new HashMap<>();
 
         rsf176000.getTranCode();
+        rsf176000.isCallOldSystem("9999999");
+        rsf176000.getTranCode();
         rsf176000.getProductMapRouteId("", map);
         rsf176001.getTranCode();
+        rsf176001.isCallOldSystem("9999999");
         rsf176001.getProductMapRouteId("", map);
         rsf176002.getTranCode();
+        rsf176002.isCallOldSystem("9999999");
         rsf176002.getProductMapRouteId("", map);
         rsf176003.getTranCode();
+        rsf176003.isCallOldSystem("9999999");
         rsf176003.getProductMapRouteId("", map);
         rsf176004.getTranCode();
+        rsf176004.isCallOldSystem("9999999");
         rsf176004.getProductMapRouteId("", map);
         rsf176005.getTranCode();
+        rsf176005.isCallOldSystem("9999999");
         rsf176005.getProductMapRouteId("", map);
         rsf176006.getTranCode();
+        rsf176006.isCallOldSystem("9999999");
         rsf176006.getProductMapRouteId("", map);
         rsf176011.getTranCode();
+        rsf176011.isCallOldSystem("9999999");
         rsf176011.getProductMapRouteId("", map);
         rsf176012.getTranCode();
+        rsf176012.isCallOldSystem("9999999");
         rsf176012.getProductMapRouteId("", map);
-        rsf470000.getTranCode();
         rsf470007.getTranCode();
         rsf470008.getTranCode();
         rsf470009.getTranCode();
