@@ -59,6 +59,8 @@ public class Rsf470020 extends RsfQuerServiceTemplate {
                 String productCode = getMappintProductCode(req, receiptNo);
                 // 将产品添加到参数中
                 req.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
+                // 设置路由字段
+                req.put(PlatConstant.PARAMETER.ROUTEID, receiptNo);
                 // 判断是否迁移，将报文分类
                 if (isCallOldSystem(productCode)) {
                     unMigrated.add(req);
