@@ -65,7 +65,6 @@ public class SubTableCreateSql {
 
                 StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
 //                StringBuilder sql = getDropSql(schema, table, i);
-//                StringBuilder sql = getAlterTimestampSql(schema, table, i);
                 outputToFile(i, sql);
             }
         }
