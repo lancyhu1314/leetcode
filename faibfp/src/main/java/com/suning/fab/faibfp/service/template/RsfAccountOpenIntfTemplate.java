@@ -23,6 +23,8 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
     @Override
     protected List<TransDetail> paramSplite(Map<String, Object> param) {
 
+        boolean isOpenPrefundAcct = true;
+
         List<TransDetail> detailList = new ArrayList<>();
         // 债务公司
         if (!CollectionUtils.isEmpty((List) param.get(ConstVar.PARAMETER.PKGLIST))) {
@@ -39,8 +41,9 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
             detParam.put("pkgList", param.get(ConstVar.PARAMETER.PKGLIST));
             // 添加路由字段为老系统：预收方面暂时都调用老系统
             detParam.put("sysGroup", "FALOAN");
-            TransDetail detail = new TransDetail("176012", "176011", detParam, 2);
+            TransDetail detail = new TransDetail("176012", "176011", detParam, 1);
             detailList.add(detail);
+            isOpenPrefundAcct = false;
         }
         // 借新还旧之还款
         if (VarChecker.asList("E").contains(param.get(ConstVar.PARAMETER.CHANNELTYPE))) {
@@ -59,9 +62,13 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
             // 暂时设置为0，无
             repayParam.put("repayChannel", "0");
             repayParam.put("compensateFlag", 3);
-            TransDetail detail = new TransDetail("471007", "", repayParam, 1);
+            TransDetail detail = new TransDetail("471007", "", repayParam, 3);
             detailList.add(detail);
-        } else {
+            isOpenPrefundAcct = false;
+        }
+
+        // 只有非借新还旧，费债务公司的时候，需要进行预售开户
+        if (isOpenPrefundAcct) {
             Map<String, Object> param_open = new HashMap<>();
             param_open.put("tranCode", "176013");
             param_open.put("termDate", param.get("termDate"));
@@ -77,7 +84,7 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
         }
 
         // 放款
-        detailList.add(new TransDetail(getTranCode(), "472001", param, 3));
+        detailList.add(new TransDetail(getTranCode(), "472001", param, 2));
 
         return detailList;
     }
