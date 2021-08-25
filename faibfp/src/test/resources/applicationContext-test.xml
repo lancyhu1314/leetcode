@@ -14,7 +14,7 @@
 	</bean>
 
 	<!--mycat-sit-ibfp-->
-	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
 				  value="jdbc:mysql://10.237.37.208:8066/FAIBFPDB?useServerPrepStmts=true" />
@@ -23,7 +23,7 @@
 		<property name="initialSize" value="10" />
 		<property name="maxActive" value="20" />
 		<property name="maxWait" value="1000" />
-	</bean>-->
+	</bean>
 
 	<!--mycat-xzpre-ibfp-->
 	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
