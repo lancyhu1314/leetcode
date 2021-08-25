@@ -11,7 +11,6 @@
 package com.suning.fab.faibfp.localTest;
 
 import com.suning.fab.faibfp.service.*;
-import com.suning.fab.faibfp.utils.ServiceUtil;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.faibfp.utils.TranDateCutUtil;
 import com.suning.fab.mulssyn.exception.FabException;
@@ -49,19 +48,8 @@ public class FaloanJXHJTest extends TestUtil {
 
     @Test
     public void test() throws ParseException, InterruptedException, FabException {
-        BigDecimal tramAmt;
 
-        TranDateCutUtil.setTranDateAndInite("", "receiptNo000010", "receiptNo000010");
-        test473004_kh("2020-11-15");
-        Test471007("2021-01-02", 75937.00, "");
-
-        //提前退到未来期
-        Test471014("2021-01-03", 25200.00, "");
-
-        //借新还旧
-        TranDateCutUtil.setTranDateAndInite("", "new_receiptNo000010", "new_receiptNo000010");
-        tramAmt = get470012("2021-02-10");
-        test473004_new("2021-02-10", "", tramAmt.doubleValue(), "receiptNo000010");
+        test473004_new("2021-02-10", "", 1000.00, "receiptNo000010");
     }
 
 
