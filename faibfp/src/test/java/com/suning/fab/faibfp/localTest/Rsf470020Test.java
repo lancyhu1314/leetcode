@@ -35,11 +35,12 @@ public class Rsf470020Test extends TestUtil {
         TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
         TranDateCutUtil.setOldSystemTrandate("2021-01-01");
         // 开老系统户
-        test473004(receiptno_old, "2412620");
+        test473004(receiptno_old, "0000013");
         // 开新模型户
-        test473004(receiptno_new, "2412611");
-        // 批量预约还款计划查询
+        test473004(receiptno_new, "0000015");
+//         批量预约还款计划查询
         test470020(receiptno_old, receiptno_new);
+        test470020("O111878671938191629256927306", "N111878671938191629256927306");
 
     }
 

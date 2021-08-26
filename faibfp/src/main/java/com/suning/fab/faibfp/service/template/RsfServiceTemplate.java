@@ -86,13 +86,14 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         } else {
             receiptNo = compatibleWithCAcctno(reqMsg);
         }
+        // 报文单独添加借据号
+        reqMsg.put(ConstVar.PARAMETER.SYSRECEIPTNO, receiptNo);
 
         // 如果不是放款类或者不是试算类的接口，需要去产品映射关系表中查询产品代码
         if (!(isOpenAcctTranCode(getTranCode())
                 || VarChecker.asList("470022", "476001", "476002", "476003", "476004").contains(getTranCode()))) {
             // 从产品映射表中获取产品
             productCode = getMappintProductCode(reqMsg, getProductMapRouteId(receiptNo, reqMsg));
-
         }
         // 将产品添加到参数中
         reqMsg.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
@@ -274,6 +275,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         if (!VarChecker.isEmpty(param.get(PlatConstant.PARAMETER.SERIALNO)))
             ctx.setSerialNo((String) param.get(PlatConstant.PARAMETER.SERIALNO));
         ctx.setTranCode(getTranCode());
+
+        // 设置路由字段
+        ctx.setRouteId(VarChecker.isEmpty(param.get(PlatConstant.PARAMETER.SYSRECEIPTNO)) ? ctx.getBid() : (String) param.get(PlatConstant.PARAMETER.SYSRECEIPTNO));
 
         // 查询类接口可以不传流水号，其他类接口必传流水号
         if (VarChecker.isEmpty(ctx.getSerialNo()) && !(this instanceof RsfQuerServiceTemplate)) {
