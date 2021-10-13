@@ -102,12 +102,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         if (isCallOldSystem(productCode)) {
 
             if (refuseTrans(productCode)) {
-                ret = new HashMap<>();
-                ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
-                ret.put(PlatConstant.PARAMETER.RSPMSG, "新老模型切换中，拒绝交易");
-                ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
-                ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
-                ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
+                ret = createRefuseResp(reqMsg);
                 LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
                 return ret;
             }
@@ -166,6 +161,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                         (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO), (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE), ConstVar.ROUTETYPE.SERSEQNO);
             }
         }
+        return ret;
+    }
+
+    protected Map<String, Object> createRefuseResp(Map<String, Object> reqMsg) {
+        Map<String, Object> ret = new HashMap<>();
+        ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
+        ret.put(PlatConstant.PARAMETER.RSPMSG, "新老模型切换中，拒绝交易");
+        ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
+        ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
+        ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
         return ret;
     }
 
