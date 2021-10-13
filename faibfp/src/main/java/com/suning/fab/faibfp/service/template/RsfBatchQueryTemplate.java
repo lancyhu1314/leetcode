@@ -2,14 +2,16 @@ package com.suning.fab.faibfp.service.template;
 
 import com.alibaba.fastjson.JSON;
 import com.suning.fab.faibfp.utils.ConstVar;
-import com.suning.fab.faibfp.utils.DateUtils;
 import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.fab.mulssyn.utils.PlatConstant;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能描述: <br>
@@ -52,12 +54,7 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                 // 判断是否迁移，将报文分类
                 if (isCallOldSystem(productCode)) {
                     if (refuseTrans(productCode)) {
-                        Map<String, Object> ret = new HashMap<>();
-                        ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
-                        ret.put(PlatConstant.PARAMETER.RSPMSG, "新老模型切换中，拒绝交易");
-                        ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
-                        ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
-                        ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
+                        Map<String, Object> ret = createRefuseResp(reqMsg);
                         LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
                         return ret;
                     }
