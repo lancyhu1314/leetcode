@@ -8,6 +8,7 @@ import com.suning.fab.faibfp.dbhandler.AcctnoRelationHandler;
 import com.suning.fab.faibfp.dbhandler.CustomerRelationHandler;
 import com.suning.fab.faibfp.dbhandler.ProductMappingHandler;
 import com.suning.fab.faibfp.utils.ConstVar;
+import com.suning.fab.faibfp.utils.DateUtils;
 import com.suning.fab.faibfp.utils.OldServiceAgentHelper;
 import com.suning.fab.mulssyn.bean.TransDetail;
 import com.suning.fab.mulssyn.ctx.LocalTranCtx;
@@ -99,6 +100,13 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         reqMsg.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
+
+            if (refuseTrans(productCode)) {
+                ret = createRefuseResp(reqMsg);
+                LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+                return ret;
+            }
+
             // 数据未迁移 调用老系统
             // 报文里面添加调用老系统的组别
             reqMsg.put("sysGroup", "FALOAN");
@@ -154,6 +162,29 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }
         }
         return ret;
+    }
+
+    protected Map<String, Object> createRefuseResp(Map<String, Object> reqMsg) {
+        Map<String, Object> ret = new HashMap<>();
+        ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
+        ret.put(PlatConstant.PARAMETER.RSPMSG, "新老模型切换中，拒绝交易");
+        ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
+        ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
+        ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
+        return ret;
+    }
+
+    /**
+     * 根据配置的产品判断是否拒绝交易
+     * 返回：true 拒绝交易 false 继续交易
+     *
+     * @param productCode
+     * @return
+     */
+    public boolean refuseTrans(String productCode) {
+        String value = ScmDynaGetterUtil.getValue("tradingHalt.properties", "prdCodes");
+        // 配置为空继续交易，产品在配置中拒绝交易
+        return !VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(productCode);
     }
 
     /**
