@@ -5,7 +5,7 @@
     <delete id="deleteProtoregData" parameterType="map">
 
         delete from protoreg
-        where serialno = #{routeId}
+        where routeid = #{routeId}
             and id = #{id}
     </delete>
 
