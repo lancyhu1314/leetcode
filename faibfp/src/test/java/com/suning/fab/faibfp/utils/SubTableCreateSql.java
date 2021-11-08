@@ -26,9 +26,9 @@ public class SubTableCreateSql {
 
         String path = "F:/需求文档/FABDOC/2_文档汇总/170207_贷款_苏宁小贷账务核心2.0/产品开发测试/贷款预处理系统/贷款预处理系统表结构.xlsx";
         // 从哪张表开始【
-        int startTables = 1;
+        int startTables = 5;
         // 到哪张表结束）
-        int tableNums = 8;
+        int tableNums = 7;
         String schema = "";
 
         List<Table> tableInfo = readTableFrom(path, tableNums, startTables);
@@ -63,11 +63,18 @@ public class SubTableCreateSql {
         for (Table table : tableInfo) {
             for (int i = 0; i < 512; i++) {
 
-                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
+//                StringBuilder sql = makeMySql(schema, table, String.valueOf(i));
 //                StringBuilder sql = getDropSql(schema, table, i);
+                StringBuilder sql = getTableName(schema, table, String.valueOf(i));
                 outputToFile(i, sql);
             }
         }
+    }
+
+    private static StringBuilder getTableName(String schema, Table table, String tableNum) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(table.getTableName().toUpperCase() + tableNum);
+        return builder;
     }
 
     private static void makeSingleCreateSql(List<Table> tableInfo, String schema) {
@@ -227,10 +234,10 @@ public class SubTableCreateSql {
             j = 9;
         } else {
             j = tableId % 8 + 1; // 计算放在那个库里
-        }
+        }*/
 
         /*** 2个库算法 ****/
-//        int j = tableId % 2 + 1;
+        int j = tableId % 2 + 1;
 
         return j;
     }
