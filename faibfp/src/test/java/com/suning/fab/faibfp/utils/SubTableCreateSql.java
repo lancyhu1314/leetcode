@@ -222,7 +222,7 @@ public class SubTableCreateSql {
     public static int getDataBaseByTableId(int tableId) {
         /*** 9个库算法 ****/
 
-        int j;
+        /*int j;
         if (tableId == 255 || tableId == 511) {
             j = 9;
         } else {
