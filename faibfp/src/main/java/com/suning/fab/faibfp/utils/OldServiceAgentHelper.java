@@ -1,6 +1,5 @@
 package com.suning.fab.faibfp.utils;
 
-import com.suning.fab.mulssyn.exception.FabRuntimeException;
 import com.suning.fab.mulssyn.utils.GetPropUtil;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.rsf.consumer.ServiceAgent;
@@ -35,9 +34,7 @@ public class OldServiceAgentHelper {
      * @return
      */
     public static ServiceAgent getAgent(String tranCode) {
-        ServiceAgent agent = agentMap.get(tranCode);
-        if (null == agent) throw new FabRuntimeException("IBF401", tranCode);
-        return agent;
+        return agentMap.get(tranCode);
     }
 
     @PostConstruct

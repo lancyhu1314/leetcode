@@ -18,6 +18,7 @@ import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.service.ServiceTemplate;
 import com.suning.fab.mulssyn.utils.*;
 import com.suning.rsf.consumer.ServiceAgent;
+import com.suning.rsf.model.ServiceNotFoundException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -327,6 +328,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             } else {
                 agent = OldServiceAgentHelper.getAgent(getTranCode());
             }
+            if (null == agent) {
+                throw new FabException("IBF404", migrated, getTranCode());
+            }
             //增加挡板开关，默认no TODO:压测的时候用的
             String baffleSwitch = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "baffleSwitch", "no");
             if ("yes".equalsIgnoreCase(baffleSwitch)) {
@@ -340,6 +344,17 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
             }
 
+        } catch (ServiceNotFoundException e) {
+            LoggerUtil.error("服务不存在异常{}", e);
+            result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
+            result.put(PlatConstant.PARAMETER.RSPCODE, "IBF404");
+            result.put(PlatConstant.PARAMETER.RSPMSG, "是否新模型【" + migrated + "】，服务【" + getTranCode() + "】不存在或者未配置！！！");
+
+        } catch (FabException e) {
+            LoggerUtil.error("服务异常，可能服务不存在。{}", e);
+            result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
+            result.put(PlatConstant.PARAMETER.RSPCODE, e.getErrCode());
+            result.put(PlatConstant.PARAMETER.RSPMSG, e.getErrMsg());
         } catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
