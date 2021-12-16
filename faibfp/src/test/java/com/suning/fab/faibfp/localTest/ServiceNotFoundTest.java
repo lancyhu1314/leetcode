@@ -1,16 +1,13 @@
 package com.suning.fab.faibfp.localTest;
 
-import com.alibaba.fastjson.JSON;
-import com.suning.fab.faibfp.service.Rsf176012;
-import com.suning.fab.faibfp.service.Rsf471007;
+import com.suning.fab.faibfp.service.Rsf470011;
 import com.suning.fab.faibfp.service.Rsf473004;
+import com.suning.fab.faibfp.service.Rsf475001;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.faibfp.utils.TranDateCutUtil;
-import com.suning.fab.mulssyn.utils.VarChecker;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,37 +15,62 @@ import java.util.Map;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉还款过预收测试
+ * 〈功能详细描述〉
  *
  * @Author 19043955
- * @Date 2021/4/1
+ * @Date 2021/11/8
  * @Version 1.0
  */
-public class RepayAdvanceTest extends TestUtil {
+public class ServiceNotFoundTest extends TestUtil {
 
     @Autowired
     Rsf473004 rsf473004;
 
     @Autowired
-    Rsf471007 rsf471007;
+    Rsf475001 rsf475001;
 
     @Autowired
-    Rsf176012 rsf176012;
+    Rsf470011 rsf470011;
 
     @Test
     public void test() {
 
-        test473004_1("2017-01-01", "0000014");
-//         开户开在了新系统，预收充值得使用176012，去除了借据号是否存在的判断
-        test176012("2017-01-01", 120000.00);
-        Test471007("", "2017-01-01", 120000.00);
+        test473004("2017-01-01", "0000014");
+
+        test475001();
+
+        test470011();
+    }
+
+    public void test470011() {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("acctNo", "receiptNo00000IBFPN");
+        param.put("endDate", "2021-12-08");
+        Map<String, Object> execute = rsf470011.execute(param);
+        System.out.println(execute);
 
     }
 
-    public void test473004_1(String date, String productCode) {
+    public void test475001() {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("receiptNo", "receiptNo00000IBFPN");
+        param.put("startDate", "2021-11-08");
+        param.put("endDate", "2021-11-10");
+        param.put("pageSize", 10);
+        param.put("currentPage", 1);
+
+        Map<String, Object> execute = rsf475001.execute(param);
+
+        System.out.println(execute);
+
+    }
+
+    public void test473004(String date, String productCode) {
 
         // 切日期清理数据
-        TranDateCutUtil.setTranDateAndInite(date, "receiptNo00000IBFP", "IBFP");
+        TranDateCutUtil.setTranDateAndInite(date, "receiptNo00000IBFPN", "receiptNo00000IBFPN");
 
         Map<String, Object> input = new HashMap<String, Object>();
         SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");
@@ -79,7 +101,7 @@ public class RepayAdvanceTest extends TestUtil {
         input.put("channelType", "3");    //放款渠道 1：银行存款 2：易付宝 3、云商分期 4、易付宝扫码
         input.put("loanType", "2");
         input.put("discountFlag", "1");
-        input.put("receiptNo", "receiptNo00000IBFP");
+        input.put("receiptNo", "receiptNo00000IBFPN");
         input.put("graceDays", 5);
         input.put("openBrc", "51030000");
         input.put("openDate", "2017-01-01");
@@ -99,54 +121,5 @@ public class RepayAdvanceTest extends TestUtil {
         input.put("fundingModel", "UNKNOWN");
         Map<String, Object> ret = rsf473004.execute(input);
         System.out.println("=============" + ret);
-    }
-
-
-    public Map<String, Object> Test471007(String serialNo, String date, Double amt) {
-
-        TranDateCutUtil.setTranDateAndInite(date, null, null);
-
-        Map<String, Object> input = new HashMap<String, Object>();
-        DateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
-        input.put("tranCode", "471007");
-        input.put("brc", "51030000");
-        input.put("termDate", "2017-02-01");
-        input.put("termTime", "00:00:00");
-        input.put("channelId", "66");
-        input.put("serialNo", VarChecker.isEmpty(serialNo) ? "TESTSERIALNO" + df.format(new Date()) : serialNo);
-        input.put("acctNo", "receiptNo00000IBFP");
-        input.put("repayAcctNo", "IBFP");
-        input.put("ccy", "CNY");
-        input.put("cashFlag", "2");
-        input.put("repayAmt", amt);
-        input.put("feeAmt", 0.00);
-        input.put("repayChannel", "2");
-        input.put("memo", "");
-        input.put("channelId", "66");
-        input.put("realDate", date);
-        Map<String, Object> ret = rsf471007.execute(input);
-        System.out.println(JSON.toJSONString(ret));
-        return ret;
-    }
-
-    public void test176012(String date, Double amt) {
-
-        Map<String, Object> input = new HashMap<String, Object>();
-        input.put("tranCode", "176002");
-        input.put("termDate", "2017-01-01");
-        input.put("termTime", "10:12:12");
-        input.put("channelId", "66");
-        input.put("brc", "51030000");
-        input.put("repayAcctNo", "IBFP");
-        input.put("ccy", "CNY");
-        input.put("amt", amt);
-        input.put("outSerialNo", "bankNo000002");
-        input.put("receiptNo", "receiptNo00000IBFP");
-        input.put("channelType", "123");
-        input.put("customType", "1");
-        DateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
-        input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
-        Map<String, Object> ret = rsf176012.execute(input);
-        System.out.println(JSON.toJSONString(ret));
     }
 }
