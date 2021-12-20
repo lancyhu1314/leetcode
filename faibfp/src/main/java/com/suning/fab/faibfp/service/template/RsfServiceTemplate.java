@@ -99,15 +99,15 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         }
         // 将产品添加到参数中
         reqMsg.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
+
+        // 判断是否拒绝交易
+        if (refuseTrans(productCode, receiptNo)) {
+            ret = createRefuseResp(reqMsg);
+            LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+            return ret;
+        }
         // 判断是否调用老系统
         if (isCallOldSystem(productCode)) {
-
-            if (refuseTrans(productCode)) {
-                ret = createRefuseResp(reqMsg);
-                LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
-                return ret;
-            }
-
             // 数据未迁移 调用老系统
             // 报文里面添加调用老系统的组别
             reqMsg.put("sysGroup", "FALOAN");
@@ -121,16 +121,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }
 
             // 只有接口中传repayAcctNo的时候，将repayacctno转成customid
-            if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
-
-                if (VarChecker.isEmpty(customId)) {
-                    CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
-                    // 未查到，赋值为repayacctno，查到了赋值为新值
-                    customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
-                }
-                // 将repayacctno覆盖
-                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
-            }
+//            if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
+//
+//                if (VarChecker.isEmpty(customId)) {
+//                    CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
+//                    // 未查到，赋值为repayacctno，查到了赋值为新值
+//                    customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
+//                }
+//                // 将repayacctno覆盖
+//                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
+//            }
 
             // 如果是开户类接口，将repayacctno字段添加到报文中传给新系统
             if (isOpenAcctTranCode(getTranCode())) {
@@ -182,10 +182,27 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      * @param productCode
      * @return
      */
-    public boolean refuseTrans(String productCode) {
+    public boolean refuseTrans(String productCode, String receiptNo) {
         String value = ScmDynaGetterUtil.getValue("tradingHalt.properties", "prdCodes");
         // 配置为空继续交易，产品在配置中拒绝交易
-        return !VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(productCode);
+        if (!VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(productCode)) {
+            String isAllowQuery = ScmDynaGetterUtil.getValue("tradingHalt.properties", "isAllowQuery");
+            if ("true".equals(isAllowQuery) && this instanceof RsfQuerServiceTemplate) {
+                // 查询类放过，不拒绝交易
+                return false;
+            }
+
+            String grayAcctnos = ScmDynaGetterUtil.getValue("tradingHalt.properties", "grayAcctnos");
+            // 拒绝交易：查询交易或者配置了借据号的，继续交易
+            if (!VarChecker.isEmpty(grayAcctnos) && Arrays.asList(grayAcctnos.split(",")).contains(receiptNo)) {
+                return false;
+            }
+            // 异常情况都不满足拒绝交易
+            return true;
+        }
+
+
+        return false;
     }
 
     /**
