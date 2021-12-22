@@ -121,18 +121,20 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 reqMsg.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
             }
 
-            // 只有接口中传repayAcctNo的时候，将repayacctno转成customid
-            if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
+            String delRpyAcctTrans = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "delRpyAcctTrans", "false");
+            if ("false".equals(delRpyAcctTrans)) {
+                // 只有接口中传repayAcctNo的时候，将repayacctno转成customid
+                if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
 
-                if (VarChecker.isEmpty(customId)) {
-                    CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
-                    // 未查到，赋值为repayacctno，查到了赋值为新值
-                    customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
+                    if (VarChecker.isEmpty(customId)) {
+                        CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
+                        // 未查到，赋值为repayacctno，查到了赋值为新值
+                        customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
+                    }
+                    // 将repayacctno覆盖
+                    reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
                 }
-                // 将repayacctno覆盖
-                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
             }
-
             // 如果是开户类接口，将repayacctno字段添加到报文中传给新系统
             if (isOpenAcctTranCode(getTranCode())) {
                 // 查询预收账号和客户号关系
