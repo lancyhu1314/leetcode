@@ -71,7 +71,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         // 借据号
         String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
         String productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-//        String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
+        String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
         // "473004", "473005", "473007" "479000" 为开户类接口，需要向映射表插入贷款账号和产品代码的映射关系
         if (isOpenAcctTranCode(getTranCode())) {
             if (VarChecker.isEmpty(receiptNo)) {
@@ -122,16 +122,16 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }
 
             // 只有接口中传repayAcctNo的时候，将repayacctno转成customid
-//            if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
-//
-//                if (VarChecker.isEmpty(customId)) {
-//                    CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
-//                    // 未查到，赋值为repayacctno，查到了赋值为新值
-//                    customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
-//                }
-//                // 将repayacctno覆盖
-//                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
-//            }
+            if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO))) {
+
+                if (VarChecker.isEmpty(customId)) {
+                    CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO));
+                    // 未查到，赋值为repayacctno，查到了赋值为新值
+                    customId = null == load ? (String) reqMsg.get(ConstVar.PARAMETER.REPAYACCTNO) : load.getCustomId();
+                }
+                // 将repayacctno覆盖
+                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, customId);
+            }
 
             // 如果是开户类接口，将repayacctno字段添加到报文中传给新系统
             if (isOpenAcctTranCode(getTranCode())) {
