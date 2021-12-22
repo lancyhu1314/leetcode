@@ -1,5 +1,6 @@
 package com.suning.fab.faibfp.localTest;
 
+import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf473004;
 import com.suning.fab.faibfp.service.Rsf477020;
 import com.suning.fab.faibfp.utils.TestUtil;
@@ -9,9 +10,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能描述: <br>
@@ -30,6 +29,7 @@ public class TranferRefuseTransTest extends TestUtil {
     public void test() {
         test473004("2021-12-20", "");
         test477016();
+        test470020();
     }
 
     public void test473004(String date, String serialNo) {
@@ -97,6 +97,28 @@ public class TranferRefuseTransTest extends TestUtil {
         param.put("tranCode", "477020");
         Map<String, Object> execute = rsf477020.execute(param);
         System.out.println("===========" + execute);
+
+    }
+
+    @Autowired
+    Rsf470020 rsf470020;
+
+    public void test470020(){
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("acctNo", "receiptNo0000re");
+        map.put("brc", "51340000");
+        map.put("termDate", "2021-10-25");
+        map.put("tranCode", "477020");
+        mapList.add(map);
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("pkgList", mapList);
+
+        Map<String, Object> execute = rsf470020.execute(param);
+
+
 
     }
 

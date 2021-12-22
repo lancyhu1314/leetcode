@@ -71,7 +71,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         // 借据号
         String receiptNo = (String) reqMsg.get(ConstVar.PARAMETER.RECEIPTNO);
         String productCode = (String) reqMsg.get(ConstVar.PARAMETER.PRODUCTCODE);
-        String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
+//        String customId = (String) reqMsg.get(ConstVar.PARAMETER.CUSTOMID);
         // "473004", "473005", "473007" "479000" 为开户类接口，需要向映射表插入贷款账号和产品代码的映射关系
         if (isOpenAcctTranCode(getTranCode())) {
             if (VarChecker.isEmpty(receiptNo)) {
