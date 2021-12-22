@@ -18,6 +18,7 @@ import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.service.ServiceTemplate;
 import com.suning.fab.mulssyn.utils.*;
 import com.suning.rsf.consumer.ServiceAgent;
+import com.suning.rsf.consumer.TimeoutException;
 import com.suning.rsf.model.ServiceNotFoundException;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.util.CollectionUtils;
@@ -375,6 +376,9 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         } catch (Exception e) {
             LoggerUtil.error("透传服务{}调用报错：{}", param.get(PlatConstant.PARAMETER.SERIALNO) + "|" + getTranCode(), e);
             result = ResponseHelper.createDefaultErrorRespone(ctx.getBid(), ctx.getTranDate());
+            if (e instanceof TimeoutException) {
+                result.put(PlatConstant.PARAMETER.RSPMSG, PlatConstant.RSPMSG.TIMEOUT);
+            }
         } finally {
             // 登记返回报文
             doFinish(param, startInterval, result);
