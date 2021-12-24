@@ -118,6 +118,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             // 数据已迁移，调用新系统，新模型中只存在receiptno(接口字段命名为acctno)，
             // 所以，调用新系统的都是借据号，一般acctno和receiptno一样，C系统在上文已转换。
             if (!VarChecker.isEmpty(reqMsg.get(ConstVar.PARAMETER.ACCTNO))) {
+                reqMsg.put(ConstVar.PARAMETER.OLD_ACCTO, reqMsg.get(ConstVar.PARAMETER.ACCTNO));
                 reqMsg.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
             }
 

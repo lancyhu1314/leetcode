@@ -51,6 +51,8 @@ public class ConstVar {
 
         public static final String ACCTNO = "acctNo";
 
+        public static final String OLD_ACCTO = "oldAcctNo";
+
         public static final String ROUTEID = "routeId";
 
         public static final String REPAYACCTNO = "repayAcctNo";
