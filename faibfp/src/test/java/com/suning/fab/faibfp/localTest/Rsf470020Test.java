@@ -40,7 +40,7 @@ public class Rsf470020Test extends TestUtil {
         test473004(receiptno_new, "0000015");
 //         批量预约还款计划查询
         test470020(receiptno_old, receiptno_new);
-        test470020("O111878671938191629256927306", "N111878671938191629256927306");
+        //test470020("O111878671938191629256927306", "N111878671938191629256927306");
 
     }
 
