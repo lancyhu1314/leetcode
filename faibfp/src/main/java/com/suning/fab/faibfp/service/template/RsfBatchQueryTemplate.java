@@ -51,13 +51,16 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                 req.put(ConstVar.PARAMETER.SYSPRDCODE, productCode);
                 // 设置路由字段
                 req.put(PlatConstant.PARAMETER.ROUTEID, receiptNo);
+
+                // 判断是否拒绝交易
+                if (refuseTrans(productCode, receiptNo)) {
+                    Map<String, Object> ret = createRefuseResp(reqMsg);
+                    LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+                    return ret;
+                }
+
                 // 判断是否迁移，将报文分类
                 if (isCallOldSystem(productCode)) {
-                    if (refuseTrans(productCode)) {
-                        Map<String, Object> ret = createRefuseResp(reqMsg);
-                        LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
-                        return ret;
-                    }
                     unMigrated.add(req);
                     LoggerUtil.info("前置拆分调用老系统：借据号：{}，产品：{}", receiptNo, productCode);
                 } else {

@@ -2,8 +2,10 @@ package com.suning.fab.faibfp.localTest;
 
 import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf473004;
+import com.suning.fab.faibfp.service.Rsf477020;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.faibfp.utils.TranDateCutUtil;
+import com.suning.fab.mulssyn.utils.VarChecker;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,68 +14,32 @@ import java.util.*;
 
 /**
  * 功能描述: <br>
- * 〈功能详细描述〉
+ * 〈功能详细描述〉交易拒绝逻辑验证
  *
  * @Author 19043955
- * @Date 2021/7/19
+ * @Date 2021/12/20
  * @Version 1.0
  */
-public class Rsf470020Test extends TestUtil {
-
-    @Autowired
-    Rsf470020 rsf470020;
+public class TranferRefuseTransTest extends TestUtil {
 
     @Autowired
     Rsf473004 rsf473004;
 
     @Test
     public void test() {
-
-        // 在新模型和老模型各开一个户
-        String receiptno_old = "O11187867193819" + System.currentTimeMillis();
-        String receiptno_new = "N11187867193819" + System.currentTimeMillis();
-        TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
-        TranDateCutUtil.setOldSystemTrandate("2021-01-01");
-        // 开老系统户
-        test473004(receiptno_old, "0000013");
-        // 开新模型户
-        test473004(receiptno_new, "0000015");
-//         批量预约还款计划查询
-        test470020(receiptno_old, receiptno_new);
-        //test470020("O111878671938191629256927306", "N111878671938191629256927306");
-
+        test473004("2021-12-20", "");
+        test477016();
+        test470020();
     }
 
-
-    public void test470020(String receiptno_old, String receiptno_new) {
-
-        Map<String, Object> param = new HashMap<>();
-
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("acctNo", receiptno_old);
-        map1.put("enCode", "51030000");
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("acctNo", receiptno_new);
-        map2.put("enCode", "51030000");
-        List<Map> list = new ArrayList<>();
-        list.add(map1);
-        list.add(map2);
-        param.put("pkgList", list);
-        param.put("brc", "51030000");
-        param.put("tranCode", "470020");
-        param.put("termDate", "2021-01-01");
-        param.put("channelId", "66");
-        Map<String, Object> execute = rsf470020.execute(param);
-        System.out.println(execute);
-    }
-
-    public void test473004(String receiptno, String productCode) {
+    public void test473004(String date, String serialNo) {
+        TranDateCutUtil.setTranDateAndInite(date, "", "");
 
         Map<String, Object> input = new HashMap<String, Object>();
         SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmss");
         SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
-        input.put("serialNo", "TESTSERIALNO" + df.format(new Date()));
+        input.put("serialNo", VarChecker.isEmpty(serialNo) ? "TESTSERIALNO" + df.format(new Date()) : serialNo);
         input.put("outSerialNo", "outSerialNo000000");
         input.put("ccy", "CNY");
         input.put("contractAmt", 120000);
@@ -96,14 +62,14 @@ public class Rsf470020Test extends TestUtil {
         input.put("channelType", "5");    //放款渠道 1银行 2易付宝 3任性付
         input.put("loanType", "2");
         input.put("discountFlag", "1");
-        input.put("receiptNo", receiptno);
+        input.put("receiptNo", "receiptNo0000re");
         input.put("graceDays", 5);
         input.put("openBrc", "51030000");
         input.put("openDate", "2021-01-01");
         input.put("fundChannel", "fundChannel000000");
-        input.put("productCode", productCode);
+        input.put("productCode", "0000017");
         input.put("repayWay", "10");
-        input.put("startIntDate", "2021-01-01"); //2021-01-01
+        input.put("startIntDate", date); //2021-01-01
         input.put("discountAmt", 0);    //扣息金额
         input.put("cashFlag", "2");
         input.put("investee", "");
@@ -118,5 +84,43 @@ public class Rsf470020Test extends TestUtil {
         Map<String, Object> ret = rsf473004.execute(input);
         System.out.println("=============" + ret);
     }
+
+    @Autowired
+    Rsf477020 rsf477020;
+
+    public void test477016() {
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("acctNo", "receiptNo0000re");
+        param.put("brc", "51340000");
+        param.put("termDate", "2021-10-25");
+        param.put("tranCode", "477020");
+        Map<String, Object> execute = rsf477020.execute(param);
+        System.out.println("===========" + execute);
+
+    }
+
+    @Autowired
+    Rsf470020 rsf470020;
+
+    public void test470020(){
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("acctNo", "receiptNo0000re");
+        map.put("brc", "51340000");
+        map.put("termDate", "2021-10-25");
+        map.put("tranCode", "477020");
+        mapList.add(map);
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("pkgList", mapList);
+
+        Map<String, Object> execute = rsf470020.execute(param);
+
+
+
+    }
+
 
 }

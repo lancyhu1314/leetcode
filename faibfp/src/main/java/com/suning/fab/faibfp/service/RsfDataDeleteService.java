@@ -2,6 +2,7 @@ package com.suning.fab.faibfp.service;
 
 import com.suning.api.rsf.service.ApiRemoteMapService;
 import com.suning.fab.faibfp.dbhandler.DataDeleteHandler;
+import com.suning.fab.faibfp.service.template.RsfQuerServiceTemplate;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.rsf.provider.annotation.Implement;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,6 @@ public class RsfDataDeleteService {
         }
         return result;
     }
+
 
 }
