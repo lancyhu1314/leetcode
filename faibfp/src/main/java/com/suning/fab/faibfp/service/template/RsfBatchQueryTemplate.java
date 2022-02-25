@@ -1,6 +1,8 @@
 package com.suning.fab.faibfp.service.template;
 
 import com.alibaba.fastjson.JSON;
+import com.suning.fab.faibfp.bean.TransferRelation;
+import com.suning.fab.faibfp.dbhandler.TransferRelationHandler;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
@@ -58,9 +60,28 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                     LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
                     return ret;
                 }
+                //走新模型返回true，否则返回false
+                boolean toNewFlag = false;
+                // 迁移中的产品，判断借据号是否走老系统，
+                if (isTransferPrdCode(productCode)) {
+                    TransferRelation transferRelation = new TransferRelationHandler().load(receiptNo);
+                    // 如果已迁移，走新模型
+                    if (ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
+                        toNewFlag = true;
+                    }
+                    //如果迁移中，抛出异常
+                    else if (ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
+                        Map<String, Object> ret = createRefuseResp(reqMsg);
+                        LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】，借据号【{}】的交易。", productCode, receiptNo);
+                        return ret;
+                    }
+                    //TODO 如果未迁移/老系统处理中,还是走老系统 NOTE 查询条件，不做处理中笔数的累计
+                }
 
                 // 判断是否迁移，将报文分类
-                if (isCallOldSystem(productCode)) {
+                // 产品走老系统；
+                // 或者迁移中的产品，借据号走老系统
+                if (isCallOldSystem(productCode) && !toNewFlag) {
                     unMigrated.add(req);
                     LoggerUtil.info("前置拆分调用老系统：借据号：{}，产品：{}", receiptNo, productCode);
                 } else {
