@@ -143,17 +143,17 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 }
                 //如果未迁移/老系统处理中
                 else {
-                    //查询的也+1-1
-                    //if (isDealTranCode(getTranCode())) {
-                    //判断更新条数，条数=0，抛异常
-                    int counts = transferHandler.updateCounts(receiptNo, 1);
-                    if (counts == 0) {
-                        ret = createRefuseResp(reqMsg);
-                        LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
-                        return ret;
+                    //查询的过滤掉
+                    if (isDealTranCode(getTranCode())) {
+                        //判断更新条数，条数=0，抛异常
+                        int counts = transferHandler.updateCounts(receiptNo, 1);
+                        if (counts == 0) {
+                            ret = createRefuseResp(reqMsg);
+                            LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+                            return ret;
+                        }
+                        countChange = true;
                     }
-                    countChange = true;
-                    //}
                 }
             }
         }
