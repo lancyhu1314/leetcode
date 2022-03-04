@@ -130,6 +130,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 //调用新模型
                 toNewFlag = true;
             } else {
+                //如果transferRelation为空，插入一条记录
+                if ( null == transferRelation) {
+                    transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.NOT_TRANSFER, 0);
+                    transferRelation = new TransferRelation();
+                    transferRelation.setStatus( ConstVar.TRANSFERSTATUS.NOT_TRANSFER) ;
+                }
                 //其他trancode，查询借据号状态
                 //如果已迁移，走新模型
                 if (ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
