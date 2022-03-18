@@ -2,6 +2,7 @@ package com.suning.fab.faibfp.localTest;
 
 import com.alibaba.fastjson.JSON;
 import com.suning.fab.faibfp.bean.TransferRelation;
+import com.suning.fab.faibfp.dbhandler.TransferRelationHandler;
 import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf471007;
 import com.suning.fab.faibfp.service.Rsf473004;
@@ -157,5 +158,12 @@ public class Rsf471007Test extends TestUtil {
         Map<String, Object> ret = rsf471007.execute(input);
         System.out.println(JSON.toJSONString(ret));
         return ret;
+    }
+
+    @Test
+    public void sonar(){
+        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
+        test473004(receiptno_transfer, "0000016");
+        new TransferRelationHandler().update(receiptno_transfer,"4",0);
     }
 }
