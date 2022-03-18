@@ -378,7 +378,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      */
     protected boolean isDealTranCode(String tranCode) {
         String value = ScmDynaGetterUtil.getValue("GlobalScm.properties", "dealtrancodes");
-        return VarChecker.isEmpty(value) || !Arrays.asList(value.split(",")).contains(tranCode);
+        return VarChecker.isEmpty(value) || Arrays.asList(value.split(",")).contains(tranCode);
     }
 
     /**

@@ -21,12 +21,60 @@ public class RsfTransferUpdateServiceTest extends TestUtil {
     RsfTransferUpdateService rsfTransferUpdateService;
 
     @Test
-    public void test() {
+    public void testlock1() {
+
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("id", 1);
+        reqMsg.put("routeId", "123456");
+        reqMsg.put("operation", "lock");
+
+        Map<String, Object> execute = rsfTransferUpdateService.execute(reqMsg);
+        System.out.println(execute);
+
+    }
+    @Test
+    public void testlock2() {
+
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("id", 1);
+        reqMsg.put("routeId", "new"+ System.currentTimeMillis());
+        reqMsg.put("operation", "lock");
+
+        Map<String, Object> execute = rsfTransferUpdateService.execute(reqMsg);
+        System.out.println(execute);
+
+    }
+    @Test
+    public void testsuccess() {
 
         Map<String, Object> reqMsg = new HashMap<>();
         reqMsg.put("id", 1);
         reqMsg.put("routeId", "123456");
         reqMsg.put("operation", "success");
+
+        Map<String, Object> execute = rsfTransferUpdateService.execute(reqMsg);
+        System.out.println(execute);
+
+    }
+    @Test
+    public void testerror() {
+
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("id", 1);
+        reqMsg.put("routeId", "123456");
+        reqMsg.put("operation", "error");
+
+        Map<String, Object> execute = rsfTransferUpdateService.execute(reqMsg);
+        System.out.println(execute);
+
+    }
+    @Test
+    public void testother() {
+
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("id", 1);
+        reqMsg.put("routeId", "123456");
+        reqMsg.put("operation", "other");
 
         Map<String, Object> execute = rsfTransferUpdateService.execute(reqMsg);
         System.out.println(execute);

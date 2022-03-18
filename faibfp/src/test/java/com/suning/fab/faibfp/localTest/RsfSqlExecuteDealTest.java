@@ -33,4 +33,26 @@ public class RsfSqlExecuteDealTest extends TestUtil {
         System.out.println(execute);
 
     }
+    @Test
+    public void test2() throws FabException {
+
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("type", "update");
+        reqMsg.put("sql", "update transferrelation set status = '2' where routeid = '123456';");
+
+        Map<String, Object> execute = rsfSqlExecuteDeal.prepare(reqMsg);
+        System.out.println(execute);
+
+    }
+    @Test
+    public void test3() throws FabException {
+        //batch 除了查询其他sql，分号分隔
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("type", "batch");
+        reqMsg.put("sql", "update transferrelation set status = '2' where routeid = '123456';update transferrelation set status = '2' where routeid = 'BFML632_zf_0224_001';");
+
+        Map<String, Object> execute = rsfSqlExecuteDeal.prepare(reqMsg);
+        System.out.println(execute);
+
+    }
 }
