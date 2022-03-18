@@ -1,6 +1,5 @@
 package com.suning.fab.faibfp.bean;
 
-import com.suning.fab.faloan.bean.LnsInvalidCode;
 import com.suning.fab.faibfp.utils.Getandset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
