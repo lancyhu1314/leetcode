@@ -1,6 +1,7 @@
 package com.suning.fab.faibfp.localTest;
 
 import com.alibaba.fastjson.JSON;
+import com.suning.fab.faibfp.bean.TransferRelation;
 import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf471007;
 import com.suning.fab.faibfp.service.Rsf473004;
@@ -12,6 +13,7 @@ import com.suning.fab.mulssyn.utils.VarChecker;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,8 +37,22 @@ public class Rsf471007Test extends TestUtil {
     @Autowired
     RsfSqlExecuteDeal rsfSqlExecuteDeal;
 
+    /**
+     * 1.配置scm迁移产品之前开户到老系统
+     * 2.scm配置迁移产品
+     * 3、调用还款(先把迁移表状态删除掉，重新插入一条记录)
+     * 4.更细状态为处理中，再次调用还款，则抛异常
+     * @throws FabException
+     * @throws ParseException
+     */
     @Test
     public void test() throws FabException, ParseException {
+        //sonar检查
+        TransferRelation transferRelation = new TransferRelation("routeId", "status", 1, new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()));
+        transferRelation.getCreateTime();
+        transferRelation.setCreateTime(new Timestamp(new Date().getTime()));
+        transferRelation.getUpdateTime();
+        transferRelation.setUpdateTime(new Timestamp(new Date().getTime()));
 
         TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
         TranDateCutUtil.setOldSystemTrandate("2021-01-01");
@@ -46,11 +62,23 @@ public class Rsf471007Test extends TestUtil {
 //        test473004(receiptno_transfer, "0000016");
         //先开好户后，再配置scm配置
         String receiptno_transfer = "TS111878671938191647571925755";
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("type", "update");
+        reqMsg.put("sql", "delete from transferrelation where routeid = '"+receiptno_transfer+"';");
+        rsfSqlExecuteDeal.prepare(reqMsg);
+        //还款
+        test471007("serialNo_TS" + System.currentTimeMillis(), "2021-01-01", 1.0, receiptno_transfer);
 
+        //更新迁移状态为3，抛出异常
+        Map<String, Object> reqMsg2 = new HashMap<>();
+        reqMsg.put("type", "update");
+        reqMsg.put("sql", "update transferrelation set status = '3' where routeid = '"+receiptno_transfer+"';");
+        rsfSqlExecuteDeal.prepare(reqMsg);
         //还款
         test471007("serialNo_TS" + System.currentTimeMillis(), "2021-01-01", 1.0, receiptno_transfer);
 
     }
+
 
     public void test473004(String receiptno, String productCode) {
 
