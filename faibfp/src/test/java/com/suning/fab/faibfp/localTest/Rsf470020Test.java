@@ -2,8 +2,10 @@ package com.suning.fab.faibfp.localTest;
 
 import com.suning.fab.faibfp.service.Rsf470020;
 import com.suning.fab.faibfp.service.Rsf473004;
+import com.suning.fab.faibfp.service.RsfSqlExecuteDeal;
 import com.suning.fab.faibfp.utils.TestUtil;
 import com.suning.fab.faibfp.utils.TranDateCutUtil;
+import com.suning.fab.mulssyn.exception.FabException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,26 +28,60 @@ public class Rsf470020Test extends TestUtil {
     @Autowired
     Rsf473004 rsf473004;
 
+    @Autowired
+    RsfSqlExecuteDeal rsfSqlExecuteDeal;
+
     @Test
     public void test() {
 
         // 在新模型和老模型各开一个户
         String receiptno_old = "O11187867193819" + System.currentTimeMillis();
         String receiptno_new = "N11187867193819" + System.currentTimeMillis();
+        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
         TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
         TranDateCutUtil.setOldSystemTrandate("2021-01-01");
         // 开老系统户
         test473004(receiptno_old, "0000013");
         // 开新模型户
         test473004(receiptno_new, "0000015");
+        // 迁移中产品开户
+        test473004(receiptno_transfer, "0000016");
 //         批量预约还款计划查询
-        test470020(receiptno_old, receiptno_new);
+        test470020(receiptno_old, receiptno_new,receiptno_transfer);
+        //test470020("O111878671938191629256927306", "N111878671938191629256927306");
+
+
+    }
+
+    //迁移中的产品，迁移中的借据号，抛出异常
+    @Test
+    public void test2() throws FabException {
+
+        // 在新模型和老模型各开一个户
+        String receiptno_old = "O11187867193819" + System.currentTimeMillis();
+        String receiptno_new = "N11187867193819" + System.currentTimeMillis();
+        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
+        TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
+        TranDateCutUtil.setOldSystemTrandate("2021-01-01");
+        // 开老系统户
+        test473004(receiptno_old, "0000013");
+        // 开新模型户
+        test473004(receiptno_new, "0000015");
+        // 迁移中产品开户
+        test473004(receiptno_transfer, "0000016");
+        //更新迁移中产品的借据号的迁移表状态
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("type", "update");
+        reqMsg.put("sql", "update transferrelation set status = '3' where routeid = '"+receiptno_transfer+"';");
+        rsfSqlExecuteDeal.prepare(reqMsg);
+
+//         批量预约还款计划查询
+        test470020(receiptno_old, receiptno_new,receiptno_transfer);
         //test470020("O111878671938191629256927306", "N111878671938191629256927306");
 
     }
 
-
-    public void test470020(String receiptno_old, String receiptno_new) {
+    public void test470020(String receiptno_old, String receiptno_new, String receiptno_transfer) {
 
         Map<String, Object> param = new HashMap<>();
 
@@ -55,9 +91,13 @@ public class Rsf470020Test extends TestUtil {
         Map<String, Object> map2 = new HashMap<>();
         map2.put("acctNo", receiptno_new);
         map2.put("enCode", "51030000");
+        Map<String, Object> map3 = new HashMap<>();
+        map2.put("acctNo", receiptno_transfer);
+        map2.put("enCode", "51030000");
         List<Map> list = new ArrayList<>();
         list.add(map1);
         list.add(map2);
+        list.add(map3);
         param.put("pkgList", list);
         param.put("brc", "51030000");
         param.put("tranCode", "470020");

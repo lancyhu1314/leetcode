@@ -25,10 +25,10 @@ public class Rsf477016Test extends TestUtil {
     public void test() {
 
         Map<String, Object> input = new HashMap<String, Object>();
-        input.put("acctNo", "5103092300375594");
-        input.put("brc", "51030000");
+        input.put("acctNo", "BFML632_zf_0224_002");
+        input.put("brc", "51350000");
         input.put("tranCode", "477016");
-        input.put("termDate", "2021-08-04");
+        input.put("termDate", "2022-02-24");
 
         Map<String, Object> ret = rsf477016.execute(input);
         System.out.println("=============" + ret);

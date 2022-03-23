@@ -35,6 +35,7 @@ public class ConstVar {
     public static final class KEYNAME {
 
         public static final String PRODUCT_CODES = "productCodes";
+        public static final String REALTIME_PRD = "realTimePrd";
 
         private KEYNAME() {
         }
@@ -54,6 +55,10 @@ public class ConstVar {
         public static final String OLD_ACCTO = "oldAcctNo";
 
         public static final String ROUTEID = "routeId";
+
+        public static final String COUNTS = "counts";
+
+        public static final String STATUS = "status";
 
         public static final String REPAYACCTNO = "repayAcctNo";
 
@@ -91,6 +96,27 @@ public class ConstVar {
         private ROUTETYPE(){}
     }
 
+    public static final class TRANSFERSTATUS{
+
+        /**
+         * 未迁移
+         */
+        public static final String NOT_TRANSFER = "1";
+        /**
+         * 老系统处理中
+         */
+        public static final String OLD_PROCESSING = "2";
+        /**
+         * 迁移中
+         */
+        public static final String TRANSFERING = "3";
+        /**
+         * 迁移完成
+         */
+        public static final String END_TRANSFER = "4";
+
+        private TRANSFERSTATUS(){}
+    }
 
     private ConstVar() {
     }

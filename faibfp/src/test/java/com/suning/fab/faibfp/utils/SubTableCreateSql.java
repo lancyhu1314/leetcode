@@ -24,11 +24,11 @@ public class SubTableCreateSql {
 
     public static void main(String[] args) {
 
-        String path = "F:/需求文档/FABDOC/2_文档汇总/170207_贷款_苏宁小贷账务核心2.0/产品开发测试/贷款预处理系统/贷款预处理系统表结构.xlsx";
+        String path = "D:\\Users\\Desktop\\问题排查\\贷款预处理系统表结构.xlsx";
         // 从哪张表开始【
-        int startTables = 5;
+        int startTables = 8;
         // 到哪张表结束）
-        int tableNums = 7;
+        int tableNums = 9;
         String schema = "";
 
         List<Table> tableInfo = readTableFrom(path, tableNums, startTables);
@@ -237,7 +237,7 @@ public class SubTableCreateSql {
         }*/
 
         /*** 2个库算法 ****/
-        int j = tableId % 2 + 1;
+        int j = tableId % 8 + 1;
 
         return j;
     }

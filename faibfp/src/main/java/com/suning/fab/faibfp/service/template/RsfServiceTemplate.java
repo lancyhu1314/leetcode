@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.suning.fab.faibfp.bean.AcctnoRelation;
 import com.suning.fab.faibfp.bean.CustomerRelation;
 import com.suning.fab.faibfp.bean.ProductMapping;
+import com.suning.fab.faibfp.bean.TransferRelation;
 import com.suning.fab.faibfp.dbhandler.AcctnoRelationHandler;
 import com.suning.fab.faibfp.dbhandler.CustomerRelationHandler;
 import com.suning.fab.faibfp.dbhandler.ProductMappingHandler;
+import com.suning.fab.faibfp.dbhandler.TransferRelationHandler;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.faibfp.utils.DateUtils;
 import com.suning.fab.faibfp.utils.OldServiceAgentHelper;
@@ -108,11 +110,71 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             return ret;
         }
         // 判断是否调用老系统
-        if (isCallOldSystem(productCode)) {
+        // 标记【迁移过程中，产品调用老系统，但是借据号调用新模型】
+        boolean toNewFlag = false;
+        boolean countChange = false;
+        //判断是否是本次迁移产品
+        if (isTransferPrdCode(productCode)) {
+            //如果包含在 realTimePrd 配置了，则说明正在迁移，否则直接调用
+            TransferRelationHandler transferHandler = new TransferRelationHandler();
+            TransferRelation transferRelation = transferHandler.load(receiptNo);
+            //判断是否是开户类的
+            if (isOpenAcctTranCode(getTranCode())) {
+                //登记新增借据号，且状态为已迁移
+                //DONE 借据号更换了产品代码，怎么处理 ——一般不会出现，不考虑这种情况
+                if ( null == transferRelation) {
+                    transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.END_TRANSFER, 0);
+                } else {
+                    transferHandler.update(receiptNo, ConstVar.TRANSFERSTATUS.END_TRANSFER, 0);
+                }
+                //调用新模型
+                toNewFlag = true;
+            } else {
+                //如果transferRelation为空，插入一条记录
+                if ( null == transferRelation) {
+                    transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.NOT_TRANSFER, 0);
+                    transferRelation = new TransferRelation();
+                    transferRelation.setStatus( ConstVar.TRANSFERSTATUS.NOT_TRANSFER) ;
+                }
+                //其他trancode，查询借据号状态
+                //如果已迁移，走新模型
+                if (ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
+                    toNewFlag = true;
+                }
+                //如果迁移中，抛出异常
+                else if (ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
+                    ret = createRefuseResp(reqMsg);
+                    LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+                    return ret;
+                }
+                //如果未迁移/老系统处理中
+                else {
+                    //查询的过滤掉
+                    if (isDealTranCode(getTranCode())) {
+                        //判断更新条数，条数=0，抛异常
+                        int counts = transferHandler.updateCounts(receiptNo, 1);
+                        if (counts == 0) {
+                            ret = createRefuseResp(reqMsg);
+                            LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
+                            return ret;
+                        }
+                        countChange = true;
+                    }
+                }
+            }
+        }
+        //产品走老系统，且产品下的借据号也是走老系统
+        if (isCallOldSystem(productCode) && !toNewFlag) {
             // 数据未迁移 调用老系统
             // 报文里面添加调用老系统的组别
             reqMsg.put("sysGroup", "FALOAN");
             ret = transparentExecute(reqMsg, false, startInterval);
+            //如果前置迁移表笔数+1了，这里要-1(异常场景已考虑，无论结果如何，都会-1操作)
+            if (countChange) {
+                TransferRelationHandler transferHandler = new TransferRelationHandler();
+                transferHandler.updateCounts(receiptNo, -1);
+            }
+            //产品配置了走新模型 || 产品配置了迁移中，但是产品下的借据号走新模型
         } else {
 
             // 数据已迁移，调用新系统，新模型中只存在receiptno(接口字段命名为acctno)，
@@ -268,7 +330,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
     /**
      * 根据产品判断调用新系统还是老系统
-     *
+     * 返回true-老系统 false-新模型
      * @param productCode
      * @return
      */
@@ -277,7 +339,17 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
         return VarChecker.isEmpty(value) || !Arrays.asList(value.split(",")).contains(productCode);
     }
-
+    /**
+     * 根据产品判断是否是本次迁移产品
+     *  返回true-本次迁移 false-非本次迁移
+     * @param productCode
+     * @return
+     */
+    public boolean isTransferPrdCode(String productCode) {
+        // 查询借据产品映射表，根据scm配置的产品，判断是调用新系统还是老系统。
+        String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.REALTIME_PRD);
+        return !VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(productCode);
+    }
     /**
      * 判断是否为C系统的老数据
      *
@@ -296,6 +368,18 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
      */
     protected boolean isOpenAcctTranCode(String tranCode) {
         return VarChecker.asList("473004", "473005", "473006", "473007", "479000").contains(tranCode);
+    }
+
+    /**
+     * 判断是否为交易类接口
+     *
+     * @param tranCode
+     * @return
+     */
+    protected boolean isDealTranCode(String tranCode) {
+        String value = ScmDynaGetterUtil.getValue("GlobalScm.properties", "dealtrancodes");
+        //交易配置不为空，且包含trancode，返回true
+        return !VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(tranCode);
     }
 
     /**

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TRANSFERRELATION">
+
+    <insert id="insert" parameterType="com.suning.fab.faibfp.bean.TransferRelation">
+        insert into TRANSFERRELATION(routeId,status,counts,createtime,updatetime)
+            values (#{routeId},#{status},#{counts},CURRENT_TIMESTAMP(6),CURRENT_TIMESTAMP(6))
+    </insert>
+
+    <select id="selectByKey" parameterType="map" resultType="com.suning.fab.faibfp.bean.TransferRelation">
+        select routeId,status,counts
+        from TRANSFERRELATION
+        where routeid = #{routeId}
+    </select>
+
+    <update id="update" parameterType="map">
+        update TRANSFERRELATION
+        set counts = #{counts},
+            status = #{status},
+            updatetime = CURRENT_TIMESTAMP(6)
+        where routeid = #{routeId}
+    </update>
+
+    <update id="updateCounts" parameterType="map">
+        update TRANSFERRELATION
+        set counts = counts + #{counts},
+            status = (case when counts = 0 then '1' else '2' end),
+            updatetime = CURRENT_TIMESTAMP(6)
+        where routeid = #{routeId}
+        and status in ('1','2')
+    </update>
+
+    <update id="updateStatus" parameterType="map">
+        update TRANSFERRELATION
+        set status = #{newstatus},
+            updatetime = CURRENT_TIMESTAMP(6)
+        where routeid = #{routeId}
+        and status = #{oldstatus}
+    </update>
+
+</mapper>
