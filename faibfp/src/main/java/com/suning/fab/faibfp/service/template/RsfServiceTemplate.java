@@ -130,19 +130,13 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 //调用新模型
                 toNewFlag = true;
             } else {
-                //如果transferRelation为空，插入一条记录
-                if ( null == transferRelation) {
-                    transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.NOT_TRANSFER, 0);
-                    transferRelation = new TransferRelation();
-                    transferRelation.setStatus( ConstVar.TRANSFERSTATUS.NOT_TRANSFER) ;
-                }
                 //其他trancode，查询借据号状态
                 //如果已迁移，走新模型
-                if (ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
+                if (transferRelation !=null && ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
                     toNewFlag = true;
                 }
                 //如果迁移中，抛出异常
-                else if (ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
+                else if (transferRelation !=null && ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
                     ret = createRefuseResp(reqMsg);
                     LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
                     return ret;
@@ -151,6 +145,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 else {
                     //查询的过滤掉
                     if (isDealTranCode(getTranCode())) {
+                        //如果transferRelation为空，插入一条记录
+                        if (null == transferRelation) {
+                            transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.NOT_TRANSFER, 0);
+                            transferRelation = new TransferRelation();
+                            transferRelation.setStatus(ConstVar.TRANSFERSTATUS.NOT_TRANSFER);
+                        }
                         //判断更新条数，条数=0，抛异常
                         int counts = transferHandler.updateCounts(receiptNo, 1);
                         if (counts == 0) {

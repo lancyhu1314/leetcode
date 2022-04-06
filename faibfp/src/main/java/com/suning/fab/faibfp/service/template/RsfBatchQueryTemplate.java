@@ -66,16 +66,16 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                 if (isTransferPrdCode(productCode)) {
                     TransferRelation transferRelation = new TransferRelationHandler().load(receiptNo);
                     // 如果已迁移，走新模型
-                    if (ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
+                    if (transferRelation !=null && ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
                         toNewFlag = true;
                     }
                     //如果迁移中，抛出异常
-                    else if (ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
+                    else if (transferRelation !=null && ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
                         Map<String, Object> ret = createRefuseResp(reqMsg);
                         LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】，借据号【{}】的交易。", productCode, receiptNo);
                         return ret;
                     }
-                    //TODO 如果未迁移/老系统处理中,还是走老系统 NOTE 查询条件，不做处理中笔数的累计
+                    //TODO 如果未迁移/老系统处理中,或者状态表中没有的(已结清)还是走老系统 NOTE 查询条件，不做处理中笔数的累计
                 }
 
                 // 判断是否迁移，将报文分类
