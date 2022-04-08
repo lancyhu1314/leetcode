@@ -107,6 +107,33 @@ public class Rsf470020Test extends TestUtil {
         System.out.println(execute);
     }
 
+    @Test
+    public void test470020() {
+
+        Map<String, Object> param = new HashMap<>();
+
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("acctNo", "JYD211124279057");
+        map1.put("enCode", "51030000");
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("acctNo", "receiptno_new");
+        map2.put("enCode", "51030000");
+        Map<String, Object> map3 = new HashMap<>();
+        map2.put("acctNo", "receiptno_transfer");
+        map2.put("enCode", "51030000");
+        List<Map> list = new ArrayList<>();
+        list.add(map1);
+        list.add(map2);
+        list.add(map3);
+        param.put("pkgList", list);
+        param.put("brc", "51030000");
+        param.put("tranCode", "470020");
+        param.put("termDate", "2021-01-01");
+        param.put("channelId", "66");
+        Map<String, Object> execute = rsf470020.execute(param);
+        System.out.println(execute);
+    }
+
     public void test473004(String receiptno, String productCode) {
 
         Map<String, Object> input = new HashMap<String, Object>();
@@ -157,6 +184,54 @@ public class Rsf470020Test extends TestUtil {
 
         Map<String, Object> ret = rsf473004.execute(input);
         System.out.println("=============" + ret);
+    }
+
+    //状态表 = 4
+    @Test
+    public void test470020_3() {
+        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
+        test473004(receiptno_transfer, "0000016");
+
+
+        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("acctNo", receiptno_transfer);
+        map1.put("enCode", "51350000");
+        List<Map> list = new ArrayList<>();
+        list.add(map1);
+        param.put("pkgList", list);
+        param.put("brc", "51030000");
+        param.put("tranCode", "470020");
+        param.put("termDate", "2021-01-01");
+        param.put("channelId", "66");
+        Map<String, Object> execute = rsf470020.execute(param);
+        System.out.println(execute);
+    }
+
+    //状态表 = 3
+    @Test
+    public void test470020_4() throws FabException {
+        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
+        test473004(receiptno_transfer, "0000016");
+        //开户状态表是，更新成3
+        Map<String, Object> reqMsg = new HashMap<>();
+        reqMsg.put("type", "update");
+        reqMsg.put("sql", "update transferrelation set status = '3' where routeid = '"+receiptno_transfer+"';");
+        rsfSqlExecuteDeal.prepare(reqMsg);
+
+        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("acctNo", receiptno_transfer);
+        map1.put("enCode", "51350000");
+        List<Map> list = new ArrayList<>();
+        list.add(map1);
+        param.put("pkgList", list);
+        param.put("brc", "51030000");
+        param.put("tranCode", "470020");
+        param.put("termDate", "2021-01-01");
+        param.put("channelId", "66");
+        Map<String, Object> execute = rsf470020.execute(param);
+        System.out.println(execute);
     }
 
 }
