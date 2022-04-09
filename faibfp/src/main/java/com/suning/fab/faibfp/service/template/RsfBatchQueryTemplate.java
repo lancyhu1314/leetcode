@@ -8,6 +8,7 @@ import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.fab.mulssyn.utils.PlatConstant;
+import com.suning.fab.mulssyn.utils.VarChecker;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -85,6 +86,10 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                     unMigrated.add(req);
                     LoggerUtil.info("前置拆分调用老系统：借据号：{}，产品：{}", receiptNo, productCode);
                 } else {
+                    if (!VarChecker.isEmpty(req.get(ConstVar.PARAMETER.ACCTNO))) {
+                        req.put(ConstVar.PARAMETER.OLD_ACCTO, req.get(ConstVar.PARAMETER.ACCTNO));
+                        req.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
+                    }
                     migrated.add(req);
                     LoggerUtil.info("前置拆分调用新模型：借据号：{}，产品：{}", receiptNo, productCode);
                 }
