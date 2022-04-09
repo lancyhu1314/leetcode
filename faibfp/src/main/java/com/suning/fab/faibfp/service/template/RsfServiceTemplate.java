@@ -164,7 +164,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             }
         }
         //产品走老系统，且产品下的借据号也是走老系统
-        if (isCallOldSystem(productCode) && !toNewFlag) {
+        //479001/479010 接口，总是走老系统
+        if ((isCallOldSystem(productCode) && !toNewFlag)
+                || Arrays.asList("479001","479010").contains(getTranCode()) ) {
+            if (Arrays.asList("479001", "479010").contains(getTranCode())) {
+                reqMsg.put("sysPrdCode", null);
+            }
             // 数据未迁移 调用老系统
             // 报文里面添加调用老系统的组别
             reqMsg.put("sysGroup", "FALOAN");
