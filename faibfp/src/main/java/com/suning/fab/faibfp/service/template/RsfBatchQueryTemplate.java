@@ -34,6 +34,7 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
      */
     @Override
     public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
+        LoggerUtil.info("前置系统批量入口报文：{}| ServiceName:{} |SerialNo【{}】", JSON.toJSONString(reqMsg), this.getClass().getSimpleName(), reqMsg.get("serialNo"));
 
         // 是否启用跨系统调用预约还款计划拼接逻辑
         String isOpenBatchCross = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "isOpenBatchCross", "false");
