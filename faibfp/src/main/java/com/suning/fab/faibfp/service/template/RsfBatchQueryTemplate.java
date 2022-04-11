@@ -129,6 +129,7 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                     pk_new.addAll(pk_old);
                 }
                 ret_new.put("pkgList1", JSON.toJSONString(pk_new));
+                ret_new.put("totalLine", pk_new.size());
                 return ret_new;
 
             } else {
