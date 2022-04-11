@@ -234,4 +234,34 @@ public class Rsf470020Test extends TestUtil {
         System.out.println(execute);
     }
 
+    @Test
+    public void test470020_5() throws FabException {
+        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("acctNo", "510312412611000000560");
+        map1.put("enCode", "51030000");
+        List<Map> list = new ArrayList<>();
+        list.add(map1);
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("acctNo", "510312412607000009320");
+        map2.put("enCode", "51030000");
+        list.add(map2);
+        Map<String, Object> map3 = new HashMap<>();
+        map3.put("acctNo", "AFML642o");
+        map3.put("enCode", "51030000");
+        list.add(map3);
+        Map<String, Object> map4 = new HashMap<>();
+        map4.put("acctNo", "AFML642");
+        map4.put("enCode", "51030000");
+        list.add(map4);
+
+        param.put("pkgList", list);
+        param.put("brc", "51030000");
+        param.put("tranCode", "470020");
+        param.put("termDate", "2021-01-01");
+        param.put("channelId", "66");
+        Map<String, Object> execute = rsf470020.execute(param);
+        System.out.println(execute);
+    }
+
 }
