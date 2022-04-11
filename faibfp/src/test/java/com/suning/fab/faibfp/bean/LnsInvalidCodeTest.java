@@ -16,11 +16,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @Version 1.0
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LnsInvalidCode.class})
+@PrepareForTest({LnsInvalidCode.class,LnsInvalidCode1.class})
 public class LnsInvalidCodeTest extends PowerMockito {
     @Test
     public void test() {
         LnsInvalidCode bean = spy(new LnsInvalidCode());
         Getandset.getsetCall(bean);
+
+        LnsInvalidCode1 bean1 = spy(new LnsInvalidCode1());
+        Getandset.getsetCall(bean1);
     }
 }
