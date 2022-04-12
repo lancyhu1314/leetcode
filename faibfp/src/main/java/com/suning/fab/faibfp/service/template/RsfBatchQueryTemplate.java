@@ -8,6 +8,7 @@ import com.suning.fab.mulssyn.exception.FabException;
 import com.suning.fab.mulssyn.scmconf.ScmDynaGetterUtil;
 import com.suning.fab.mulssyn.utils.LoggerUtil;
 import com.suning.fab.mulssyn.utils.PlatConstant;
+import com.suning.fab.mulssyn.utils.VarChecker;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
      */
     @Override
     public Map<String, Object> dataDistribute(Map<String, Object> reqMsg, long startInterval) throws FabException {
+        LoggerUtil.info("前置系统批量入口报文：{}| ServiceName:{} |SerialNo【{}】", JSON.toJSONString(reqMsg), this.getClass().getSimpleName(), reqMsg.get("serialNo"));
 
         // 是否启用跨系统调用预约还款计划拼接逻辑
         String isOpenBatchCross = ScmDynaGetterUtil.getWithDefaultValue("GlobalScm.properties", "isOpenBatchCross", "false");
@@ -85,6 +87,10 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                     unMigrated.add(req);
                     LoggerUtil.info("前置拆分调用老系统：借据号：{}，产品：{}", receiptNo, productCode);
                 } else {
+                    if (!VarChecker.isEmpty(req.get(ConstVar.PARAMETER.ACCTNO))) {
+                        req.put(ConstVar.PARAMETER.OLD_ACCTO, req.get(ConstVar.PARAMETER.ACCTNO));
+                        req.put(ConstVar.PARAMETER.ACCTNO, receiptNo);
+                    }
                     migrated.add(req);
                     LoggerUtil.info("前置拆分调用新模型：借据号：{}，产品：{}", receiptNo, productCode);
                 }
@@ -123,6 +129,7 @@ public abstract class RsfBatchQueryTemplate extends RsfQuerServiceTemplate {
                     pk_new.addAll(pk_old);
                 }
                 ret_new.put("pkgList1", JSON.toJSONString(pk_new));
+                ret_new.put("totalLine", pk_new.size());
                 return ret_new;
 
             } else {
