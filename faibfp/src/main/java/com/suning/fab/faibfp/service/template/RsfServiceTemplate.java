@@ -209,7 +209,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.MERCHANTNO));
                 // 报文增加repayAcctNo字段
                 // load不为空，且机构号以5103/5105开头
-                if (null != load && isCallOldSystem((String) reqMsg.get("brc"))) {
+                if (null != load && isCsystemData((String) reqMsg.get("brc"))) {
                     reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, load.getRepayacctNo());
                 } else {
                     reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, reqMsg.get(ConstVar.PARAMETER.MERCHANTNO));
