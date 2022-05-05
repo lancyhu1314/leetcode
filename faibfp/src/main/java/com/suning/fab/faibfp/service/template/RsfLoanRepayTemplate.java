@@ -26,7 +26,16 @@ public abstract class RsfLoanRepayTemplate extends RsfServiceTemplate {
         param_1760011.put("termDate", param.get("termDate"));
         param_1760011.put("termTime", param.get("termTime"));
         param_1760011.put("channelId", param.get("channelId"));
-        param_1760011.put("brc", param.get("brc"));
+        //471011特殊处理下，如果子机构传值了，取子机构号，否则取公共子机构号
+        if (getTranCode().equals("471011")) {
+            if (param.get("childBrc") != null) {
+                param_1760011.put("brc", param.get("childBrc"));
+            } else {
+                param_1760011.put("brc", param.get("brc"));
+            }
+        } else {
+            param_1760011.put("brc", param.get("brc"));
+        }
         param_1760011.put("repayAcctNo", param.get("repayAcctNo"));
         param_1760011.put("ccy", param.get("ccy"));
         param_1760011.put("amt", param.get("repayAmt"));
