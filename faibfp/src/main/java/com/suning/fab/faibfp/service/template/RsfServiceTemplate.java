@@ -208,7 +208,12 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 // 查询预收账号和客户号关系
                 CustomerRelation load = new CustomerRelationHandler().load((String) reqMsg.get(ConstVar.PARAMETER.MERCHANTNO));
                 // 报文增加repayAcctNo字段
-                reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, null == load ? (String) reqMsg.get(ConstVar.PARAMETER.MERCHANTNO) : load.getRepayacctNo());
+                // load不为空，且机构号以5103/5105开头
+                if (null != load && isCsystemData((String) reqMsg.get("brc"))) {
+                    reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, load.getRepayacctNo());
+                } else {
+                    reqMsg.put(ConstVar.PARAMETER.REPAYACCTNO, reqMsg.get(ConstVar.PARAMETER.MERCHANTNO));
+                }
             }
 
 
