@@ -2,6 +2,8 @@ package com.suning.fab.faibfp.service.template;
 
 import com.suning.fab.mulssyn.ctx.LocalTranCtx;
 
+import java.util.Map;
+
 /**
  * 功能描述: <br>
  * 〈功能详细描述〉
@@ -22,5 +24,9 @@ public abstract class RsfQuerServiceTemplate extends RsfServiceTemplate {
         LocalTranCtx localTranCtx = super.createLocalTranCtx();
         localTranCtx.setSerialNo(localTranCtx.getBid());
         return localTranCtx;
+    }
+    @Override
+    public void onProtoReg(Map<String, Object> in, Map<String, Object> out){
+        //交易类型的请求不落报文表
     }
 }
