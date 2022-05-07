@@ -96,6 +96,8 @@ public class RsfMockTest extends TestUtil {
     @Autowired
     Rsf472006 rsf472006;
     @Autowired
+    Rsf472007 rsf472007;
+    @Autowired
     Rsf473004 rsf473004;
     @Autowired
     Rsf473005 rsf473005;
@@ -220,6 +222,7 @@ public class RsfMockTest extends TestUtil {
         rsf472005.getTranCode();
         rsf472005.getProductMapRouteId("", map);
         rsf472006.getTranCode();
+        rsf472007.getTranCode();
         rsf473004.getTranCode();
         rsf473005.getTranCode();
         rsf473006.getTranCode();
