@@ -3,6 +3,7 @@ package com.suning.fab.faibfp.service.template;
 import com.suning.fab.faibfp.utils.ConstVar;
 import com.suning.fab.mulssyn.bean.TransDetail;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,9 @@ public abstract class RsfLoanRepayTemplate extends RsfServiceTemplate {
 
     @Override
     protected List<TransDetail> paramSplite(Map<String, Object> param) {
-
+        if (new BigDecimal(param.get("repayAmt").toString()).compareTo(BigDecimal.ZERO) == 0) {
+            return new ArrayList<>();
+        }
         Map<String, Object> param_1760011 = new HashMap<>();
         param_1760011.put("tranCode", "176011");
         param_1760011.put("termDate", param.get("termDate"));
