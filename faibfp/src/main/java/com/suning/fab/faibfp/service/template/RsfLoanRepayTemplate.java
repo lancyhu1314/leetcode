@@ -21,9 +21,7 @@ public abstract class RsfLoanRepayTemplate extends RsfServiceTemplate {
 
     @Override
     protected List<TransDetail> paramSplite(Map<String, Object> param) {
-        if (new BigDecimal(param.get("repayAmt").toString()).compareTo(BigDecimal.ZERO) == 0) {
-            return new ArrayList<>();
-        }
+
         Map<String, Object> param_1760011 = new HashMap<>();
         param_1760011.put("tranCode", "176011");
         param_1760011.put("termDate", param.get("termDate"));
@@ -50,7 +48,9 @@ public abstract class RsfLoanRepayTemplate extends RsfServiceTemplate {
         TransDetail detail_17 = new TransDetail("176011", "176012", param_1760011, 1);
         TransDetail detail = new TransDetail(getTranCode(), "", param, 2);
         List<TransDetail> list = new ArrayList<>();
-        list.add(detail_17);
+        if (new BigDecimal(param.get("repayAmt").toString()).compareTo(BigDecimal.ZERO) != 0) {
+            list.add(detail_17);
+        }
         list.add(detail);
 
         return list;
