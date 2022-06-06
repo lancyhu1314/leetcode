@@ -27,24 +27,24 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
 
         List<TransDetail> detailList = new ArrayList<>();
         // 债务公司
-//        if (!CollectionUtils.isEmpty((List) param.get(ConstVar.PARAMETER.PKGLIST))) {
-//            Map<String, Object> detParam = new HashMap<>();
-//
-//            detParam.put("tranCode", "1760012");
-//            detParam.put("termDate", param.get("termDate"));
-//            detParam.put("termTime", param.get("termTime"));
-//            detParam.put("channelId", param.get("channelId"));
-//            detParam.put("brc", param.get("brc"));
-//            detParam.put("receiptNo", param.get("receiptNo"));
-//            detParam.put("amt", param.get("contractAmt"));
-//            detParam.put("customType", param.get("customType"));
-//            detParam.put("pkgList", param.get(ConstVar.PARAMETER.PKGLIST));
-//            // 添加路由字段为老系统：预收方面暂时都调用老系统
-//            detParam.put("sysGroup", "FALOAN");
-//            TransDetail detail = new TransDetail("176012", "176011", detParam, 1);
-//            detailList.add(detail);
-//            isOpenPrefundAcct = false;
-//        }
+        if (!CollectionUtils.isEmpty((List) param.get(ConstVar.PARAMETER.PKGLIST))) {
+            Map<String, Object> detParam = new HashMap<>();
+
+            detParam.put("tranCode", "1760012");
+            detParam.put("termDate", param.get("termDate"));
+            detParam.put("termTime", param.get("termTime"));
+            detParam.put("channelId", param.get("channelId"));
+            detParam.put("brc", param.get("brc"));
+            detParam.put("receiptNo", param.get("receiptNo"));
+            detParam.put("amt", param.get("contractAmt"));
+            detParam.put("customType", param.get("customType"));
+            detParam.put("pkgList", param.get(ConstVar.PARAMETER.PKGLIST));
+            // 添加路由字段为老系统：预收方面暂时都调用老系统
+            detParam.put("sysGroup", "FALOAN");
+            TransDetail detail = new TransDetail("176012", "176011", detParam, 1);
+            detailList.add(detail);
+            isOpenPrefundAcct = false;
+        }
         // 借新还旧之还款
         if (VarChecker.asList("E").contains(param.get(ConstVar.PARAMETER.CHANNELTYPE))) {
             Map<String, Object> repayParam = new HashMap<>();
