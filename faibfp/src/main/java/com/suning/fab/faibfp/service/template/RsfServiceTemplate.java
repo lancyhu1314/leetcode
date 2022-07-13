@@ -438,6 +438,17 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
             ServiceAgent agent;
             if (migrated) {
+                // 2022-07-13 begin 配置新系统非跨库交易，先结息操作
+                String tranCode = ScmDynaGetterUtil.getValue("MigratedProducts.properties", "settleTranCode");
+                if (!VarChecker.isEmpty(tranCode) && Arrays.asList(tranCode.split(",")).contains(getTranCode())) {
+                    agent = ServiceAgentHelper.getAgent("479002");
+                    param.put("repayDate",ctx.getTranDate());
+                    result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+                    if( !"000000".equals(result.get("rspCode")))
+                        throw new FabException("MUL004","结息异常");
+                }
+                // 2022-07-13 enddate
+
                 // 已迁移：调用新系统
                 agent = ServiceAgentHelper.getAgent(getTranCode());
             } else {
