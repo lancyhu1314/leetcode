@@ -26,7 +26,7 @@ public abstract class RsfAccountOpenIntfTemplate extends RsfServiceTemplate {
         boolean isOpenPrefundAcct = true;
 
         List<TransDetail> detailList = new ArrayList<>();
-        // 债务公司
+        // 债务公司(和下面冲突，以后对公业务迁移要考虑如何实现)  20220721 modify by huyi
 //        if (!CollectionUtils.isEmpty((List) param.get(ConstVar.PARAMETER.PKGLIST))) {
 //            Map<String, Object> detParam = new HashMap<>();
 //
