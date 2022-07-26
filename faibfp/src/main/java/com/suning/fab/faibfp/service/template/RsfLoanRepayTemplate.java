@@ -44,7 +44,12 @@ public abstract class RsfLoanRepayTemplate extends RsfServiceTemplate {
         param_1760011.put("pkgList", param.get("pkgList"));
         // 添加路由字段为老系统：预收方面暂时都调用老系统
         param_1760011.put("sysGroup", "FALOAN");
+
+        // 2022-07-13 begin 预收减款时，按实际扣款金额收取
         param_1760011.put("feeAmt", param.get("feeAmt"));
+        param_1760011.put("settleFlag", param.get("settleFlag"));
+        param_1760011.put("realDate", param.get("realDate"));
+        // 2022-07-13 end
 
         TransDetail detail_17 = new TransDetail("176011", "176012", param_1760011, 1);
         TransDetail detail = new TransDetail(getTranCode(), "", param, 2);
