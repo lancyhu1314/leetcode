@@ -438,6 +438,17 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
             ServiceAgent agent;
             if (migrated) {
+                // 2022-07-13 begin 配置新系统非跨库交易，先结息操作
+                String tranCode = ScmDynaGetterUtil.getValue("MigratedProducts.properties", "settleTranCode");
+                if (!VarChecker.isEmpty(tranCode) && Arrays.asList(tranCode.split(",")).contains(getTranCode())) {
+                    agent = ServiceAgentHelper.getAgent("479002");
+                    param.put("repayDate",ctx.getTranDate());
+                    result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+                    if( !"000000".equals(result.get("rspCode")))
+                        throw new FabException("MUL004","结息异常");
+                }
+                // 2022-07-13 enddate
+
                 // 已迁移：调用新系统
                 agent = ServiceAgentHelper.getAgent(getTranCode());
             } else {
@@ -456,7 +467,22 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 result.put("tranTime", "unknown");
                 result.put("serSeqNo", "unknown");
             } else {
+                LoggerUtil.info("服务[{}]开始调用========", getTranCode());
                 result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+                LoggerUtil.info("服务[{}]返回成功========", getTranCode());
+
+//                // 2022-07-13 begin 实际还款日展期，需冲销后重新展期
+//                if( "471007".equals(getTranCode()) && !VarChecker.isEmpty(param.get("serviceType")) && "3".equals(param.get("serviceType"))){
+//                    agent = ServiceAgentHelper.getAgent("470017");
+//                    param.put("tranCode","470017");
+//                    LoggerUtil.info("服务[{}]开始调用========", "470017");
+//                    result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
+//                    if( !"000000".equals(result.get("rspCode")))
+//                        throw new FabException("MUL004","结息异常");
+//                    LoggerUtil.info("服务[{}]返回成功========", "470017");
+//
+//                }
+//                // 2022-07-13 enddate
             }
 
         } catch (ServiceNotFoundException e) {
