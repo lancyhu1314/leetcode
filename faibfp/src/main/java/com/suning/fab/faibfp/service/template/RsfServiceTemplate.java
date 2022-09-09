@@ -443,6 +443,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 if (!VarChecker.isEmpty(tranCode) && Arrays.asList(tranCode.split(",")).contains(getTranCode())) {
                     agent = ServiceAgentHelper.getAgent("479002");
                     param.put("repayDate",ctx.getTranDate());
+                    param.put("settleBill","1");
                     result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
                     if( !"000000".equals(result.get("rspCode")))
                         throw new FabException("MUL004","结息异常");
@@ -470,19 +471,6 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 LoggerUtil.info("服务[{}]开始调用========", getTranCode());
                 result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
                 LoggerUtil.info("服务[{}]返回成功========", getTranCode());
-
-//                // 2022-07-13 begin 实际还款日展期，需冲销后重新展期
-//                if( "471007".equals(getTranCode()) && !VarChecker.isEmpty(param.get("serviceType")) && "3".equals(param.get("serviceType"))){
-//                    agent = ServiceAgentHelper.getAgent("470017");
-//                    param.put("tranCode","470017");
-//                    LoggerUtil.info("服务[{}]开始调用========", "470017");
-//                    result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
-//                    if( !"000000".equals(result.get("rspCode")))
-//                        throw new FabException("MUL004","结息异常");
-//                    LoggerUtil.info("服务[{}]返回成功========", "470017");
-//
-//                }
-//                // 2022-07-13 enddate
             }
 
         } catch (ServiceNotFoundException e) {
