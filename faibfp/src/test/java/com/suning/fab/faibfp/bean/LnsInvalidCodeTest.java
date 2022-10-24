@@ -31,5 +31,8 @@ public class LnsInvalidCodeTest extends PowerMockito {
 
         LnsInvalidCode3 bean3 = spy(new LnsInvalidCode3());
         Getandset.getsetCall(bean3);
+
+        LnsInvalidCode4 bean4 = spy(new LnsInvalidCode4());
+        Getandset.getsetCall(bean4);
     }
 }
