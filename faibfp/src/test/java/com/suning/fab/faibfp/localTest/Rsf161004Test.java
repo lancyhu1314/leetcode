@@ -1,27 +1,22 @@
 package com.suning.fab.faibfp.localTest;
 
-
 import com.suning.fab.faibfp.service.Rsf161001;
+import com.suning.fab.faibfp.utils.TestUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 /**
- * 〈一句话功能简述〉<br>
+ * 功能描述: <br>
  * 〈功能详细描述〉
  *
- * @author 16071579
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @Author 19043955
+ * @Date 2021/8/11
+ * @Version 1.0
  */
-
-public class Tp161004Test {
+public class Rsf161004Test extends TestUtil {
 
     @Autowired
     Rsf161001 tp161004;
@@ -64,10 +59,3 @@ public class Tp161004Test {
     }
 
 }
-
-
-
-
-
-
-
