@@ -253,7 +253,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     protected Map<String, Object> createRefuseResp(Map<String, Object> reqMsg) {
         Map<String, Object> ret = new HashMap<>();
         ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
-        ret.put(PlatConstant.PARAMETER.RSPMSG, "服务器切换中，拒绝交易");
+        ret.put(PlatConstant.PARAMETER.RSPMSG, "系统发布中，请稍后再试");
         ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
         ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
         ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
