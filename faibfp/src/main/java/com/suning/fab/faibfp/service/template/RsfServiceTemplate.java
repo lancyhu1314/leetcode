@@ -47,6 +47,15 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         try {
             // 设置交易码
             ThreadLocalUtil.set(PlatConstant.PARAMETER.TRANCODE, this.getTranCode());
+
+            // 2023-05-25 移山计划，服务器切换过程会停机，根据配置拒绝请求
+            String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.REFUSED_CODES);
+            if (Arrays.asList(value.split(",")).contains(this.getTranCode())) {
+                ret = createRefuseResp(reqMsg);
+                LoggerUtil.info("scm配置的交易码【{}】拒绝请求", this.getTranCode());
+                return ret;
+            }
+
             ret = dataDistribute(reqMsg, startInterval);
         } catch (Exception e) {
             Pair<String, String> pair = LoggerUtil.logException((String) reqMsg.get("serialNo")
@@ -122,7 +131,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             if (isOpenAcctTranCode(getTranCode())) {
                 //登记新增借据号，且状态为已迁移
                 //DONE 借据号更换了产品代码，怎么处理 ——一般不会出现，不考虑这种情况
-                if ( null == transferRelation) {
+                if (null == transferRelation) {
                     transferHandler.save(receiptNo, ConstVar.TRANSFERSTATUS.END_TRANSFER, 0);
                 } else {
                     transferHandler.update(receiptNo, ConstVar.TRANSFERSTATUS.END_TRANSFER, 0);
@@ -132,11 +141,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
             } else {
                 //其他trancode，查询借据号状态
                 //如果已迁移，走新模型
-                if (transferRelation !=null && ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
+                if (transferRelation != null && ConstVar.TRANSFERSTATUS.END_TRANSFER.equals(transferRelation.getStatus())) {
                     toNewFlag = true;
                 }
                 //如果迁移中，抛出异常
-                else if (transferRelation !=null && ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
+                else if (transferRelation != null && ConstVar.TRANSFERSTATUS.TRANSFERING.equals(transferRelation.getStatus())) {
                     ret = createRefuseResp(reqMsg);
                     LoggerUtil.info("新老模型切换中，前置拒绝产品：【{}】的交易。", productCode);
                     return ret;
@@ -166,7 +175,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         //产品走老系统，且产品下的借据号也是走老系统
         //479001/479010 接口，总是走老系统
         if ((isCallOldSystem(productCode) && !toNewFlag)
-                || Arrays.asList("479001","479010").contains(getTranCode()) ) {
+                || Arrays.asList("479001", "479010").contains(getTranCode())) {
             if (Arrays.asList("479001", "479010").contains(getTranCode())) {
                 reqMsg.put("sysPrdCode", null);
             }
@@ -244,7 +253,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     protected Map<String, Object> createRefuseResp(Map<String, Object> reqMsg) {
         Map<String, Object> ret = new HashMap<>();
         ret.put(PlatConstant.PARAMETER.RSPCODE, "999999");
-        ret.put(PlatConstant.PARAMETER.RSPMSG, "新老模型切换中，拒绝交易");
+        ret.put(PlatConstant.PARAMETER.RSPMSG, "服务器切换中，拒绝交易");
         ret.put(PlatConstant.PARAMETER.SERIALNO, reqMsg.get("serialNo"));
         ret.put(PlatConstant.PARAMETER.SERSEQNO, "");
         ret.put(PlatConstant.PARAMETER.TRANDATE, DateUtils.dateToString(new Date()));
@@ -341,6 +350,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
     /**
      * 根据产品判断调用新系统还是老系统
      * 返回true-老系统 false-新模型
+     *
      * @param productCode
      * @return
      */
@@ -349,9 +359,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.PRODUCT_CODES);
         return VarChecker.isEmpty(value) || !Arrays.asList(value.split(",")).contains(productCode);
     }
+
     /**
      * 根据产品判断是否是本次迁移产品
-     *  返回true-本次迁移 false-非本次迁移
+     * 返回true-本次迁移 false-非本次迁移
+     *
      * @param productCode
      * @return
      */
@@ -360,6 +372,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
         String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.REALTIME_PRD);
         return !VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(productCode);
     }
+
     /**
      * 判断是否为C系统的老数据
      *
@@ -442,11 +455,11 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
                 String tranCode = ScmDynaGetterUtil.getValue("MigratedProducts.properties", "settleTranCode");
                 if (!VarChecker.isEmpty(tranCode) && Arrays.asList(tranCode.split(",")).contains(getTranCode())) {
                     agent = ServiceAgentHelper.getAgent("479002");
-                    param.put("repayDate",ctx.getTranDate());
-                    param.put("settleBill","1");
+                    param.put("repayDate", ctx.getTranDate());
+                    param.put("settleBill", "1");
                     result = (Map<String, Object>) agent.invoke("execute", new Object[]{param}, new Class[]{Map.class});
-                    if( !"000000".equals(result.get("rspCode")))
-                        throw new FabException("MUL004","结息异常");
+                    if (!"000000".equals(result.get("rspCode")))
+                        throw new FabException("MUL004", "结息异常");
                 }
                 // 2022-07-13 enddate
 

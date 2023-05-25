@@ -34,6 +34,7 @@ public class ConstVar {
 
     public static final class KEYNAME {
 
+        public static final String REFUSED_CODES = "refusedCodes";
         public static final String PRODUCT_CODES = "productCodes";
         public static final String REALTIME_PRD = "realTimePrd";
 
@@ -82,7 +83,7 @@ public class ConstVar {
         }
     }
 
-    public static final class ROUTETYPE{
+    public static final class ROUTETYPE {
 
         /**
          * 贷款账号
@@ -93,10 +94,11 @@ public class ConstVar {
          */
         public static final String SERSEQNO = "1";
 
-        private ROUTETYPE(){}
+        private ROUTETYPE() {
+        }
     }
 
-    public static final class TRANSFERSTATUS{
+    public static final class TRANSFERSTATUS {
 
         /**
          * 未迁移
@@ -115,7 +117,8 @@ public class ConstVar {
          */
         public static final String END_TRANSFER = "4";
 
-        private TRANSFERSTATUS(){}
+        private TRANSFERSTATUS() {
+        }
     }
 
     private ConstVar() {
