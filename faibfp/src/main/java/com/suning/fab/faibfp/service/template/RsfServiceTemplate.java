@@ -50,7 +50,7 @@ public abstract class RsfServiceTemplate extends ServiceTemplate {
 
             // 2023-05-25 移山计划，服务器切换过程会停机，根据配置拒绝请求
             String value = ScmDynaGetterUtil.getValue(ConstVar.SCMFILENAME.MIGRATED_PRODUCTS, ConstVar.KEYNAME.REFUSED_CODES);
-            if (Arrays.asList(value.split(",")).contains(this.getTranCode())) {
+            if (!VarChecker.isEmpty(value) && Arrays.asList(value.split(",")).contains(this.getTranCode())) {
                 ret = createRefuseResp(reqMsg);
                 LoggerUtil.info("scm配置的交易码【{}】拒绝请求", this.getTranCode());
                 return ret;
