@@ -1,0 +1,7 @@
+#metadata.broker.list这个参数不要随意运行过程中修改！不允许一个topic对应多个metadata.broker.list！metadata.broker.list作为json的key要唯一！
+#json格式：{"metadata.broker.list":"topic，英文逗号分隔多个topic"}
+#jsonTopicBrokers={"10.27.189.25:9092,10.27.189.26:9092,10.27.189.27:9093":"faepp_acct_list,faacc_uniform_account,faepp_data_transmission"}
+jsonTopicBrokers={"kafkasit02broker01.cnsuning.com:9092,kafkasit02broker02.cnsuning.com:9092,kafkasit02broker03.cnsuning.com:9092":"faacc_uniform_account"}
+serializer.class=kafka.serializer.StringEncoder
+producer.type=async
+queue.enqueue.timeout.ms=0

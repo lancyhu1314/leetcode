@@ -1,0 +1,8 @@
+#限流等待超时，单位毫秒，可动态修改
+TryAcquireTimeout=0
+#异步服务线程池大小，可动态修改
+ThreadPoolMaxSize=2
+#异步服务线程池的缓冲队列长度，不可修改，只有服务重启方生效
+ThreadPoolBlockQueueSize=200
+#是否发送kafka消息的开关：no -- 不发送kafka消息；yes -- 发送kafka消息；
+SendKafka=no
