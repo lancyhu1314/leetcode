@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map473006" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns203</class-b>
+	</mapping>
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp473006</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns105.customName</a>
+			<b key="customName">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns105.oldrepayacct</a>
+			<b key="repayAcctNo">this</b>
+		</field>
+ 		<field>
+			<a is-accessible="true">lns105.receiptNo</a>
+			<b key="acctNo">this</b>
+		</field>
+	</mapping>
+</mappings>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map51" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns501</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map53" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns503</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map54" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map412" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns412</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>
+	
+	<mapping wildcard="false" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470008</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns412.intAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.forfeitAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.endFlag</a>
+			<b key="endFlag">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.refundIntAmt</a>
+			<b key="refundIntAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.refundPrinAmt</a>
+			<b key="refundPrinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns412.refundForfeitAmt</a>
+			<b key="refundForfeitAmt">this</b>
+		</field>
+	</mapping>
+</mappings>

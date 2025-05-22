@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping wildcard="false" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470006</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns450.lastIncome</a>
+			<b key="lastIncome">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.totalIncome</a>
+			<b key="totalIncome">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.totalInt</a>
+			<b key="totalInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.totalDint</a>
+			<b key="totalDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.vestingday</a>
+			<b key="vestingday">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.settleFlag</a>
+			<b key="settleFlag">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.sumPenalty</a>
+			<b key="sumPenalty">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.sumdelFint</a>
+			<b key="sumdelFint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns450.sumdelInt</a>
+			<b key="sumdelInt">this</b>
+		</field>
+	</mapping>
+</mappings>

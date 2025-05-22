@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping wildcard="false" type="one-way">
+        <class-a>com.suning.fab.loan.service.Tp161003</class-a>
+        <class-b>java.util.Map</class-b>
+        <field>
+            <a is-accessible="true">lns273.feeBusiNo</a>
+            <b key="feeBusiNo">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns273.feeBusiType</a>
+            <b key="feeBusiType">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns273.accumRepayAmt</a>
+            <b key="accumRepayAmt">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns273.repayAmt</a>
+            <b key="repayAmt">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns273.noPayAmt</a>
+            <b key="noPayAmt">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns273.status</a>
+            <b key="status">this</b>
+        </field>
+    </mapping>
+</mappings>

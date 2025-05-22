@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping wildcard="false" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470009</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns400.cleanPrin</a>
+			<b key="cleanPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.cleanInt</a>
+			<b key="cleanInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.intAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.cleanForfeit</a>
+			<b key="cleanForfeit">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.forfeitAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.cleanFeeAmt</a>
+			<b key="cleanFeeAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.feeAmt</a>
+			<b key="feeAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.penaltyAmt</a>
+			<b key="penaltyAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.overPrin</a>
+			<b key="overPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.overInt</a>
+			<b key="overInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns400.cleanForfeit</a>
+			<b key="overDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.overFee</a>
+			<b key="overFee">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns440.cleanFee</a>
+			<b key="cleanFee">this</b>
+		</field>
+		<!--逾期本金和利息-->
+		<field>
+			<a is-accessible="true">lns439.exceedInt</a>
+			<b key="exceedInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns439.exceedPrin</a>
+			<b key="exceedPrin">this</b>
+		</field>
+	</mapping>
+</mappings>

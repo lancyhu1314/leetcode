@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map400" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns400</class-b>
+	</mapping>
+	<mapping wildcard="false" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470010</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">cleanPrin</a>
+			<b key="cleanPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">cleanInt</a>
+			<b key="cleanInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">intAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">cleanForfeit</a>
+			<b key="cleanForfeit">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">forfeitAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.cleanForfee</a>
+			<b key="cleanForfee">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.forfeetAmt</a>
+			<b key="forfeetAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.cleanDamages</a>
+			<b key="cleanDamages">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.damagesAmt</a>
+			<b key="damagesAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.overFee</a>
+			<b key="overFee">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.overDamages</a>
+			<b key="overDamages">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.overPrin</a>
+			<b key="overPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.overInt</a>
+			<b key="overInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns434.overDint</a>
+			<b key="overDint">this</b>
+		</field>
+	</mapping>
+</mappings>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map507_01" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns507</class-b>
+	</mapping>
+		<mapping map-null="false" map-id="map503_02" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns503</class-b>
+	</mapping>
+	
+	<mapping map-null="false" map-id="map504_02" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns507</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+		<field>
+			<a>acctNo</a>
+			<b>acctNo</b>
+		</field>
+		
+	</mapping>
+	<mapping map-null="false" map-id="map2301" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns507</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns230</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map501_02" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+		<field>
+			<a>acctNo</a>
+			<b>acctNo</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map2351" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns235</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+		<field>
+			<a>acctNo</a>
+			<b>acctNo</b>
+		</field>
+	</mapping>
+</mappings>

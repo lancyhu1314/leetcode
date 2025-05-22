@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map5017" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns501</class-b>
+	</mapping>
+		<mapping map-null="false" map-id="map507" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns507</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map5039" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns503</class-b>
+	</mapping>
+
+	<mapping map-null="false" map-id="map5049" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns507</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+		<field>
+			<a>acctNo</a>
+			<b>acctNo</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map50491" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+		<field>
+			<a>acctNo</a>
+			<b>acctNo</b>
+		</field>
+	</mapping>	
+	<mapping map-null="false" map-id="map229" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns507</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns229</class-b>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>lnsBillStatistics</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map244" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns507</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns244</class-b>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>
+	<mapping map-null="false" map-id="map2291" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns231</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map2129" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns212</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map506" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns506</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map471009" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns107</class-b>
+	</mapping>
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp471009</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">nintAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">dintAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">endFlag</a>
+			<b key="endFlag">this</b>
+		</field>		
+	</mapping>
+
+</mappings>
