@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dftScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerName" value="Scheduler_DTF_Server"/>
+    </bean>
+
+    <bean id="dtfJobManager" class="com.suning.dtf.server.job.internal.QuartzJobManager">
+        <constructor-arg name="scheduler" ref="dftScheduler"/>
+        <constructor-arg name="jobDefineArr">
+            <array>
+                <value>TccTransactionCompensationJob|0 * * * * ?</value>
+                <value>TransferDataToHistoryJob|0 0/10 * * * ?</value>
+                <!--<value>TccTransactionLogBackupJob|0 0 0/1 * * ?</value>-->
+                <value>BusinessInfoClearJob|0 * * * * ?</value>
+                <value>ServerNodeReportJob|0 * * * * ?</value>
+                <value>ManualTransactionLogJob|0 0/15 * * * ?</value>
+                <!-- <value>DataTakeoverJob|0 */1 * * * ?</value>-->
+            </array>
+        </constructor-arg>
+        <!--scm 配置文件名称 -->
+        <constructor-arg name="scmNodePath" value="dtfJob.config"/>
+    </bean>
+</beans>

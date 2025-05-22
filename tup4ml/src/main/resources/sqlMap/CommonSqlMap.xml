@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TUPCOMMONCUSTOM">
+	<insert id="protoInsert" parameterType="map">
+		insert into ProtoReg
+		(userno, serseqno, trandate, hops, serialno, request, response, createtime, updatetime) values
+		(#{userno, jdbcType=VARCHAR}, #{serseqno, jdbcType=VARCHAR},
+		#{trandate, jdbcType=DATE}, #{hops, jdbcType=INTEGER}, #{serialno, jdbcType=VARCHAR},
+		#{request, javaType=com.suning.fab.model.common.AbstractDatagram, jdbcType=VARCHAR}, 
+		#{response, javaType=com.suning.fab.model.common.AbstractDatagram, jdbcType=VARCHAR}, 
+		CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+	</insert>
+	<!-- <update id="protoUpdate" parameterType="map">
+		update ProtoReg
+		set response = #{response, javaType=com.suning.fab.model.common.AbstractDatagram, jdbcType=VARCHAR},
+		updatetime = CURRENT_TIMESTAMP where trandate = #{trandate, jdbcType=DATE}
+		and hops = #{hops, jdbcType=INTEGER} and  serseqno = #{serseqno, jdbcType=VARCHAR} and userno = #{userno, jdbcType=VARCHAR} 
+	</update> -->
+	<insert id="idempotencyInsert" parameterType="map">
+		insert into
+		IdempotencyCtrl (userno, serseqno, trandate, hashcode) values
+		(#{userno, jdbcType=VARCHAR}, #{serseqno, jdbcType=VARCHAR},
+		#{trandate, jdbcType=DATE}, #{hashcode, jdbcType=VARCHAR})
+	</insert>
+	<select id="idempotencySelect" resultType="map" parameterType="map">
+		select serseqno, trandate from IdempotencyCtrl where 
+			hashcode = #{hashcode, jdbcType=VARCHAR}
+		and
+		   userno = #{userno, jdbcType=VARCHAR} 
+ 	</select>
+</mapper>
