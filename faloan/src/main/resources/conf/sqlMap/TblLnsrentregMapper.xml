@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsrentreg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSRENTREG
+      where ACCDATE = :accdate
+        and SERSEQNO = :serseqno
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSRENTREG (ACCDATE, SERSEQNO, TRANDATE, SERIALNO, ACCTNO, REQMAP, RSQMAP, TIMESTAMP, 
+        BRC)
+      values (:accdate, :serseqno, :trandate, :serialno, :acctno, :reqmap, :rsqmap, current timestamp, 
+        :brc)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSRENTREG
+      set TRANDATE = :trandate,
+        SERIALNO = :serialno,
+        ACCTNO = :acctno,
+        REQMAP = :reqmap,
+        RSQMAP = :rsqmap,
+        TIMESTAMP = current timestamp,
+        BRC = :brc
+      where ACCDATE = :accdate
+        and SERSEQNO = :serseqno
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCDATE, SERSEQNO, TRANDATE, SERIALNO, ACCTNO, REQMAP, RSQMAP, TIMESTAMP, 
+      BRC
+      from LNSRENTREG
+      where ACCDATE = :accdate
+        and SERSEQNO = :serseqno
+    ]]>
+  </sql>
+</sqlMap>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnspenintprovreg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPENINTPROVREG
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPENINTPROVREG (RECEIPTNO, BRC, BILLTYPE, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, BEGINDATE, 
+        ENDDATE, TIMESTAMP, TOTALLIST, RESERV1, RESERV2)
+      values (:receiptno, :brc, :billtype, :ccy, :taxrate, :totalinterest, :totaltax, :begindate, 
+        :enddate, current timestamp, :totallist, :reserv1, :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPENINTPROVREG
+      set CCY = :ccy,
+        TAXRATE = :taxrate,
+        TOTALINTEREST = :totalinterest,
+        TOTALTAX = :totaltax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        TOTALLIST = :totallist,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select RECEIPTNO, BRC, BILLTYPE, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, BEGINDATE, 
+      ENDDATE, TIMESTAMP, TOTALLIST, RESERV1, RESERV2
+      from LNSPENINTPROVREG
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+
+  <sql id="updateDTFD">
+    <![CDATA[
+      update LNSPENINTPROVREG
+      set
+        TOTALINTEREST = :totalinterest,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        TOTALLIST = :totallist
+
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+  <sql id="updateTotalDTFD">
+    <![CDATA[
+      update LNSPENINTPROVREG
+      set
+        TOTALINTEREST = :totalinterest,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        TOTALLIST = :totallist
+
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+  <sql id="updateADTFD">
+    <!--更新封顶标志时 不更新最后日期，不影响下次封顶金额的计算  ,
+        enddate = :enddate-->
+    <![CDATA[
+     update LNSPENINTPROVREG
+      set
+        TIMESTAMP = current timestamp,
+        reserv1 = 'A'
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = 'DTFD'
+        and reserv1 != 'A'
+    ]]>
+  </sql>
+
+  <!--更新不需要封顶-->
+  <sql id="updateBDTFD">
+    <![CDATA[
+     update LNSPENINTPROVREG
+      set
+        TIMESTAMP = current timestamp,
+        reserv2 = concat(trim(reserv2),'B')
+        where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = 'DTFD'
+        and reserv1 = 'A'
+    ]]>
+  </sql>
+  
+   <!--更新特殊封顶标识-->
+  <sql id="updateTSFD">
+    <![CDATA[
+     update LNSPENINTPROVREG
+      set
+        TIMESTAMP = current timestamp,
+        reserv2 = :reserv2
+        where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+  
+     <!--更新封顶金额-->
+  <sql id="updateFDJE">
+    <![CDATA[
+     update LNSPENINTPROVREG
+      set
+      	TOTALTAX = :fdaddamt,
+      	TOTALINTEREST = TOTALINTEREST + :fdaddamt,
+        TIMESTAMP = current timestamp
+        where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+
+</sqlMap>

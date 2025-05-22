@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsprovisiondtl">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPROVISIONDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+<!--根据账户进行删除-->
+  <sql id="deleteByAcctno">
+    <![CDATA[
+      delete from LNSPROVISIONDTL
+      where BRC = :brc
+        and ACCTNO = :acctno
+    ]]>
+  </sql>
+
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPROVISIONDTL (TRANDATE, SERSEQNO, TXNSEQ, ACCTNO, BRC, CHILDBRC, CCY, PERIOD, BILLTYPE, 
+        INTERTYPE, TAXRATE, INTEREST, TAX, TOTALINTEREST, TOTALTAX, BEGINDATE, ENDDATE, 
+        IRR, INTERFLAG, CANCELFLAG, LISTNO, TIMESTAMP, RESERV1, RESERV2)
+      values (:trandate, :serseqno, :txnseq, :acctno, :brc, :childbrc, :ccy, :period, :billtype, 
+        :intertype, :taxrate, :interest, :tax, :totalinterest, :totaltax, :begindate, :enddate, 
+        :irr, :interflag, :cancelflag, :listno, current timestamp, :reserv1, :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPROVISIONDTL
+      set ACCTNO = :acctno,
+        BRC = :brc,
+        CHILDBRC = :childbrc,
+        CCY = :ccy,
+        PERIOD = :period,
+        BILLTYPE = :billtype,
+        INTERTYPE = :intertype,
+        TAXRATE = :taxrate,
+        INTEREST = :interest,
+        TAX = :tax,
+        TOTALINTEREST = :totalinterest,
+        TOTALTAX = :totaltax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        IRR = :irr,
+        INTERFLAG = :interflag,
+        CANCELFLAG = :cancelflag,
+        LISTNO = :listno,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select TRANDATE, SERSEQNO, TXNSEQ, ACCTNO, BRC, CHILDBRC, CCY, PERIOD, BILLTYPE, 
+      INTERTYPE, TAXRATE, INTEREST, TAX, TOTALINTEREST, TOTALTAX, BEGINDATE, ENDDATE, IRR, 
+      INTERFLAG, CANCELFLAG, LISTNO, TIMESTAMP, RESERV1, RESERV2
+      from LNSPROVISIONDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+
+  <!--获取当前明细的最大序号-->
+  <sql id="selectCurrentMaxNumber">
+    <![CDATA[
+      select max(txnseq) as maxline
+      from LNSPROVISIONDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+    ]]>
+  </sql>
+
+  <sql id="select_all">
+    <![CDATA[
+      select * from LNSPROVISIONDTL
+      where BRC = :brc and
+      acctno = :receiptno
+    ]]>
+  </sql>
+
+  <!--查找新的明细最后一条数据-->
+  <sql id="query_lnsprovision_lastperiod">
+    SELECT acctno, INTERTYPE, PERIOD, TRANDATE, SERSEQNO, TXNSEQ, BRC, BILLTYPE,
+    CCY, TOTALINTEREST, TOTALTAX, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, INTERFLAG,
+    CANCELFLAG, TIMESTAMP, RESERV1, RESERV2
+    FROM lnsprovisiondtl
+    WHERE
+    brc=:brc
+    AND  acctno = :receiptno
+    AND billtype=:billtype
+    AND INTERTYPE = :intertype
+    AND listno = (SELECT max(listno) FROM lnsprovisiondtl
+    WHERE
+    brc=:brc
+    AND  acctno = :receiptno
+    AND billtype=:billtype
+    AND INTERTYPE = :intertype)
+  </sql>
+</sqlMap>

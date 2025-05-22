@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Penintprovregdtl">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from PENINTPROVREGDTL
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into PENINTPROVREGDTL (RECEIPTNO, BRC, TXNSEQ, TRANDATE, SERSEQNO, CCY, PERIOD, LISTNO, 
+        BILLTYPE, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, TIMESTAMP, 
+        RESERV1, RESERV2)
+      values (:receiptno, :brc, :txnseq, :trandate, :serseqno, :ccy, :period, :listno, 
+        :billtype, :taxrate, :interest, :tax, :begindate, :enddate, current timestamp, 
+        :reserv1, :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update PENINTPROVREGDTL
+      set TRANDATE = :trandate,
+        SERSEQNO = :serseqno,
+        CCY = :ccy,
+        PERIOD = :period,
+        LISTNO = :listno,
+        BILLTYPE = :billtype,
+        TAXRATE = :taxrate,
+        INTEREST = :interest,
+        TAX = :tax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select RECEIPTNO, BRC, TXNSEQ, TRANDATE, SERSEQNO, CCY, PERIOD, LISTNO, BILLTYPE, 
+      TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, TIMESTAMP, RESERV1, RESERV2
+      from PENINTPROVREGDTL
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+</sqlMap>

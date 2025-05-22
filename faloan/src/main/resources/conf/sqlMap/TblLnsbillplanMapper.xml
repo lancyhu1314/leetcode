@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbillplan">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSBILLPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+        and PERIOD = :period
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSBILLPLAN (ACCTNO, BRC, BILLTYPE, PERIOD, TRANDATE, SERSEQNO, TXSEQ, BILLAMT, 
+        PRINBAL, BEGINDATE, ENDDATE, REPAYEDATE, TIMESTAMP)
+      values (:acctno, :brc, :billtype, :period, :trandate, :serseqno, :txseq, :billamt, 
+        :prinbal, :begindate, :enddate, :repayedate, current timestamp)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSBILLPLAN
+      set TRANDATE = :trandate,
+        SERSEQNO = :serseqno,
+        TXSEQ = :txseq,
+        BILLAMT = :billamt,
+        PRINBAL = :prinbal,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        REPAYEDATE = :repayedate,
+        TIMESTAMP = current timestamp
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+        and PERIOD = :period
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, BRC, BILLTYPE, PERIOD, TRANDATE, SERSEQNO, TXSEQ, BILLAMT, PRINBAL, 
+      BEGINDATE, ENDDATE, REPAYEDATE, TIMESTAMP
+      from LNSBILLPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+        and PERIOD = :period
+    ]]>
+  </sql>
+</sqlMap>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbasicinfoback">
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSBASICINFOBACK (OPENBRC, ACCTNO, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, PRDCODE, 
+        FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, LOANSTAT, 
+        PROFITBRC, ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, PRINPERFORMULA, 
+        PRINFORMULA, LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, PRINTERMS, 
+        INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, 
+        OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, 
+        BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, 
+        OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG, 
+        MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, 
+        TRANDATE, RESERV1, RESERVAMT1)
+      values (:openbrc, :acctno, :acctype, :ccy, :custtype, :customid, :name, :prdcode, 
+        :flag1, :prinmindays, :intmindays, :iscalint, :repayway, :loantype1, :loanstat, 
+        :profitbrc, :acctno1, :firstprindate, :firstintdate, :firstintflag, :prinperformula, 
+        :prinformula, :lastprindate, :intperformula, :intformula, :lastintdate, :printerms, 
+        :intterms, :curprinterm, :curintterm, :oldprinterm, :oldintterm, :contractbal, 
+        :opendate, :beginintdate, :gracedays, :contduedate, :intenddate, :extnums, :intrateplan, 
+        :bjtxbl, :txacctno, :diacct, :investee, :investmode, :channeltype, :fundchannel, 
+        :outserialno, :contrasctno, :contractamt, :openfee, :deductionamt, :provisionflag, 
+        :memo, :normalrate, :overduerate, :overduerate1, :modifydate, current timestamp, 
+        :trandate, :reserv1, :reservamt1)
+    ]]>
+  </sql>
+</sqlMap>

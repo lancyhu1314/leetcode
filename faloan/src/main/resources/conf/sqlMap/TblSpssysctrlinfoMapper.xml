@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Spssysctrlinfo">
+  <sql id="insert">
+    <![CDATA[
+      insert into SPSSYSCTRLINFO (BRANCHNO, SYSSTATUS, TRANDATE, PREDATE, NEXTDATE, ACCDATE, YEARSUMDATE, 
+        POSCCY, POTCCY, TESTINFOLEVEL, FLAG)
+      values (:branchno, :sysstatus, :trandate, :predate, :nextdate, :accdate, :yearsumdate, 
+        :posccy, :potccy, :testinfolevel, :flag)
+    ]]>
+  </sql>
+</sqlMap>

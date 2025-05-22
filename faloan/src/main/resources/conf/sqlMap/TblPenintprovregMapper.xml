@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Penintprovreg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from PENINTPROVREG
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into PENINTPROVREG (RECEIPTNO, BRC, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, BEGINDATE, 
+        ENDDATE, TIMESTAMP, TOTALLIST, RESERV1, RESERV2)
+      values (:receiptno, :brc, :ccy, :taxrate, :totalinterest, :totaltax, :begindate, 
+        :enddate, current timestamp, :totallist, :reserv1, :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update PENINTPROVREG
+      set CCY = :ccy,
+        TAXRATE = :taxrate,
+        TOTALINTEREST = :totalinterest,
+        TOTALTAX = :totaltax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        TOTALLIST = :totallist,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select RECEIPTNO, BRC, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, BEGINDATE, ENDDATE, 
+      TIMESTAMP, TOTALLIST, RESERV1, RESERV2
+      from PENINTPROVREG
+      where RECEIPTNO = :acctno
+        and BRC = :openbrc
+    ]]>
+  </sql>
+</sqlMap>

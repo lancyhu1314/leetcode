@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbasicinfo">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSBASICINFO
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSBASICINFO (ACCTNO, OPENBRC, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, PRDCODE, 
+        FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, LOANSTAT, 
+        PROFITBRC, ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, PRINPERFORMULA, 
+        PRINFORMULA, LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, PRINTERMS, 
+        INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, 
+        OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, 
+        BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, 
+        OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG, 
+        MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, 
+        TRANDATE, RESERV1, RESERVAMT1)
+      values (:acctno, :openbrc, :acctype, :ccy, :custtype, :customid, :name, :prdcode, 
+        :flag1, :prinmindays, :intmindays, :iscalint, :repayway, :loantype1, :loanstat, 
+        :profitbrc, :acctno1, :firstprindate, :firstintdate, :firstintflag, :prinperformula, 
+        :prinformula, :lastprindate, :intperformula, :intformula, :lastintdate, :printerms, 
+        :intterms, :curprinterm, :curintterm, :oldprinterm, :oldintterm, :contractbal, 
+        :opendate, :beginintdate, :gracedays, :contduedate, :intenddate, :extnums, :intrateplan, 
+        :bjtxbl, :txacctno, :diacct, :investee, :investmode, :channeltype, :fundchannel, 
+        :outserialno, :contrasctno, :contractamt, :openfee, :deductionamt, :provisionflag, 
+        :memo, :normalrate, :overduerate, :overduerate1, :modifydate, current timestamp, 
+        :trandate, :reserv1, :reservamt1)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSBASICINFO
+      set ACCTYPE = :acctype,
+        CCY = :ccy,
+        CUSTTYPE = :custtype,
+        CUSTOMID = :customid,
+        NAME = :name,
+        PRDCODE = :prdcode,
+        FLAG1 = :flag1,
+        PRINMINDAYS = :prinmindays,
+        INTMINDAYS = :intmindays,
+        ISCALINT = :iscalint,
+        REPAYWAY = :repayway,
+        LOANTYPE1 = :loantype1,
+        LOANSTAT = :loanstat,
+        PROFITBRC = :profitbrc,
+        ACCTNO1 = :acctno1,
+        FIRSTPRINDATE = :firstprindate,
+        FIRSTINTDATE = :firstintdate,
+        FIRSTINTFLAG = :firstintflag,
+        PRINPERFORMULA = :prinperformula,
+        PRINFORMULA = :prinformula,
+        LASTPRINDATE = :lastprindate,
+        INTPERFORMULA = :intperformula,
+        INTFORMULA = :intformula,
+        LASTINTDATE = :lastintdate,
+        PRINTERMS = :printerms,
+        INTTERMS = :intterms,
+        CURPRINTERM = :curprinterm,
+        CURINTTERM = :curintterm,
+        OLDPRINTERM = :oldprinterm,
+        OLDINTTERM = :oldintterm,
+        CONTRACTBAL = :contractbal,
+        OPENDATE = :opendate,
+        BEGININTDATE = :beginintdate,
+        GRACEDAYS = :gracedays,
+        CONTDUEDATE = :contduedate,
+        INTENDDATE = :intenddate,
+        EXTNUMS = :extnums,
+        INTRATEPLAN = :intrateplan,
+        BJTXBL = :bjtxbl,
+        TXACCTNO = :txacctno,
+        DIACCT = :diacct,
+        INVESTEE = :investee,
+        INVESTMODE = :investmode,
+        CHANNELTYPE = :channeltype,
+        FUNDCHANNEL = :fundchannel,
+        OUTSERIALNO = :outserialno,
+        CONTRASCTNO = :contrasctno,
+        CONTRACTAMT = :contractamt,
+        OPENFEE = :openfee,
+        DEDUCTIONAMT = :deductionamt,
+        PROVISIONFLAG = :provisionflag,
+        MEMO = :memo,
+        NORMALRATE = :normalrate,
+        OVERDUERATE = :overduerate,
+        OVERDUERATE1 = :overduerate1,
+        MODIFYDATE = :modifydate,
+        MODIFYTIME = current timestamp,
+        TRANDATE = :trandate,
+        RESERV1 = :reserv1,
+        RESERVAMT1 = :reservamt1
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+  <![CDATA[
+      select ACCTNO, OPENBRC, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, PRDCODE, FLAG1, PRINMINDAYS,
+      INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, LOANSTAT, PROFITBRC, ACCTNO1, FIRSTPRINDATE,
+      FIRSTINTDATE, FIRSTINTFLAG, PRINPERFORMULA, PRINFORMULA, LASTPRINDATE, INTPERFORMULA,
+      INTFORMULA, LASTINTDATE, PRINTERMS, INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM,
+      OLDINTTERM, CONTRACTBAL, OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE,
+      EXTNUMS, INTRATEPLAN, BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE,
+      FUNDCHANNEL, OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG,
+      MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, TRANDATE, RESERV1,
+      RESERVAMT1
+      from LNSBASICINFO
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+</sql>
+  <sql id="update_formula">
+  <![CDATA[
+      update LNSBASICINFO
+      set prinperformula = :prinperformula
+      <#if intperformula?exists && intperformula != "">
+				,intperformula=:intperformula
+			   </#if>, MODIFYTIME = current timestamp
+      where OPENBRC = :openbrc
+       and ACCTNO = :acctno
+
+    ]]>
+</sql>
+  <sql id="update_repayPrinDate">
+    <![CDATA[
+      update LNSBASICINFO
+      set lastprindate = :lastprindate
+      <#if lastintdate?exists && lastintdate != "">
+				,lastintdate=:lastintdate
+			   </#if>, MODIFYTIME = current timestamp
+      where OPENBRC = :openbrc
+       and ACCTNO = :acctno
+
+    ]]>
+  </sql>
+  <sql id="update_term">
+    <![CDATA[
+      update LNSBASICINFO
+      set curintterm = :term,
+      curprinterm = :term
+
+      where OPENBRC = :openbrc
+       and ACCTNO = :acctno
+
+    ]]>
+  </sql>
+  <sql id="update_contduedate">
+    <![CDATA[
+      update LNSBASICINFO
+      set contduedate = :contduedate , MODIFYTIME = current timestamp
+      where OPENBRC = :openbrc
+       and ACCTNO = :acctno
+
+    ]]>
+  </sql>
+</sqlMap>

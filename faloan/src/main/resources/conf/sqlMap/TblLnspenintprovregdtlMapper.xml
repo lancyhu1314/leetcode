@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnspenintprovregdtl">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPENINTPROVREGDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPENINTPROVREGDTL (TRANDATE, SERSEQNO, TXNSEQ, RECEIPTNO, BRC, CCY, PERIOD, LISTNO, 
+        BILLTYPE, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, TIMESTAMP, 
+        RESERV1, RESERV2)
+      values (:trandate, :serseqno, :txnseq, :receiptno, :brc, :ccy, :period, :listno, 
+        :billtype, :taxrate, :interest, :tax, :begindate, :enddate, current timestamp, 
+        :reserv1, :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPENINTPROVREGDTL
+      set RECEIPTNO = :receiptno,
+        BRC = :brc,
+        CCY = :ccy,
+        PERIOD = :period,
+        LISTNO = :listno,
+        BILLTYPE = :billtype,
+        TAXRATE = :taxrate,
+        INTEREST = :interest,
+        TAX = :tax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select TRANDATE, SERSEQNO, TXNSEQ, RECEIPTNO, BRC, CCY, PERIOD, LISTNO, BILLTYPE, 
+      TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, TIMESTAMP, RESERV1, RESERV2
+      from LNSPENINTPROVREGDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectMaxTrandate">
+    <![CDATA[
+       select * from  LNSPENINTPROVREGDTL where  brc = :brc and RECEIPTNO = :receiptno and billtype in ('CINT','DINT','GINT') and
+       trandate = (select max(TRANDATE)  from LNSPENINTPROVREGDTL where  brc = :brc and RECEIPTNO = :receiptno and billtype in ('CINT','DINT','GINT')
+        <#if trandate?exists && trandate != "">
+			and trandate <= :trandate
+		</#if>
+        )
+    ]]>
+  </sql>
+  <sql id="selectTrandate">
+    <![CDATA[
+       select max(TRANDATE)  from LNSPENINTPROVREGDTL where  brc = :brc and RECEIPTNO = :receiptno and billtype in ('CINT','DINT','GINT')
+    ]]>
+  </sql>
+  <sql id="updateAByUk">
+    <![CDATA[
+      update LNSPENINTPROVREGDTL
+      set reserv2 = 'A',TIMESTAMP = current timestamp
+      where TRANDATE = :trandate
+      and receiptno = :receiptno
+      and billtype = 'DTFD'
+    ]]>
+  </sql>
+  <sql id="updateOff">
+    <![CDATA[
+      update   LNSPENINTPROVREGDTL set interest = 0.00 where  brc = :brc and RECEIPTNO = :receiptno and billtype in ('CINT','DINT','GINT') and
+                    trandate > :trandate
+    ]]>
+  </sql>
+</sqlMap>

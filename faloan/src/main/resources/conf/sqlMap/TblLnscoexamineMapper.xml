@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnscoexamine">
+
+    <sql id="insert">
+        <![CDATA[
+      insert into LNSCOEXAMINE (trandate, serialno, accdate, serseqno, brc, trancode, channelid, acctno, userno, employeeid, salesstore, flowchannel, terminalcode, bsno,contractcode, promotionid, fundingmodel, fundingid, undertake, undertakeid)
+values (:trandate, :serialno, :accdate, :serseqno, :brc, :trancode, :channelid, :acctno, :userno, :employeeid, :salesstore, :flowchannel, :terminalcode,:bsno, :contractcode, :promotionid, :fundingmodel, :fundingid, :undertake, :undertakeid)
+
+    ]]>
+    </sql>
+
+    <sql id="delete">
+        <![CDATA[
+      delete from LNSCOEXAMINE where ACCTNO = :acctno
+    ]]>
+    </sql>
+</sqlMap>

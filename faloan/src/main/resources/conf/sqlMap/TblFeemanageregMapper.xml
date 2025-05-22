@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Feemanagereg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from FEEMANAGEREG
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into FEEMANAGEREG (BRC, ACCTNO, REPAYTERM, REPAYOWNBDATE, REPAYOWNEDATE, REPAYINTBDATE, 
+        REPAYINTEDATE, TERMRETFEE, FEEAMT, NORETFEE, DAYS, CURRENTSTAT, SETTLEFLAG, 
+        TERMRETDATE, MODIFYDATE, MODIFYTIME, RESERVE1, RESERVE2)
+      values (:brc, :acctno, :repayterm, :repayownbdate, :repayownedate, :repayintbdate, 
+        :repayintedate, :termretfee, :feeamt, :noretfee, :days, :currentstat, :settleflag, 
+        :termretdate, :modifydate, current timestamp, :reserve1, :reserve2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update FEEMANAGEREG
+      set REPAYOWNBDATE = :repayownbdate,
+        REPAYOWNEDATE = :repayownedate,
+        REPAYINTBDATE = :repayintbdate,
+        REPAYINTEDATE = :repayintedate,
+        TERMRETFEE = :termretfee,
+        FEEAMT = :feeamt,
+        NORETFEE = :noretfee,
+        DAYS = :days,
+        CURRENTSTAT = :currentstat,
+        SETTLEFLAG = :settleflag,
+        TERMRETDATE = :termretdate,
+        MODIFYDATE = :modifydate,
+        MODIFYTIME = current timestamp,
+        RESERVE1 = :reserve1,
+        RESERVE2 = :reserve2
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select BRC, ACCTNO, REPAYTERM, REPAYOWNBDATE, REPAYOWNEDATE, REPAYINTBDATE, REPAYINTEDATE, 
+      TERMRETFEE, FEEAMT, NORETFEE, DAYS, CURRENTSTAT, SETTLEFLAG, TERMRETDATE, MODIFYDATE, 
+      MODIFYTIME, RESERVE1, RESERVE2
+      from FEEMANAGEREG
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="selectUnPayFee">
+    <![CDATA[
+        select * from feemanagereg where acctno = :acctno and settleflag = '01' order by REPAYTERM
+
+    ]]>
+  </sql>
+
+</sqlMap>

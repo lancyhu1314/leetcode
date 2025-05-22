@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsholiday">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSHOLIDAY
+      where HOLIDAYDATE = :holidaydate
+        and FESTIVAL = :festival
+        and WORKFLAG = :workflag
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSHOLIDAY (HOLIDAYDATE, FESTIVAL, WORKFLAG)
+      values (:holidaydate, :festival, :workflag)
+    ]]>
+  </sql>
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSHOLIDAY
+      where HOLIDAYDATE = :holidaydate
+        and FESTIVAL = :festival
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSHOLIDAY (HOLIDAYDATE, FESTIVAL, WORKFALG)
+      values (:holidaydate, :festival, :workfalg)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSHOLIDAY
+      set WORKFALG = :workfalg
+      where HOLIDAYDATE = :holidaydate
+        and FESTIVAL = :festival
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select HOLIDAYDATE, FESTIVAL, WORKFALG
+      from LNSHOLIDAY
+      where HOLIDAYDATE = :holidaydate
+        and FESTIVAL = :festival
+    ]]>
+  </sql>
+</sqlMap>

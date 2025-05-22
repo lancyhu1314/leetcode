@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="AccountingMode">
+    <sql id="lnswriteoffdetail_insert">
+        <![CDATA[
+        insert into LNSWRITEOFFDETAIL (TRANDATE, SERSEQNO, TXSEQNO,
+      BRC, ACCTNO, TRANCODE, EVENTCODE, BRIEFCODE,
+      TRANBRIEF, TRANAMT, DEBTCOMPANY,
+      CHANNELTYPE, FUNDCHANNEL, OUTSERIALNO,investeeId,
+      AMT1, AMT2, AMT3, RESERV1,
+      RESERV2, RESERVE, TIMESTAMP
+      )
+    values (:trandate,
+     :serseqno,
+      :txseqno,
+      :brc, 
+      :acctno, 
+      :trancode, 
+      :eventcode, 
+      :briefcode,
+      :tranbrief, 
+      :tranamt, 
+      :debtcompany,
+      :channeltype, 
+      :fundchannel, 
+      :outserialno,
+      :investeeId,
+      :amt1, 
+      :amt2, 
+      :amt3, 
+      :reserv1,
+      :reserv2, 
+      :reserve, 
+      char(CURRENT TIMESTAMP)
+      )
+    ]]>
+    </sql>
+    <sql id="lnstaxdetail_insert">
+        <![CDATA[
+      insert into LNSTAXDETAIL (TRANDATE, SERSEQNO, TXSEQNO,
+      BRC, ACCTNO, TRANAMT, TAX,
+      TAXRATE, TAXTYPE, INTERFLAG,
+      BILLTYPE, BILLSTATUS, BILLTRANDATE,
+      BILLSERSEQNO, BILLTXSEQ, RESERV1,
+      RESERV2, RESERVE, TIMESTAMP
+      )
+    values (:trandate, :serseqno, :txseqno,
+      :brc, :acctno, :tranamt, :tax,
+      :taxrate, :taxtype, :interflag,
+      :billtype, :billstatus, :billtrandate,
+      :billserseqno, :billtxseq, :reserv1,
+      :reserv2, :reserve, char(CURRENT TIMESTAMP)
+      )
+    ]]>
+    </sql>
+    <sql id="lnsprefundsch_insert">
+        <![CDATA[
+     insert into LNSPREFUNDSCH (TRANDATE, SERSEQNO, TXSEQNO,
+      BRC, ACCTNO, CUSTOMID, ACCSRCCODE,
+      CUSTTYPE, NAME, AMOUNT,
+      TRANCODE, CDFLAG, RESERV1, RESERV2,
+      RESERVE, TIMESTAMP)
+    values (:trandate, :serseqno, :txseqno,
+      :brc, :acctno, :customid, :accsrccode,
+      :custtype, :name, :amount,
+      :trancode, :cdflag, :reserv1, :reserv2,
+      :reserve, char(CURRENT TIMESTAMP))
+    ]]>
+    </sql>
+    <sql id="lnsinvesteedetail_insert">
+        <![CDATA[
+       insert into LNSINVESTEEDETAIL (TRANDATE, SERSEQNO, TXSEQNO,
+      BRC, ACCTNO, INVESTEEID, NEWINVESTEE,
+      INVESTEENO, NEWINVESTEENO, PERIOD,
+      INVESTEEPRIN, INVESTEEINT, INVESTEEDINT,
+      INVESTEEFEE, TRANCODE, TRANTYPE,
+      TOTALAMT, 
+      <#if intflag?exists && intflag != "">
+      	INTFLAG, 
+      </#if>
+      PRINFLAG,
+      INVESTEEFLAG, 
+       <#if diffint?exists && diffint != "">
+      DIFFINT, 
+      </#if>
+      DIFFPRIN,
+      RESERV1, RESERV2, RESERVE,
+      TIMESTAMP)
+    values (:trandate, :serseqno, :txseqno,
+      :brc, :acctno, :investeeid, :newinvestee,
+      :investeeno, :newinvesteeno, :period,
+      :investeeprin, :investeeint, :investeedint,
+      :investeefee, :trancode, :trantype,
+      :totalamt, 
+      <#if intflag?exists && intflag != "">
+      	:intflag, 
+      </#if>
+      :prinflag,
+      :investeeflag, 
+      <#if diffint?exists && diffint != "">
+      :diffint, 
+      </#if>
+      :diffprin,
+      :reserv1, :reserv2, :reserve,
+      char(CURRENT TIMESTAMP))
+    ]]>
+    </sql>
+    <sql id="lnsinterfaceex_insert">
+        <![CDATA[
+       insert into LNSINTERFACEEX (TRANDATE, SERSEQNO, BRC, 
+      ACCTNO, KEY, BRIEF, VALUE, 
+      RESERV1, RESERV2, RESERVE, 
+      TIMESTAMP)
+    values (:trandate, :serseqno, :brc, 
+      :acctno, :key, :brief, :value, 
+      :reserv1, :reserv2, :reserve, 
+      char(CURRENT TIMESTAMP))
+    ]]>
+    </sql>
+    <sql id="lnsinvesteedetail_update">
+        <![CDATA[
+    update lnsinvesteedetail set intflag = :intflag , prinflag = :prinflag , diffint = :diffint , diffprin = :diffprin,timestamp = char(CURRENT TIMESTAMP)
+    where trandate = :trandate and serseqno = :serseqno and trantype = 'HK'
+    ]]>
+    </sql>
+    <sql id="delete_lnstaxdetail">
+        <![CDATA[
+        DELETE FROM lnstaxdetail WHERE ACCTNO = :acctno AND brc = :brc
+
+    ]]>
+    </sql>
+    <sql id="delete_lnsprefundsch">
+        <![CDATA[
+            DELETE FROM lnsprefundsch WHERE ACCTNO = :acctno AND brc = :brc
+
+    ]]>
+    </sql>
+    <sql id="delete_lnsinvesteedetail">
+    <![CDATA[
+            DELETE FROM lnsinvesteedetail WHERE ACCTNO = :acctno AND brc = :brc
+    ]]>
+    </sql>
+    <sql id="query_lnsinvesteedetail">
+        <![CDATA[
+            select * FROM lnsinvesteedetail WHERE ACCTNO = :acctno AND brc = :brc
+                  <#if trantype?exists && trantype != "">
+                    AND TRANTYPE = :trantype
+                  </#if>
+                   <#if newinvestee?exists && newinvestee != "">
+                    AND NEWINVESTEE = :newinvestee
+                  </#if>
+
+    ]]>
+    </sql>
+    <sql id="query_lnsprefundschD">
+        <![CDATA[
+        select * from lnsprefundsch where trandate = :trandate and serseqno = :serseqno and  accsrccode ='D'
+    ]]>
+    </sql>
+    <sql id="query_lnstaxdetailKX">
+        <![CDATA[
+            select * from lnstaxdetail where trandate = :trandate and serseqno = :serseqno and taxtype = 'KX'
+    ]]>
+    </sql>
+    <sql id="query_lnsinterfaceexQD">
+        <![CDATA[
+            select * from lnsinterfaceex where trandate  = :trandate and serseqno= :serseqno and key = 'QD'
+    ]]>
+    </sql>
+    <sql id="query_lnstaxdetailJX">
+        <![CDATA[
+            select * from lnstaxdetail where acctno = :acctno  and brc = :brc and taxtype = 'JX' AND billtype = 'NINT'
+    ]]>
+    </sql>
+    <sql id="query_lnstaxdetail">
+        <![CDATA[
+            select * from lnstaxdetail where acctno = :acctno  and brc = :brc and taxtype = :taxtype
+    ]]>
+    </sql>
+    <sql id="query_lnsinterfaceex">
+    <![CDATA[
+            select * from lnsinterfaceex where acctno = :acctno  and brc = :brc and key = :key
+    ]]>
+    </sql>
+    <sql id="query_lnsinterfaceex_max">
+        <![CDATA[
+            select * from lnsinterfaceex where acctno = :acctno  and brc = :brc and key = :key  order by timestamp desc fetch first 1 rows only
+    ]]>
+    </sql>
+
+ <sql id="query_lnsinterfaceex_hkmx">
+    <![CDATA[
+            select * from lnsinterfaceex where trandate=:trandate and serseqno=:serseqno and key = :key
+    ]]>
+</sql>
+
+    <sql id="updateInterfaceEx">
+        <![CDATA[
+            update lnsinterfaceex set value = :value where acctno = :acctno  and brc = :brc and key = :key
+    ]]>
+    </sql>
+    <sql id="delete_lnsinterfaceex">
+        <![CDATA[
+                   DELETE FROM LNSINTERFACEEX WHERE ACCTNO = :acctno AND brc = :brc
+
+    ]]>
+    </sql>
+    <sql id="delete_lnsinterfaceexk">
+        <![CDATA[
+                   DELETE FROM LNSINTERFACEEX WHERE trandate = :trandate AND serseqno =  :serseqno
+
+    ]]>
+    </sql>
+
+    <!--查询账户的余额-->
+    <sql id="query_lnsaccountdyninfo_bal">
+        <![CDATA[
+        select sum(currbal) as currbal from faloan.lnsaccountdyninfo  where acctno=:acctno and acctstat in ( ${acctstat} ) and profitbrc=:brc
+        ]]>
+    </sql>
+
+
+</sqlMap>

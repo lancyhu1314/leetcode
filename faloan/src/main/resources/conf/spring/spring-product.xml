@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aty="http://www.aty.com/schema/aty"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.aty.com/schema/aty
+        http://www.aty.com/schema/aty.xsd">
+	<bean id="products" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="pd0000000" value-ref="pd0000000" />
+				<entry key="pd0000001" value-ref="pd0000001" />
+				<entry key="pd0000002" value-ref="pd0000002" />
+				<entry key="pd0000003" value-ref="pd0000003" />
+				<entry key="pd0000004" value-ref="pd0000004" />
+				<entry key="pd0000005" value-ref="pd0000005" />
+				<entry key="pd0000006" value-ref="pd0000006" />
+				<entry key="pd0000007" value-ref="pd0000007" />
+				<entry key="pd0000008" value-ref="pd0000008" />
+				<entry key="pd0000009" value-ref="pd0000009" />
+				<entry key="pd0000011" value-ref="pd0000011" />
+				<entry key="pd0000012" value-ref="pd0000012" />
+				<entry key="pd0000013" value-ref="pd0000013" />
+				<entry key="pd0000014" value-ref="pd0000014" />
+				<entry key="pd0000015" value-ref="pd0000015" />
+				<entry key="pd0000016" value-ref="pd0000016" />
+				<entry key="pd0000017" value-ref="pd0000017" />
+				<entry key="pd0000018" value-ref="pd0000018" />
+				<entry key="pd0000019" value-ref="pd0000019" />
+				<entry key="pd1212605" value-ref="pd1212605" />
+				<entry key="pd1212606" value-ref="pd1212606" />
+				<entry key="pd2412606" value-ref="pd2412606" />
+				<entry key="pd2412607" value-ref="pd2412607" />
+				<entry key="pd2412608" value-ref="pd2412608" />
+				<entry key="pd2412610" value-ref="pd2412610" />
+				<entry key="pd2412611" value-ref="pd2412611" />
+				<entry key="pd2412612" value-ref="pd2412612" />
+				<entry key="pd2412613" value-ref="pd2412613" />
+				<entry key="pd2412614" value-ref="pd2412614" />
+				<entry key="pd2412615" value-ref="pd2412615" />
+				<entry key="pd2412616" value-ref="pd2412616" />
+				<entry key="pd2412617" value-ref="pd2412617" />
+				<entry key="pd2412618" value-ref="pd2412618" />
+				<entry key="pd2412619" value-ref="pd2412619" />
+				<entry key="pd2412620" value-ref="pd2412620" />
+				<entry key="pd2412621" value-ref="pd2412621" />
+				<entry key="pd2412622" value-ref="pd2412622" />
+				<entry key="pd2412623" value-ref="pd2412623" />
+				<entry key="pd2412624" value-ref="pd2412624" />
+				<entry key="pd2412625" value-ref="pd2412625" />
+				<entry key="pd2412626" value-ref="pd2412626" />
+				<entry key="pd2412627" value-ref="pd2412627" />
+				<entry key="pd2412628" value-ref="pd2412628" />
+				<entry key="pd2412629" value-ref="pd2412629" />
+				<entry key="pd2412630" value-ref="pd2412630" />
+				<entry key="pd2412631" value-ref="pd2412631" />
+				<entry key="pd2412632" value-ref="pd2412632" />
+				<entry key="pd2412633" value-ref="pd2412633" />
+				<entry key="pd2412634" value-ref="pd2412634" />
+				<entry key="pd2412635" value-ref="pd2412635" />
+				<entry key="pd2412636" value-ref="pd2412636" />
+				<entry key="pd2412637" value-ref="pd2412637" />
+				<entry key="pd2412640" value-ref="pd2412640" />
+				<entry key="pd2412641" value-ref="pd2412641" />
+				<entry key="pd2512641" value-ref="pd2512641" />
+				<entry key="pd2512643" value-ref="pd2512643" />
+				<entry key="pd2512612" value-ref="pd2512612" />
+				<entry key="pd2512614" value-ref="pd2512614" />
+				<entry key="pd2512615" value-ref="pd2512615" />
+				<entry key="pd2512616" value-ref="pd2512616" />
+				<entry key="pd2512621" value-ref="pd2512621" />
+				<entry key="pd2512622" value-ref="pd2512622" />
+				<entry key="pd2512623" value-ref="pd2512623" />
+				<entry key="pd2512624" value-ref="pd2512624" />
+				<entry key="pd2512625" value-ref="pd2512625" />
+				<entry key="pd2521001" value-ref="pd2521001" />
+				<entry key="pd3010002" value-ref="pd3010002" />
+				<entry key="pd3010003" value-ref="pd3010003" />
+				<entry key="pd3010004" value-ref="pd3010004" />
+				<entry key="pd3010005" value-ref="pd3010005" />
+				<entry key="pd3010006" value-ref="pd3010006" />
+				<entry key="pd3010007" value-ref="pd3010007" />
+				<entry key="pd3010008" value-ref="pd3010008" />
+				<entry key="pd3010009" value-ref="pd3010009" />
+				<entry key="pd3010010" value-ref="pd3010010" />
+				<entry key="pd3010011" value-ref="pd3010011" />
+				<entry key="pd3010012" value-ref="pd3010012" />
+				<entry key="pd3010013" value-ref="pd3010013" />
+				<entry key="pd3010014" value-ref="pd3010014" />
+				<entry key="pd3010015" value-ref="pd3010015" />
+				<entry key="pd3010016" value-ref="pd3010016" />
+				<entry key="pd3010017" value-ref="pd3010017" />
+				<entry key="pd4010001" value-ref="pd4010001" />
+				<entry key="pd4010002" value-ref="pd4010002" />
+				<entry key="pd4010003" value-ref="pd4010003" />
+				<entry key="pd2512617" value-ref="pd2512617" />
+				<entry key="pd2512618" value-ref="pd2512618" />
+				<entry key="pd2512619" value-ref="pd2512619" />
+				<entry key="pd2512626" value-ref="pd2512626" />
+				<entry key="pd2512627" value-ref="pd2512627" />
+				<entry key="pd2512628" value-ref="pd2512628" />
+				<entry key="pd2512629" value-ref="pd2512629" />
+				<entry key="pd2512630" value-ref="pd2512630" />
+				<entry key="pd2512631" value-ref="pd2512631" />
+				<entry key="pd2512632" value-ref="pd2512632" />
+				<entry key="pd2512633" value-ref="pd2512633" />
+				<entry key="pd2512639" value-ref="pd2512639" />
+				<entry key="pd2512640" value-ref="pd2512640" />
+				<entry key="pd2512642" value-ref="pd2512642" />
+				<entry key="pd2512644" value-ref="pd2512644" />
+				<entry key="pd2812601" value-ref="pd2812601" />
+				<entry key="pd2812602" value-ref="pd2812602" />
+				<entry key="pd2812603" value-ref="pd2812603" />
+				<entry key="pd2812604" value-ref="pd2812604" />
+				<entry key="pd2512634" value-ref="pd2512634" />
+				<entry key="pd2512635" value-ref="pd2512635" />
+				<entry key="pd2512636" value-ref="pd2512636" />
+				<entry key="pd2512637" value-ref="pd2512637" />
+				<entry key="pd2412638" value-ref="pd2412638" />
+				<entry key="pd2412639" value-ref="pd2412639" />
+			</map>
+		</property>
+	</bean>
+
+	<!--   <bean id="formulaCommon" class="com.suning.fab.loan.supporter.RepayFormulaCommonSupporter" scope="prototype"></bean>
+      <bean id="formulaEqPrinAndInt" class="com.suning.fab.loan.supporter.RepayFormulaEqPrinAndIntSupporter" scope="prototype"></bean>
+      <bean id="formulaEqPrinEqInt" class="com.suning.fab.loan.supporter.RepayFormulaEqPrinEqIntSupporter" scope="prototype"></bean>
+      <bean id="formulaUserDefine" class="com.suning.fab.loan.supporter.RepayFormulaUserDefineSupporter" scope="prototype"></bean>
+
+      <bean id="formulas" class="org.springframework.beans.factory.config.MapFactoryBean" scope="prototype">
+          <property name="sourceMap">
+              <map>
+                  <entry key="0" value-ref="formulaEqPrinEqInt" />
+                  <entry key="1" value-ref="formulaEqPrinAndInt" />
+                  <entry key="2" value-ref="formulaCommon" />
+                  <entry key="3" value-ref="formulaUserDefine" />
+              </map>
+          </property>
+      </bean> -->
+
+	<!-- 	还款方式映射 -->
+	<bean id="repayWayAvgPrinAndInt"   class="com.suning.fab.loan.supporter.RepayWayAvgPrinAndIntSupporter"></bean>
+	<bean id="repayWayAvgPrinPlusInt"   class="com.suning.fab.loan.supporter.RepayWayAvgPrinPlusIntSupporter"></bean>
+	<bean id="repayWayAvgPrin"   class="com.suning.fab.loan.supporter.RepayWayAvgPrinSpporter"></bean>
+	<bean id="repayWayEachIntPrinDueTime" class="com.suning.fab.loan.supporter.RepayWayEachIntPrinDueTimeSupporter"></bean>
+	<bean id="repayWayFirIntAftPrinInt" class="com.suning.fab.loan.supporter.RepayWayFirIntAftPrinIntSupporter"></bean>
+	<bean id="repayWayYearPrinMonInt" class="com.suning.fab.loan.supporter.RepayWayYearPrinMonIntSupporter"></bean>
+	<bean id="repayWayHalfPrinMonInt" class="com.suning.fab.loan.supporter.RepayWayHalfPrinMonIntSupporter"></bean>
+	<bean id="repayWayQtrPrinMonInt" class="com.suning.fab.loan.supporter.RepayWayQtrPrinMonIntSupporter"></bean>
+	<bean id="repayWayRepayAtMaturity" class="com.suning.fab.loan.supporter.RepayWayRepayAtMaturitySupporter"></bean>
+	<bean id="repayWayUserDefine" class="com.suning.fab.loan.supporter.RepayWayUserDefineSupporter"></bean>
+	<bean id="repayWayBalloonLoan"   class="com.suning.fab.loan.supporter.RepayWayBalloonLoanSupporter"></bean>
+	<!--任性付等本等息 author:chenchao-->
+	<bean id="repayWayWard" class="com.suning.fab.loan.supporter.RepayWayWardSupporter"/>
+	<bean id="repayWayAvgPrinIntFee"  class="com.suning.fab.loan.supporter.RepayWayAvgPrinIntFeeSupporter"></bean>
+
+
+
+
+	<!--     还款计划 -->
+	<bean id="loanRepayPlanAvgPrinAndInt"   class="com.suning.fab.loan.supporter.LoanRePayPlanAvgPrinAndIntSupporter"></bean>
+	<bean id="loanRepayPlanAvgPrinPlusInt"   class="com.suning.fab.loan.supporter.LoanRePayPlanAvgPrinPlusIntSupporter"></bean>
+	<bean id="loanRepayPlanAvgPrin"   class="com.suning.fab.loan.supporter.LoanRePayPlanAvgPrinSpporter"></bean>
+	<bean id="loanRepayPlanEachIntPrinDueTime" class="com.suning.fab.loan.supporter.LoanRePayPlanEachIntPrinDueTimeSupporter"></bean>
+	<bean id="loanRepayPlanFirIntAftPrinInt" class="com.suning.fab.loan.supporter.LoanRePayPlanFirIntAftPrinIntSupporter"></bean>
+	<bean id="loanRepayPlanYearPrinMonInt" class="com.suning.fab.loan.supporter.LoanRePayPlanYearPrinMonIntSupporter"></bean>
+	<bean id="loanRepayPlanHalfPrinMonInt" class="com.suning.fab.loan.supporter.LoanRePayPlanHalfPrinMonIntSupporter"></bean>
+	<bean id="loanRepayPlanQtrPrinMonInt" class="com.suning.fab.loan.supporter.LoanRePayPlanQtrPrinMonIntSupporter"></bean>
+	<bean id="loanRepayPlanRepayAtMaturity" class="com.suning.fab.loan.supporter.LoanRePayPlanRepayAtMaturitySupporter"></bean>
+
+
+
+
+
+	<!--      结息、 -->
+	<bean id="SettleInterestPrinGintSupporter" class="com.suning.fab.loan.supporter.SettleInterestPrinGintSupporter"></bean>
+	<bean id="SettleInterestPrinDintSupporter" class="com.suning.fab.loan.supporter.SettleInterestPrinDintSupporter"></bean>
+	<bean id="SettleInterestIntAmltSupporter" class="com.suning.fab.loan.supporter.SettleInterestIntAmltSupporter"></bean>
+	<bean id="SettleInterestIntCintSupporter" class="com.suning.fab.loan.supporter.SettleInterestIntCintSupporter"></bean>
+	<bean id="SettleInterestPrinIntSupporter" class="com.suning.fab.loan.supporter.SettleInterestPrinIntSupporter"></bean>
+
+
+	<!--      转列 -->
+	<bean id="TransferPrinNormalToOverduSupporter" class="com.suning.fab.loan.supporter.TransferPrinNormalToOverduSupporter" ></bean>
+	<bean id="TransferPrinOverduToLanguishmentSupporter" class="com.suning.fab.loan.supporter.TransferPrinOverduToLanguishmentSupporter"></bean>
+	<bean id="TransferPrinLanguishmentToBaddebtsSupporter" class="com.suning.fab.loan.supporter.TransferPrinLanguishmentToBaddebtsSupporter"></bean>
+	<bean id="TransferIntNormalToOverduSupporter" class="com.suning.fab.loan.supporter.TransferIntNormalToOverduSupporter" ></bean>
+	<bean id="TransferFeeNormalToOverduSupporter" class="com.suning.fab.loan.supporter.TransferFeeNormalToOverduSupporter" ></bean>
+	<bean id="TransferIntOverduToLanguishmentSupporter" class="com.suning.fab.loan.supporter.TransferIntOverduToLanguishmentSupporter" ></bean>
+	<bean id="TransferIntLanguishmentToBaddebtsSupporter" class="com.suning.fab.loan.supporter.TransferIntLanguishmentToBaddebtsSupporter" ></bean>
+
+
+	<!--      提前还款	 -->
+	<bean id="prepayTermPlanAvgPrin"   class="com.suning.fab.loan.supporter.PrepayTermAvgPrinSpporter"></bean>
+	<bean id="prepayTermRepayAtMaturitySupporter" class="com.suning.fab.loan.supporter.PrepayTermRepayAtMaturitySupporter" ></bean>
+	<bean id="prepayTermEachIntPrinDueTime" class="com.suning.fab.loan.supporter.PrepayTermEachIntPrinDueTimeSupporter"></bean>
+
+
+	<bean id="repayWay" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="0" value-ref="repayWayAvgPrinAndInt" />	<!-- 0.等本等息 -->
+				<entry key="1" value-ref="repayWayAvgPrinPlusInt" />  <!-- 1.等额本息 -->
+				<entry key="2" value-ref="repayWayAvgPrin" />  <!-- 2.等额本金 -->
+				<entry key="3" value-ref="repayWayEachIntPrinDueTime" />  <!-- 3.分次付息一次还本 -->
+				<entry key="4" value-ref="repayWayFirIntAftPrinInt" />  <!-- 4.先还息,后本息 -->
+				<entry key="5" value-ref="repayWayYearPrinMonInt" />  <!-- 5.年还本，月还息 -->
+				<entry key="6" value-ref="repayWayHalfPrinMonInt" />  <!-- 6.半年还本,月还息 -->
+				<entry key="7" value-ref="repayWayQtrPrinMonInt" />  <!-- 7.季还本，月还息 -->
+				<entry key="8" value-ref="repayWayRepayAtMaturity" />  <!-- 8.到期还本还息 -->
+				<entry key="9" value-ref="repayWayBalloonLoan" />  <!-- 9.气球贷 -->
+				<entry key="10" value-ref="repayWayWard"/> <!--任性付等本等息 author:chenchao-->
+
+
+				<entry key="11" value-ref="repayWayUserDefine" />  <!-- 11.每期只还利息，最后一期还本付息 -->
+				<entry key="12" value-ref="repayWayUserDefine" />  <!-- 12.每期只还本金，最后一期还本付息 -->
+				<entry key="13" value-ref="repayWayUserDefine" />  <!-- 13.每期都要还本付息 -->
+				<entry key="14" value-ref="repayWayUserDefine" />  <!-- 14.自定义 -->
+				<entry key="15" value-ref="repayWayAvgPrinIntFee"></entry><!--等额本息费-->
+
+			</map>
+		</property>
+	</bean>
+	<bean id="repayPlanRepayWay" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="0" value-ref="loanRepayPlanAvgPrin" />	<!-- 0.等本等息 -->
+				<entry key="1" value-ref="loanRepayPlanAvgPrin" />  <!-- 1.等额本息 -->
+				<entry key="2" value-ref="loanRepayPlanAvgPrin" />  <!-- 2.等额本金 -->
+				<entry key="3" value-ref="loanRepayPlanEachIntPrinDueTime" />  <!-- 3.分次付息一次还本 -->
+				<entry key="4" value-ref="loanRepayPlanEachIntPrinDueTime" />  <!-- 4.先还息,后本息 -->
+				<entry key="5" value-ref="loanRepayPlanEachIntPrinDueTime" />  <!-- 5.年还本，月还息 -->
+				<entry key="6" value-ref="loanRepayPlanEachIntPrinDueTime" />  <!-- 6.半年还本,月还息 -->
+				<entry key="7" value-ref="loanRepayPlanEachIntPrinDueTime" />  <!-- 7.季还本，月还息 -->
+				<entry key="8" value-ref="loanRepayPlanAvgPrin" />  <!-- 8.到期还本还息 -->
+				<entry key="15" value-ref="loanRepayPlanAvgPrin" /> <!--等额本息费-->
+			</map>
+		</property>
+	</bean>
+
+	<bean id="prepayrepayway" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="1" value-ref="prepayTermPlanAvgPrin" />  		<!-- 1.等额本息 -->
+				<entry key="2" value-ref="prepayTermPlanAvgPrin" />  		<!-- 2.等额本金 -->
+				<entry key="3" value-ref="prepayTermEachIntPrinDueTime" />  		<!-- 3.先息后本 -->
+				<entry key="4" value-ref="prepayTermEachIntPrinDueTime" />  		<!-- 4:先还息,后本息 -->
+				<entry key="5" value-ref="prepayTermEachIntPrinDueTime" />  		<!-- 5.年还本，月还息 -->
+				<entry key="6" value-ref="prepayTermEachIntPrinDueTime" />  		<!-- 6.半年还本,月还息 -->
+				<entry key="7" value-ref="prepayTermEachIntPrinDueTime" />  		<!-- 7. 季还本，月还息 -->
+				<entry key="8" value-ref="prepayTermRepayAtMaturitySupporter" />	<!-- 随借随还 -->
+				<entry key="9" value-ref="prepayTermPlanAvgPrin" />					<!-- 气球贷 -->
+				<entry key="15" value-ref="prepayTermPlanAvgPrin"/><!--等额本息费-->
+			</map>
+		</property>
+	</bean>
+
+	<bean id="prinSettleInterest" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="G" value-ref="SettleInterestPrinGintSupporter" />
+				<entry key="O" value-ref="SettleInterestPrinDintSupporter" />
+				<entry key="N" value-ref="SettleInterestPrinIntSupporter" />
+			</map>
+		</property>
+	</bean>
+	<bean id="intSettleInterest" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="G" value-ref="SettleInterestIntAmltSupporter" />
+				<entry key="O" value-ref="SettleInterestIntCintSupporter" />
+			</map>
+		</property>
+	</bean>
+	<bean id="prinAcctTransfer" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="O" value-ref="TransferPrinNormalToOverduSupporter" />
+				<entry key="L" value-ref="TransferPrinOverduToLanguishmentSupporter" />
+				<entry key="B" value-ref="TransferPrinLanguishmentToBaddebtsSupporter" />
+			</map>
+		</property>
+	</bean>
+	<bean id="intAcctTransfer" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="O" value-ref="TransferIntNormalToOverduSupporter" />
+				<entry key="L" value-ref="TransferIntOverduToLanguishmentSupporter" />
+				<entry key="B" value-ref="TransferIntLanguishmentToBaddebtsSupporter" />
+			</map>
+		</property>
+	</bean>
+	<bean id="feeAcctTransfer" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="O" value-ref="TransferFeeNormalToOverduSupporter" />
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Statutorydays">
+
+    <sql id="insert">
+        <![CDATA[
+          INSERT INTO STATUTORYDAYS (TYPE, DATE, MODIFYTIME, RESERV1, RESERV2, TUNNELDATA) VALUES
+      (:type, :date, current timestamp, '', '', '')
+
+    ]]>
+    </sql>
+
+    <sql id="reserve">
+        <![CDATA[
+        insert into STATUTORYDAYSBAK SELECT * FROM STATUTORYDAYS WHERE DATE < :date
+]]>
+    </sql>
+    <sql id="query">
+        <![CDATA[
+         SELECT * FROM STATUTORYDAYS
+        ]]>
+    </sql>
+    <sql id="delete">
+        <![CDATA[
+        		delete from STATUTORYDAYS where  DATE < :date
+		]]>
+    </sql>
+
+</sqlMap>

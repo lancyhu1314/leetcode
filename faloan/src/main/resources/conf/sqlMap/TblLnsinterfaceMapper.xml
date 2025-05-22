@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsinterface">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSINTERFACE
+      where SERIALNO = :serialno
+        and TRANCODE = :trancode
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSINTERFACE (SERIALNO, TRANCODE, TRANDATE, ACCDATE, SERSEQNO, BRC, ACCTNAME, USERNO, 
+        ACCTNO, TRANAMT, SUMRINT, SUMRAMT, SUMRFINT, SUMDELINT, SUMDELFINT, ACCTFLAG, 
+        TIMESTAMP, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, 
+        ORGID, BILLNO, BANKNO, MAGACCT)
+      values (:serialno, :trancode, :trandate, :accdate, :serseqno, :brc, :acctname, :userno, 
+        :acctno, :tranamt, :sumrint, :sumramt, :sumrfint, :sumdelint, :sumdelfint, :acctflag, 
+        current timestamp, :reserv1, :reserv2, :reserv3, :reserv4, :reserv5, :reserv6, 
+        :orgid, :billno, :bankno, :magacct)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSINTERFACE
+      set TRANDATE = :trandate,
+        ACCDATE = :accdate,
+        SERSEQNO = :serseqno,
+        BRC = :brc,
+        ACCTNAME = :acctname,
+        USERNO = :userno,
+        ACCTNO = :acctno,
+        TRANAMT = :tranamt,
+        SUMRINT = :sumrint,
+        SUMRAMT = :sumramt,
+        SUMRFINT = :sumrfint,
+        SUMDELINT = :sumdelint,
+        SUMDELFINT = :sumdelfint,
+        ACCTFLAG = :acctflag,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2,
+        RESERV3 = :reserv3,
+        RESERV4 = :reserv4,
+        RESERV5 = :reserv5,
+        RESERV6 = :reserv6,
+        ORGID = :orgid,
+        BILLNO = :billno,
+        BANKNO = :bankno,
+        MAGACCT = :magacct
+      where SERIALNO = :serialno
+        and TRANCODE = :trancode
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select SERIALNO, TRANCODE, TRANDATE, ACCDATE, SERSEQNO, BRC, ACCTNAME, USERNO, ACCTNO, 
+      TRANAMT, SUMRINT, SUMRAMT, SUMRFINT, SUMDELINT, SUMDELFINT, ACCTFLAG, TIMESTAMP, 
+      RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, ORGID, BILLNO, BANKNO, MAGACCT
+      from LNSINTERFACE
+      where SERIALNO = :serialno
+        and TRANCODE = :trancode
+    ]]>
+  </sql>
+  <sql id="update_acctflag">
+    <![CDATA[
+      update  LNSINTERFACE
+      set acctflag = :acctflag,timestamp = char(CURRENT TIMESTAMP)
+      WHERE serialno = :serialno and trancode = :trancode
+    ]]>
+  </sql>
+  <sql id="querytmp">
+    <![CDATA[
+      select SERIALNO, TRANCODE, TRANDATE, ACCDATE, SERSEQNO, BRC, ACCTNAME, USERNO, ACCTNO,
+      TRANAMT, SUMRINT, SUMRAMT, SUMRFINT, SUMDELINT, SUMDELFINT, ACCTFLAG, TIMESTAMP,
+      RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, ORGID, BILLNO, BANKNO, MAGACCT
+      from LNSINTERFACE
+      where  brc = :brc and acctno = :acctno and trancode = '471007' and  ACCDATE >:startdate
+    ]]>
+  </sql>
+
+  <sql id="query_repay_fee">
+    <![CDATA[
+      select SERIALNO, TRANCODE, TRANDATE, ACCDATE, SERSEQNO, BRC, ACCTNAME, USERNO, ACCTNO,
+      TRANAMT, SUMRINT, SUMRAMT, SUMRFINT, SUMDELINT, SUMDELFINT, ACCTFLAG, TIMESTAMP,
+      RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, ORGID, BILLNO, BANKNO, MAGACCT
+      from LNSINTERFACE
+      where brc = :brc
+        and acctno = :acctno
+        and trancode = :trancode
+        <#if reserv2?exists && reserv2 != "">
+		and reserv2 = :reserv2
+		</#if>
+        
+    ]]>
+  </sql>
+</sqlMap>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsassistlist">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSASSISTLIST
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSASSISTLIST (BRC, ACCTNO, TXNSEQ, TRANDATE, SERSEQNO, CUSTOMID, CCY, FEETYPE, 
+        CDFLAG, TRANAMT, BAL, ACCTSTAT, ORDNU, TRANCODE, MEMOCODE, MEMONAME, RESERV1, 
+        RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, TUNNELDATA, CREATETIME, MODIFYTIME
+        )
+      values (:brc, :acctno, :txnseq, :trandate, :serseqno, :customid, :ccy, :feetype, 
+        :cdflag, :tranamt, :bal, :acctstat, :ordnu, :trancode, :memocode, :memoname, :reserv1, 
+        :reserv2, :reserv3, :reserv4, :reserv5, :reserv6, :tunneldata, current timestamp, current timestamp
+        )
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSASSISTLIST
+      set TRANDATE = :trandate,
+        SERSEQNO = :serseqno,
+        CUSTOMID = :customid,
+        CCY = :ccy,
+        FEETYPE = :feetype,
+        CDFLAG = :cdflag,
+        TRANAMT = :tranamt,
+        BAL = :bal,
+        ACCTSTAT = :acctstat,
+        ORDNU = :ordnu,
+        TRANCODE = :trancode,
+        MEMOCODE = :memocode,
+        MEMONAME = :memoname,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2,
+        RESERV3 = :reserv3,
+        RESERV4 = :reserv4,
+        RESERV5 = :reserv5,
+        RESERV6 = :reserv6,
+        TUNNELDATA = :tunneldata,
+        CREATETIME = :createtime,
+        MODIFYTIME = current timestamp
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select BRC, ACCTNO, TXNSEQ, TRANDATE, SERSEQNO, CUSTOMID, CCY, FEETYPE, CDFLAG, TRANAMT, 
+      BAL, ACCTSTAT, ORDNU, TRANCODE, MEMOCODE, MEMONAME, RESERV1, RESERV2, RESERV3, RESERV4, 
+      RESERV5, RESERV6, TUNNELDATA, CREATETIME, MODIFYTIME
+      from LNSASSISTLIST
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+</sqlMap>

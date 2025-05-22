@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsrpyplan">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSRPYPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSRPYPLAN (ACCTNO, BRC, REPAYTERM, ACCTFLAG, REPAYWAY, REPAYOWNBDATE, REPAYOWNEDATE, 
+        REPAYINTBDATE, REPAYINTEDATE, TERMRETPRIN, TERMRETINT, DEDUCTIONAMT, PRINAMT, 
+        INTAMT, NORETAMT, NORETINT, TERMFINT, TERMCINT, SUMFINT, SUMCINT, DAYS, 
+        TERMCDINT, BALANCE, SUMRFINT, SUMRCINT, ACTREPAYDATE, TERMRETDATE, MODIFYDATE, 
+        MODIFYTIME, RESERVE1, RESERVE2)
+      values (:acctno, :brc, :repayterm, :acctflag, :repayway, :repayownbdate, :repayownedate, 
+        :repayintbdate, :repayintedate, :termretprin, :termretint, :deductionamt, :prinamt, 
+        :intamt, :noretamt, :noretint, :termfint, :termcint, :sumfint, :sumcint, :days, 
+        :termcdint, :balance, :sumrfint, :sumrcint, :actrepaydate, :termretdate, :modifydate, 
+        current timestamp, :reserve1, :reserve2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSRPYPLAN
+      set ACCTFLAG = :acctflag,
+        REPAYWAY = :repayway,
+        REPAYOWNBDATE = :repayownbdate,
+        REPAYOWNEDATE = :repayownedate,
+        REPAYINTBDATE = :repayintbdate,
+        REPAYINTEDATE = :repayintedate,
+        TERMRETPRIN = :termretprin,
+        TERMRETINT = :termretint,
+        DEDUCTIONAMT = :deductionamt,
+        PRINAMT = :prinamt,
+        INTAMT = :intamt,
+        NORETAMT = :noretamt,
+        NORETINT = :noretint,
+        TERMFINT = :termfint,
+        TERMCINT = :termcint,
+        SUMFINT = :sumfint,
+        SUMCINT = :sumcint,
+        DAYS = :days,
+        TERMCDINT = :termcdint,
+        BALANCE = :balance,
+        SUMRFINT = :sumrfint,
+        SUMRCINT = :sumrcint,
+        ACTREPAYDATE = :actrepaydate,
+        TERMRETDATE = :termretdate,
+        MODIFYDATE = :modifydate,
+        MODIFYTIME = current timestamp,
+        RESERVE1 = :reserve1,
+        RESERVE2 = :reserve2
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, BRC, REPAYTERM, ACCTFLAG, REPAYWAY, REPAYOWNBDATE, REPAYOWNEDATE, 
+      REPAYINTBDATE, REPAYINTEDATE, TERMRETPRIN, TERMRETINT, DEDUCTIONAMT, PRINAMT, INTAMT, 
+      NORETAMT, NORETINT, TERMFINT, TERMCINT, SUMFINT, SUMCINT, DAYS, TERMCDINT, BALANCE, 
+      SUMRFINT, SUMRCINT, ACTREPAYDATE, TERMRETDATE, MODIFYDATE, MODIFYTIME, RESERVE1, 
+      RESERVE2
+      from LNSRPYPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, BRC, REPAYTERM, ACCTFLAG, REPAYWAY, REPAYOWNBDATE, REPAYOWNEDATE,
+      REPAYINTBDATE, REPAYINTEDATE, TERMRETPRIN, TERMRETINT, DEDUCTIONAMT, PRINAMT, INTAMT,
+      NORETAMT, NORETINT, TERMFINT, TERMCINT, SUMFINT, SUMCINT, DAYS, TERMCDINT, BALANCE,
+      SUMRFINT, SUMRCINT, ACTREPAYDATE, TERMRETDATE, MODIFYDATE, MODIFYTIME, RESERVE1,
+      RESERVE2
+      from LNSRPYPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+
+  <sql id="update_delayRepay">
+    <![CDATA[
+      update LNSRPYPLAN
+      set
+       repayintedate = :repayintedate,
+                repayownbdate = :repayintedate,
+                repayownedate = :repayownedate,
+                actrepaydate = :repayintedate,
+                termretprin = :termretprin,
+                termretint = :termretint,
+
+                 <#if balance?exists && balance != "">
+				 balance = :balance,
+			   </#if>
+            MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+
+
+</sqlMap>

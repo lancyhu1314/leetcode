@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbasicinfoex">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSBASICINFOEX
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and KEY = :key
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSBASICINFOEX (ACCTNO, OPENBRC, KEY, VALUE1, VALUE2, VALUE3, TUNNELDATA, MODIFYTIME
+        )
+      values (:acctno, :openbrc, :key, :value1, :value2, :value3, :tunneldata, current timestamp
+        )
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSBASICINFOEX
+      set VALUE1 = :value1,
+        VALUE2 = :value2,
+        VALUE3 = :value3,
+        TUNNELDATA = :tunneldata,
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and KEY = :key
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, OPENBRC, KEY, VALUE1, VALUE2, VALUE3, TUNNELDATA, MODIFYTIME
+      from LNSBASICINFOEX
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        <#if key?exists && key != "">
+			   and KEY = :key
+		</#if>
+        
+    ]]>
+  </sql>
+
+
+  <sql id="updateTunneldata">
+    <![CDATA[
+      update LNSBASICINFOEX
+      set
+        TUNNELDATA = :tunneldata,
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and KEY = :key
+    ]]>
+  </sql>
+
+  <sql id="update_lnsbasicinfoex">
+    <![CDATA[
+      update LNSBASICINFOEX
+      set
+        VALUE1 = :value1,
+        VALUE2 =  :value2,
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and KEY = :key
+    ]]>
+  </sql>
+
+  <sql id="update_lnsbasicinfoex_536">
+    <![CDATA[
+      update LNSBASICINFOEX set value1 = :value1,MODIFYTIME = CURRENT TIMESTAMP
+      where acctno = :acctno and OPENBRC = :brc and key =:key
+    ]]>
+  </sql>
+
+</sqlMap>

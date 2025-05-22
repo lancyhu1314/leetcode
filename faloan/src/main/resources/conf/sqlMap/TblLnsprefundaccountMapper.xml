@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsprefundaccount">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPREFUNDACCOUNT
+      where BRC = :brc
+        and ACCSRCCODE = :accsrccode
+        and ACCTNO = :acctno
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPREFUNDACCOUNT (BRC, ACCSRCCODE, ACCTNO, CUSTOMID, CUSTTYPE, OPENDATE, CLOSEDATE, 
+        BALANCE, STATUS, TIMESTAMP, REVERSE1, REVERSE2, NAME)
+      values (:brc, :accsrccode, :acctno, :customid, :custtype, :opendate, :closedate, 
+        :balance, :status, current timestamp, :reverse1, :reverse2, :name)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPREFUNDACCOUNT
+      set CUSTOMID = :customid,
+        CUSTTYPE = :custtype,
+        OPENDATE = :opendate,
+        CLOSEDATE = :closedate,
+        BALANCE = :balance,
+        STATUS = :status,
+        TIMESTAMP = current timestamp,
+        REVERSE1 = :reverse1,
+        REVERSE2 = :reverse2,
+        NAME = :name
+      where BRC = :brc
+        and ACCSRCCODE = :accsrccode
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select BRC, ACCSRCCODE, ACCTNO, CUSTOMID, CUSTTYPE, OPENDATE, CLOSEDATE, BALANCE, 
+      STATUS, TIMESTAMP, REVERSE1, REVERSE2, NAME
+      from LNSPREFUNDACCOUNT
+      where BRC = :brc
+        and ACCSRCCODE = :accsrccode
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+        and status !='9'
+    ]]>
+  </sql>
+
+  <sql id ="updateStatusByUk">
+    <![CDATA[
+      UPDATE LNSPREFUNDACCOUNT SET
+        STATUS = '9'
+      where BRC = :brc
+        and ACCSRCCODE = :accsrccode
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+    ]]>
+
+
+  </sql>
+
+</sqlMap>
