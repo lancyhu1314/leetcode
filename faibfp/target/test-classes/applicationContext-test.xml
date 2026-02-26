@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="propertyConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/main-setting.properties</value>
+			</list>
+		</property>
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+	</bean>
+
+	<!--mycat-sit-ibfp-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.237.72.82:8066/FAIBFPDB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="2Ui6JsnRSq23" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>
+
+	<!--mycat-xzpre-ibfp-->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.237.3.113:8066/FAIBFPDB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="2Ui6JsnRSq23" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>-->
+
+	<!--mycat-xgpre-ibfp-->
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+				  value="jdbc:mysql://10.242.45.185:8066/FAIBFPDB?useServerPrepStmts=true" />
+		<property name="username" value="root" />
+		<property name="password" value="2Ui6JsnRSq23" />
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="1000" />
+	</bean>-->
+
+
+	<import resource="classpath*:conf/spring/spring-plat.xml" />
+
+</beans>

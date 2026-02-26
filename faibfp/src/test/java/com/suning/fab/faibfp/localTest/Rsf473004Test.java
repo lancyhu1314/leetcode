@@ -26,65 +26,55 @@ public class Rsf473004Test extends TestUtil {
     public void test() {
 
         Map<String, Object> input = new HashMap<String, Object>();
-
-        input.put("termDate", "2022-02-01");
-        input.put("startIntDate", "2022-02-01");
-        input.put("endDate", "2023-02-01");
-        input.put("graceDays", 3);
-
-        input.put("channelType", "5");
-
-        input.put("normalRateType", "Y");
-        input.put("brc", "51350000");
+        SimpleDateFormat df = new SimpleDateFormat("yyMMddHHmmssSSS");
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        input.put("routeId", "huyi10");
+        input.put("serialNo", df.format(new Date()));
+        input.put("outSerialNo", "outSerialNo000000");
         input.put("ccy", "CNY");
-        input.put("intPerUnit", "M");
-        input.put("undertakeID", "1");
-        input.put("customName", "zf");
-        input.put("compoundRateType", "Y");
-        input.put("serialNo", "GBFML632_zf0118_0224_0024");
-        input.put("overdueRate", 18.00);
-        input.put("receiptNo", "BFML632_zf_0224_002");
-        input.put("contractAmt", 120000.00);
-        input.put("fundingModel", "M02");
-        input.put("repayDate", "7");
-        input.put("sysPrdCode", "123456");
-        input.put("discountIntFlag", "Y");
-        input.put("merchantNo", "70666777");
-        input.put("periodNum", 1);
-        input.put("normalRate", 12.00);
-        input.put("underTake", "G01");
-        input.put("flowChannel", "4444");
-        input.put("loanType", "2");
-        input.put("freeInterest", 100.00);
-        input.put("contractNo", "JNRCB1002381077");
-        input.put("sysReceiptNo", "BFML632_zf_0224_002");
-        input.put("customId", "70666777");
-        input.put("outSerialNo", "BS21121400027951");
-        input.put("repayWay", "8");
-        input.put("termTime", "151603");
-        input.put("cashFlag", "2");
-        input.put("repayAcctNo", "70666777");
-        input.put("bsNo", "AAGBFML600");
-        input.put("openBrc", "51350000");
-        input.put("channelId", "DH");
-        input.put("compoundRate", 18.00);
-        input.put("employeeId", "88554990");
-        input.put("overdueRateType", "Y");
-        input.put("promotionID", "ACCX001");
-        input.put("salesStore", "XF");
+        input.put("contractAmt", 12000);
+        input.put("contractNo", "contractNo000000");
+        input.put("merchantNo", "huyi10");
+        input.put("customName", "customName000000");
         input.put("customType", "1");
+        input.put("endDate", "2022-09-20");
+        input.put("feeAmt", 0.00);
+        input.put("feeRate", 0.00); //10.00
+        input.put("repayDate", "20");
+        input.put("intPerUnit", "M");
+        input.put("periodNum", 1);
         input.put("periodType", "M");
-        input.put("productCode", "2412638");
+        input.put("normalRate", 12.00);
+        input.put("overdueRate", 18.00);
+        input.put("compoundRate", 0.00);
+        input.put("normalRateType", "Y");
+        input.put("overdueRateType", "Y");
+        input.put("compoundRateType", "Y");
+        input.put("channelType", "5");    //放款渠道 1银行 2易付宝 3任性付
+        input.put("loanType", "2");
         input.put("discountFlag", "1");
+        input.put("receiptNo", "receiptNo0000010");
+        input.put("graceDays", 5);
+        input.put("openBrc", "51030000");
+        input.put("fundChannel", "fundChannel000000");
+        input.put("productCode", "2412622");
+        input.put("repayWay", "10");
+        input.put("startIntDate", "2021-09-20"); //2021-01-01
+        input.put("discountAmt", 0);    //扣息金额
+        input.put("cashFlag", "2");
+        input.put("investee", "");
         input.put("tranCode", "473004");
-        input.put("terminalCode", "API");
+        input.put("brc", brc);
+        input.put("termDate", df1.format(new Date()));
+        input.put("termTime", df2.format(new Date()));
+        input.put("channelId", "66");
+        input.put("cappingrule", "JQFD");
 
-        List<Map<String, Object>> pkgList1 = new ArrayList<>();
-        Map<String, Object> det1 = new HashMap<>();
-        det1.put("investeeId", "70062597");
-        det1.put("investeePrin", 120000.00);
-        pkgList1.add(det1);
-        input.put("pkgList1", pkgList1);
+
+        input.put("promotionID", "UNKNOWN");
+        input.put("fundingModel", "UNKNOWN");
+
 
         /*List<Map<String, Object>> pkgList3 = new ArrayList<>();
         Map<String, Object> det3 = new HashMap<>();

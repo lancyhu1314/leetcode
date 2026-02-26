@@ -47,44 +47,44 @@ public class Rsf471007Test extends TestUtil {
      */
     @Test
     public void test() throws FabException, ParseException {
-        //sonar检查
-        TransferRelation transferRelation = new TransferRelation("routeId", "status", 1, new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()));
-        transferRelation.getCreateTime();
-        transferRelation.setCreateTime(new Timestamp(new Date().getTime()));
-        transferRelation.getUpdateTime();
-        transferRelation.setUpdateTime(new Timestamp(new Date().getTime()));
-
-        TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
-        TranDateCutUtil.setOldSystemTrandate("2021-01-01");
-
-//        // 迁移中产品开户
-//        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
-//        test473004(receiptno_transfer, "0000016");
-        //先开好户后，再配置scm配置
-        String receiptno_transfer = "TS111878671938191647571925755";
-        Map<String, Object> reqMsg = new HashMap<>();
-        reqMsg.put("type", "update");
-        reqMsg.put("sql", "delete from transferrelation where routeid = '"+receiptno_transfer+"';");
-        rsfSqlExecuteDeal.prepare(reqMsg);
+//        //sonar检查
+//        TransferRelation transferRelation = new TransferRelation("routeId", "status", 1, new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()));
+//        transferRelation.getCreateTime();
+//        transferRelation.setCreateTime(new Timestamp(new Date().getTime()));
+//        transferRelation.getUpdateTime();
+//        transferRelation.setUpdateTime(new Timestamp(new Date().getTime()));
+//
+//        TranDateCutUtil.setTranDateAndInite("2021-01-01", "", "");
+//        TranDateCutUtil.setOldSystemTrandate("2021-01-01");
+//
+////        // 迁移中产品开户
+////        String receiptno_transfer = "TS11187867193819" + System.currentTimeMillis();
+////        test473004(receiptno_transfer, "0000016");
+//        //先开好户后，再配置scm配置
+//        String receiptno_transfer = "TS111878671938191647571925755";
+//        Map<String, Object> reqMsg = new HashMap<>();
+//        reqMsg.put("type", "update");
+//        reqMsg.put("sql", "delete from transferrelation where routeid = '"+receiptno_transfer+"';");
+//        rsfSqlExecuteDeal.prepare(reqMsg);
         //还款
-        test471007("serialNo_TS" + System.currentTimeMillis(), "2021-01-01", 1.0, receiptno_transfer);
+        test471007("serialNo_TS" + System.currentTimeMillis(), "2026-03-11", 13590.86, "receiptNo000002");
 
-        Map<String, Object> input = new HashMap<String, Object>();
-        input.put("acctNo", receiptno_transfer);
-        input.put("brc", "51350000");
-        input.put("tranCode", "477016");
-        input.put("termDate", "2022-02-24");
-
-        Map<String, Object> ret = rsf477016.execute(input);
-        System.out.println("=============" + ret);
-
-        //更新迁移状态为3，抛出异常
-        Map<String, Object> reqMsg2 = new HashMap<>();
-        reqMsg.put("type", "update");
-        reqMsg.put("sql", "update transferrelation set status = '3' where routeid = '"+receiptno_transfer+"';");
-        rsfSqlExecuteDeal.prepare(reqMsg);
-        //还款
-        test471007("serialNo_TS" + System.currentTimeMillis(), "2021-01-01", 1.0, receiptno_transfer);
+//        Map<String, Object> input = new HashMap<String, Object>();
+//        input.put("acctNo", receiptno_transfer);
+//        input.put("brc", "51350000");
+//        input.put("tranCode", "477016");
+//        input.put("termDate", "2022-02-24");
+//
+//        Map<String, Object> ret = rsf477016.execute(input);
+//        System.out.println("=============" + ret);
+//
+//        //更新迁移状态为3，抛出异常
+//        Map<String, Object> reqMsg2 = new HashMap<>();
+//        reqMsg.put("type", "update");
+//        reqMsg.put("sql", "update transferrelation set status = '3' where routeid = '"+receiptno_transfer+"';");
+//        rsfSqlExecuteDeal.prepare(reqMsg);
+//        //还款
+//        test471007("serialNo_TS" + System.currentTimeMillis(), "2021-01-01", 1.0, receiptno_transfer);
 
     }
 
@@ -154,15 +154,17 @@ public class Rsf471007Test extends TestUtil {
         input.put("channelId", "66");
         input.put("serialNo", VarChecker.isEmpty(serialNo) ? "TESTSERIALNO" + df.format(new Date()) : serialNo);
         input.put("acctNo", acctNo);
-        //input.put("repayAcctNo", "IBFP");
+        input.put("repayAcctNo", "MEL1654480154156");
         input.put("ccy", "CNY");
         input.put("cashFlag", "2");
         input.put("repayAmt", amt);
-        input.put("feeAmt", 0.00);
+        input.put("feeAmt", 0.01);
         input.put("repayChannel", "2");
         input.put("memo", "");
         input.put("channelId", "66");
-        input.put("realDate", date);
+        input.put("realDate", "2026-03-10");
+//        input.put("settleFlag", "1");
+
         Map<String, Object> ret = rsf471007.execute(input);
         System.out.println(JSON.toJSONString(ret));
         return ret;

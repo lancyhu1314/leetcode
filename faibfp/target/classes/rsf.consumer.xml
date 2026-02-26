@@ -1,0 +1,19 @@
+<consumer>
+    <!--是否与中央仓库连通，在开发环境下，如果想脱离中央仓库，可以选择false，SIT/PRE/PRD请选择true-->
+  <!--  <repository connect="false"/>-->
+
+    <repository connect="true"/>
+
+    <!--在TCP协议下，与一个提供服务的主机最多能建立多少个连接，最大不超过5，默认为1-->
+    <maxTcpConnectionsPerAddress value="3"/>
+  <!--  &lt;!&ndash;在开发环境且脱离中央仓库下使用，如果不与中央仓库连通，需要明确指定如何连接服务方&ndash;&gt;
+    <communications>
+        <communication name="TCP-HESSIAN" serialization="HESSIAN" tcpHost="localhost" tcpPort="10000" connectTimeout="5000"/>
+        <communication name="TCP-HESSIAN_1" serialization="HESSIAN" tcpHost="localhost" tcpPort="10001" connectTimeout="5000"/>
+    </communications>
+    &lt;!&ndash;在开发环境且脱离中央仓库下使用，指定消费某一个服务使用的联通配置，communication必须在上面的communication列表中&ndash;&gt;
+    <services>
+        <service contract="com.suning.dtf.common.support.rsf.DtfPushService" implCode="dtfDemoInventory" communication="TCP-HESSIAN_1"/>
+        <service contract="com.suning.dtf.common.support.rsf.DtfPushService" implCode="dtfDemoOrder" communication="TCP-HESSIAN"/>
+    </services>-->
+</consumer>
