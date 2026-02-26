@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsamortizeplan">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSAMORTIZEPLAN
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and AMORTIZETYPE = :amortizetype
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSAMORTIZEPLAN (TRANDATE, SERSEQNO, BRC, ACCTNO, AMORTIZETYPE, CCY, TAXRATE, TOTALAMT, 
+        AMORTIZEAMT, TOTALTAXAMT, AMORTIZETAX, LASTDATE, BEGINDATE, ENDDATE, PERIOD, 
+        AMORTIZEFORMULA, STATUS, TIMESTAMP)
+      values (:trandate, :serseqno, :brc, :acctno, :amortizetype, :ccy, :taxrate, :totalamt, 
+        :amortizeamt, :totaltaxamt, :amortizetax, :lastdate, :begindate, :enddate, :period, 
+        :amortizeformula, :status, current timestamp)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSAMORTIZEPLAN
+      set BRC = :brc,
+        ACCTNO = :acctno,
+        AMORTIZETYPE = :amortizetype,
+        CCY = :ccy,
+        TAXRATE = :taxrate,
+        TOTALAMT = :totalamt,
+        AMORTIZEAMT = :amortizeamt,
+        TOTALTAXAMT = :totaltaxamt,
+        AMORTIZETAX = :amortizetax,
+        LASTDATE = :lastdate,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        PERIOD = :period,
+        AMORTIZEFORMULA = :amortizeformula,
+        STATUS = :status,
+        TIMESTAMP = current timestamp
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and AMORTIZETYPE = :amortizetype
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select TRANDATE, SERSEQNO, BRC, ACCTNO, AMORTIZETYPE, CCY, TAXRATE, TOTALAMT, AMORTIZEAMT, 
+      TOTALTAXAMT, AMORTIZETAX, LASTDATE, BEGINDATE, ENDDATE, PERIOD, AMORTIZEFORMULA, 
+      STATUS, TIMESTAMP
+      from LNSAMORTIZEPLAN
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and AMORTIZETYPE = :amortizetype
+    ]]>
+  </sql>
+</sqlMap>

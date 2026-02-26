@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<configuration>
+		<stop-on-errors>true</stop-on-errors>
+		<date-format>yyyy-MM-dd</date-format>
+		<wildcard>true</wildcard>
+		<trim-strings>true</trim-strings>
+		<!-- <map-null>false</map-null> -->
+		<custom-converters> <!-- these are always bi-directional -->
+			<converter type="com.suning.fab.tup4j.dozer.AmountConverter">
+				<class-a>com.suning.fab.tup4j.amount.Amount</class-a>
+				<class-b>java.lang.Object</class-b>
+			</converter>
+			<converter type="com.suning.fab.tup4j.dozer.CurrencyConverter">
+				<class-a>com.suning.fab.tup4j.currency.Currency</class-a>
+				<class-b>java.lang.Object</class-b>
+			</converter>
+			<converter type="com.suning.fab.tup4j.dozer.RateIoConverter">
+				<class-a>com.suning.fab.tup4j.amount.FabRate</class-a>
+				<class-b>java.lang.Object</class-b>
+			</converter>
+		</custom-converters>
+	</configuration>
+	<mapping map-null="false">
+		<class-a>com.suning.fab.tup4j.base.TranCtx</class-a>
+		<class-b>java.lang.Object</class-b>
+	</mapping>
+	<mapping map-null="false">
+		<class-a>com.suning.fab.loan.bo.LnsBill</class-a>
+		<class-b>com.suning.fab.loan.domain.TblLnsbill</class-b>
+	</mapping>
+	<mapping wildcard="true" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.account.LnsAcctChange</class-a>
+<!-- 		<class-b>com.suning.fab.loan.domain.TblLnsaccountlist</class-b> -->
+		<class-b>com.suning.fab.loan.domain.TblLnsacclist</class-b>
+		<field>
+			<a>ctxnSeq</a>
+			<b>txnseq</b>
+		</field>
+		<field>
+			<a>ctxnCode</a>
+			<b>subtrancode</b>
+		</field>
+		<field>
+			<a>oppAcctNo.acctNo</a>
+			<b>oppacctno</b>
+		</field>
+		<field>
+			<a>briefCode</a>
+			<b>memocode</b>
+		</field>
+		<field>
+			<a>briefText</a>
+			<b>memoname</b>
+		</field>
+	</mapping>
+	<mapping wildcard="true" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.la.FundInvest</class-a>
+		<class-b>com.suning.fab.loan.domain.TblLnseventreg</class-b>
+	</mapping>
+	
+	<mapping wildcard="true" map-null="false" type="one-way">
+		<class-a>com.suning.fab.tup4j.accounting.Event</class-a>
+		<class-b>com.suning.fab.loan.domain.TblLnseventreg</class-b>
+		<field>
+			<a>fundInvestInfo.investee</a>
+			<b>investee</b>
+		</field>
+		<field>
+			<a>fundInvestInfo.investMode</a>
+			<b>investMode</b>
+		</field>
+		<field>
+			<a>fundInvestInfo.channelType</a>
+			<b>channelType</b>
+		</field>
+		<field>
+			<a>fundInvestInfo.fundChannel</a>
+			<b>fundChannel</b>
+		</field>
+		<field>
+			<a>fundInvestInfo.outSerialNo</a>
+			<b>outSerialNo</b>
+		</field>
+	</mapping>
+	
+</mappings>

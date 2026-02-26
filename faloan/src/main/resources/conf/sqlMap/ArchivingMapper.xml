@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Archiving">
+
+    <sql id="lnsprovisionregDelete">
+        <![CDATA[
+        DELETE FROM lnsprovisionreg
+        WHERE receiptno = :receiptno
+            AND intertype = :intertype
+            AND period = :period
+            and timestamp = :timestamp
+        ]]>
+    </sql>
+    <!--结息明细登记簿删除任务-->
+    <sql id="lnspenintprovregdtlDelete">
+        <![CDATA[
+        DELETE FROM lnspenintprovregdtl
+            WHERE  TRANDATE = :trandate
+            AND serseqno = :serseqno
+            AND txnseq = :txnseq
+        ]]>
+    </sql>
+    <sql id="lnstaxdetailDelete">
+        <![CDATA[
+            DELETE FROM lnstaxdetail
+            WHERE TRANDATE = :trandate
+                AND SERSEQNO = :serseqno
+                and TXSEQNO = :txseqno
+                and timestamp = :timestamp
+        ]]>
+    </sql>
+    <sql id="lnseventregDelete">
+        <![CDATA[
+            delete from lnseventreg
+            where trandate = :trandate
+                and serseqno = :serseqno
+                and txnseq = :txnseq
+                and timestamp = :timestamp
+        ]]>
+    </sql>
+
+    <sql id="lnsacclistDelete">
+        <![CDATA[
+        delete from lnsacclist
+        where acctno = :acctno
+            and acctstat = :acctstat
+            and ordnu = :ordnu
+            and brc = :brc
+            and modifytime = :modifytime
+        ]]>
+    </sql>
+
+    <sql id="lnsrpyinfoDelete">
+        <![CDATA[
+
+        delete from lnsrpyinfo
+        where acctno = :acctno
+            and repayterm = :repayterm
+            and acctstat = :acctstat
+            and trandate = :trandate
+            and seqno = :seqno
+        ]]>
+    </sql>
+
+    <sql id="lnscoexamineDelete">
+        <![CDATA[
+            delete from lnscoexamine
+            where serialno = :serialno
+                and trancode = :trancode
+        ]]>
+    </sql>
+    <sql id="lnsassistlistDelete">
+        <![CDATA[
+            delete from lnsassistlist
+            where trandate = :trandate
+                and serseqno = :serseqno
+                and txnseq = :txnseq
+                and modifytime = :modifytime
+        ]]>
+    </sql>
+
+    <sql id="lnsprefundschDelete">
+        <![CDATA[
+        delete from lnsprefundsch
+        where trandate = :trandate
+            and serseqno = :serseqno
+            and txseqno = :txseqno
+            and timestamp = :timestamp
+        ]]>
+    </sql>
+
+    <sql id="lnsinvesteedetailDelete">
+        <![CDATA[
+        delete from lnsinvesteedetail
+        where TRANDATE = :trandate
+            and SERSEQNO = :serseqno
+            and TXSEQNO = :txseqno
+            and timestamp = :timestamp
+        ]]>
+    </sql>
+
+    <sql id="feemanageregDelete">
+        <![CDATA[
+        delete from feemanagereg
+        where brc = :brc
+            and acctno = :acctno
+            and repayterm = :repayterm
+            and modifytime = :modifytime
+        ]]>
+    </sql>
+
+    <sql id="lnsinterfaceDelete">
+        <![CDATA[
+      delete from LNSINTERFACE
+      where SERIALNO = :serialno
+        and TRANCODE = :trancode
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsbasicinfoDelete">
+        <![CDATA[
+      delete from LNSBASICINFO
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsbillDelete">
+        <![CDATA[
+      delete from LNSBILL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsrpyplanDelete">
+        <![CDATA[
+      delete from LNSRPYPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and REPAYTERM = :repayterm
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsaccountdyninfoDelete">
+        <![CDATA[
+      delete from LNSACCOUNTDYNINFO
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and PROFITBRC = :profitbrc
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+    <sql id="lnsfeeinfoDelete">
+        <![CDATA[
+        		delete from LNSFEEINFO
+        		where  OPENBRC = :openbrc
+        		and  acctno = :acctno
+        		and FEETYPE = :feetype
+        		and REPAYWAY = :repayway
+        		and modifytime = :modifytime
+		]]>
+    </sql>
+
+    <sql id="lnsprovisionregDelete">
+        <![CDATA[
+      delete from LNSPROVISIONREG
+      where RECEIPTNO = :receiptno
+        and INTERTYPE = :intertype
+        and PERIOD = :period
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnspenintprovregDelete">
+        <![CDATA[
+      delete from LNSPENINTPROVREG
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsamortizeplanDelete">
+        <![CDATA[
+      delete from LNSAMORTIZEPLAN
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and AMORTIZETYPE = :amortizetype
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsbasicinfoexDelete">
+        <![CDATA[
+      delete from LNSBASICINFOEX
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and KEY = :key
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsbasicinfodynDelete">
+        <![CDATA[
+      delete from LNSBASICINFODYN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsbasicinfodynDelete">
+        <![CDATA[
+      delete from LNSINTERFACEEX
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and KEY = :key
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsprovisionDelete">
+        <![CDATA[
+      delete from LNSPROVISION
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and BILLTYPE = :billtype
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsnonstdplanDelete">
+        <![CDATA[
+      delete from LNSNONSTDPLAN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and REPAYTERM = :repayterm
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsassistdyninfoDelete">
+        <![CDATA[
+      delete from LNSASSISTDYNINFO
+      where BRC = :brc
+        and FEETYPE = :feetype
+        and CUSTOMID = :customid
+        and modifytime = :modifytime
+    ]]>
+    </sql>
+
+    <sql id="lnsprovisiondtlDelete">
+        <![CDATA[
+      delete from LNSPROVISIONDTL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+    <sql id="lnsbillplanDelete">
+        <![CDATA[
+      delete from LNSBILLPLAN
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and BILLTYPE = :billtype
+        and PERIOD = :period
+        and timestamp = :timestamp
+    ]]>
+    </sql>
+
+
+</sqlMap>

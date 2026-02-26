@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsaccountlist">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSACCOUNTLIST
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and ORDNU = :ordnu
+        and BRC = :brc
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSACCOUNTLIST (ACCTNO, ACCTSTAT, ORDNU, BRC, TRANDATE, BILLTRANDATE, BILLSERSEQNO, 
+        BILLTXNSEQ, INACCTNO, SUBCTRLCODE, ACCTYPE, CCY, CDFLAG, TRANAMT, BAL, 
+        DAYS, ACCUM, VOUKIND, PRECHARCODE, VOUCHERNO, MEMOCODE, MEMONAME, OPPACCTNO, 
+        CANACCTNO, MODIFYTIME, SERSEQNO, TXNSEQ, TRANCODE, SUBTRANCODE, TRANBRC, 
+        TELLERCODE, AUTHCODE, CHECKCODE, PGNM, PRINTFLAG, TRANSOURCE, RECORDTYPE, 
+        FLAG1, FLAG2, FLAG3, SEQ, SEQ1)
+      values (:acctno, :acctstat, :ordnu, :brc, :trandate, :billtrandate, :billserseqno, 
+        :billtxnseq, :inacctno, :subctrlcode, :acctype, :ccy, :cdflag, :tranamt, :bal, 
+        :days, :accum, :voukind, :precharcode, :voucherno, :memocode, :memoname, :oppacctno, 
+        :canacctno, current timestamp, :serseqno, :txnseq, :trancode, :subtrancode, :tranbrc, 
+        :tellercode, :authcode, :checkcode, :pgnm, :printflag, :transource, :recordtype, 
+        :flag1, :flag2, :flag3, :seq, :seq1)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSACCOUNTLIST
+      set TRANDATE = :trandate,
+        BILLTRANDATE = :billtrandate,
+        BILLSERSEQNO = :billserseqno,
+        BILLTXNSEQ = :billtxnseq,
+        INACCTNO = :inacctno,
+        SUBCTRLCODE = :subctrlcode,
+        ACCTYPE = :acctype,
+        CCY = :ccy,
+        CDFLAG = :cdflag,
+        TRANAMT = :tranamt,
+        BAL = :bal,
+        DAYS = :days,
+        ACCUM = :accum,
+        VOUKIND = :voukind,
+        PRECHARCODE = :precharcode,
+        VOUCHERNO = :voucherno,
+        MEMOCODE = :memocode,
+        MEMONAME = :memoname,
+        OPPACCTNO = :oppacctno,
+        CANACCTNO = :canacctno,
+        MODIFYTIME = current timestamp,
+        SERSEQNO = :serseqno,
+        TXNSEQ = :txnseq,
+        TRANCODE = :trancode,
+        SUBTRANCODE = :subtrancode,
+        TRANBRC = :tranbrc,
+        TELLERCODE = :tellercode,
+        AUTHCODE = :authcode,
+        CHECKCODE = :checkcode,
+        PGNM = :pgnm,
+        PRINTFLAG = :printflag,
+        TRANSOURCE = :transource,
+        RECORDTYPE = :recordtype,
+        FLAG1 = :flag1,
+        FLAG2 = :flag2,
+        FLAG3 = :flag3,
+        SEQ = :seq,
+        SEQ1 = :seq1
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and ORDNU = :ordnu
+        and BRC = :brc
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, ACCTSTAT, ORDNU, BRC, TRANDATE, BILLTRANDATE, BILLSERSEQNO, BILLTXNSEQ, 
+      INACCTNO, SUBCTRLCODE, ACCTYPE, CCY, CDFLAG, TRANAMT, BAL, DAYS, ACCUM, VOUKIND, 
+      PRECHARCODE, VOUCHERNO, MEMOCODE, MEMONAME, OPPACCTNO, CANACCTNO, MODIFYTIME, SERSEQNO, 
+      TXNSEQ, TRANCODE, SUBTRANCODE, TRANBRC, TELLERCODE, AUTHCODE, CHECKCODE, PGNM, PRINTFLAG, 
+      TRANSOURCE, RECORDTYPE, FLAG1, FLAG2, FLAG3, SEQ, SEQ1
+      from LNSACCOUNTLIST
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and ORDNU = :ordnu
+        and BRC = :brc
+    ]]>
+  </sql>
+</sqlMap>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:p="http://cxf.apache.org/policy"
+	xmlns:ss="http://www.springframework.org/schema/security"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:dozer="http://dozer.sourceforge.net"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+   	http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd 
+   	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd 
+   	http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd
+   	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+   	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+   	http://cxf.apache.org/bindings/soap http://cxf.apache.org/schemas/configuration/soap.xsd 
+   	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd 
+   	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+   	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+   	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<import resource="classpath*:/conf/spring/tccQuartz.xml" />
+
+	<context:component-scan
+		base-package="com.suning.dtf.client.*" />
+	<context:component-scan
+		base-package="com.suning.dtf.server" use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+
+	<bean id="dtfConfig" class="com.suning.dtf.client.DtfConfigBySCM">
+		<constructor-arg name="scmNodePath"
+			value="dtf.properties" />
+	</bean>
+
+	<bean id="dtfServerConfig"
+		class="com.suning.dtf.server.DtfConfigBySCM">
+		<constructor-arg name="scmNodePath"
+			value="dtfServer.properties" />
+	</bean>
+	
+	<bean id="customeExeCode" class="com.suning.fab.tup4ml.utils.CustomeExeCode">
+	</bean>
+
+	<bean class="com.suning.dtf.client.DtfTransactionBootStrap"
+		init-method="start" destroy-method="stop">
+		<constructor-arg name="dtfConfig" ref="dtfConfig" />
+		<property name="exceptionExtract" ref="customeExeCode" />
+	</bean>
+
+	<bean id="dtfTxManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dtfDataSource" />
+		<property name="rollbackOnCommitFailure" value="true" />
+	</bean>
+
+	<bean id="dtfTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="dtfTxManager" />
+	</bean>
+
+	<bean id="dtfDalClient"
+		class="com.suning.framework.dal.client.support.PaginationDalClient">
+		<property name="sqlMapConfigLocation"
+			value="classpath*:/dtfSqlMap/dtfSqlMap_*.xml" />
+		<property name="dataSource" ref="dtfDataSource" />
+		<property name="dialect">
+			<bean class="com.suning.framework.dal.pagination.MySQLDialect" />
+		</property>
+	</bean>
+
+</beans>

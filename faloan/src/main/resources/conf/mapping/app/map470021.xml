@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping wildcard="false" type="one-way">
+        <class-a>com.suning.fab.loan.service.Tp470021</class-a>
+        <class-b>java.util.Map</class-b>
+        <field>
+            <a is-accessible="true">lns462.reduceFee</a>
+            <b key="reduceFee">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns462.acctNo</a>
+            <b key="acctNo">this</b>
+        </field>
+        <field>
+            <a is-accessible="true">lns469.reduceDamageResult</a>
+            <b key="reduceDamage">this</b>
+        </field>
+    </mapping>
+</mappings>

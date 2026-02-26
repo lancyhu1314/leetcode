@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsrpyinfo">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSRPYINFO
+      where ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+        and ACCTSTAT = :acctstat
+        and TRANDATE = :trandate
+        and SEQNO = :seqno
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSRPYINFO (ACCTNO, REPAYTERM, ACCTSTAT, TRANDATE, SEQNO, BRC, PROFITBRC, DIACCT, 
+        CCY, TRANAMT, FLAG, LOANTYPE1, LOANTYPE2, LOANTYPE3, RPYFLAG, REPAYAMT, 
+        NORETAMT, BDATE, EDATE, EXECURATE)
+      values (:acctno, :repayterm, :acctstat, :trandate, :seqno, :brc, :profitbrc, :diacct, 
+        :ccy, :tranamt, :flag, :loantype1, :loantype2, :loantype3, :rpyflag, :repayamt, 
+        :noretamt, :bdate, :edate, :execurate)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSRPYINFO
+      set BRC = :brc,
+        PROFITBRC = :profitbrc,
+        DIACCT = :diacct,
+        CCY = :ccy,
+        TRANAMT = :tranamt,
+        FLAG = :flag,
+        LOANTYPE1 = :loantype1,
+        LOANTYPE2 = :loantype2,
+        LOANTYPE3 = :loantype3,
+        RPYFLAG = :rpyflag,
+        REPAYAMT = :repayamt,
+        NORETAMT = :noretamt,
+        BDATE = :bdate,
+        EDATE = :edate,
+        EXECURATE = :execurate
+      where ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+        and ACCTSTAT = :acctstat
+        and TRANDATE = :trandate
+        and SEQNO = :seqno
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, REPAYTERM, ACCTSTAT, TRANDATE, SEQNO, BRC, PROFITBRC, DIACCT, CCY, 
+      TRANAMT, FLAG, LOANTYPE1, LOANTYPE2, LOANTYPE3, RPYFLAG, REPAYAMT, NORETAMT, BDATE, 
+      EDATE, EXECURATE
+      from LNSRPYINFO
+      where ACCTNO = :acctno
+        and REPAYTERM = :repayterm
+        and ACCTSTAT = :acctstat
+        and TRANDATE = :trandate
+        and SEQNO = :seqno
+    ]]>
+  </sql>
+</sqlMap>

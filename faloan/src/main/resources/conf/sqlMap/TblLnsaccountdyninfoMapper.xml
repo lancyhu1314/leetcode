@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsaccountdyninfo">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSACCOUNTDYNINFO
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and PROFITBRC = :profitbrc
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSACCOUNTDYNINFO (ACCTNO, ACCTSTAT, PROFITBRC, STATUS, PRDCODE, INACCTNO, OPENACCTBRC, 
+        ACCTYPE, SUBCTRLCODE, CCY, FLAG, FLAG1, REPAYORDER, RATETYPE, BALD, INTRATE, 
+        LASTBAL, CURRBAL, CTRLBAL, ACCUM, BEGINDATE, PRECHGRATEDATE, PRECALCINTDATE, 
+        NEXTCALCDATE, PRETRANDATE, DAC, BEGINCACUDATE, ENDCACUDATE, PRECACUDAYS, 
+        CACUDAYS, YEARSTARTBAL, FLAGRES11, DATERES01, DATERES02, AMOUNTRES1, AMOUNTRES2, 
+        ACCUMRES, ACCTNORES01, ACCTNORES02, ORDNU, MODIFYDATE, MODIFYTIME)
+      values (:acctno, :acctstat, :profitbrc, :status, :prdcode, :inacctno, :openacctbrc, 
+        :acctype, :subctrlcode, :ccy, :flag, :flag1, :repayorder, :ratetype, :bald, :intrate, 
+        :lastbal, :currbal, :ctrlbal, :accum, :begindate, :prechgratedate, :precalcintdate, 
+        :nextcalcdate, :pretrandate, :dac, :begincacudate, :endcacudate, :precacudays, 
+        :cacudays, :yearstartbal, :flagres11, :dateres01, :dateres02, :amountres1, :amountres2, 
+        :accumres, :acctnores01, :acctnores02, :ordnu, :modifydate, current timestamp)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSACCOUNTDYNINFO
+      set STATUS = :status,
+        PRDCODE = :prdcode,
+        INACCTNO = :inacctno,
+        OPENACCTBRC = :openacctbrc,
+        ACCTYPE = :acctype,
+        SUBCTRLCODE = :subctrlcode,
+        CCY = :ccy,
+        FLAG = :flag,
+        FLAG1 = :flag1,
+        REPAYORDER = :repayorder,
+        RATETYPE = :ratetype,
+        BALD = :bald,
+        INTRATE = :intrate,
+        LASTBAL = :lastbal,
+        CURRBAL = :currbal,
+        CTRLBAL = :ctrlbal,
+        ACCUM = :accum,
+        BEGINDATE = :begindate,
+        PRECHGRATEDATE = :prechgratedate,
+        PRECALCINTDATE = :precalcintdate,
+        NEXTCALCDATE = :nextcalcdate,
+        PRETRANDATE = :pretrandate,
+        DAC = :dac,
+        BEGINCACUDATE = :begincacudate,
+        ENDCACUDATE = :endcacudate,
+        PRECACUDAYS = :precacudays,
+        CACUDAYS = :cacudays,
+        YEARSTARTBAL = :yearstartbal,
+        FLAGRES11 = :flagres11,
+        DATERES01 = :dateres01,
+        DATERES02 = :dateres02,
+        AMOUNTRES1 = :amountres1,
+        AMOUNTRES2 = :amountres2,
+        ACCUMRES = :accumres,
+        ACCTNORES01 = :acctnores01,
+        ACCTNORES02 = :acctnores02,
+        ORDNU = :ordnu,
+        MODIFYDATE = :modifydate,
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and PROFITBRC = :profitbrc
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, ACCTSTAT, PROFITBRC, STATUS, PRDCODE, INACCTNO, OPENACCTBRC, ACCTYPE, 
+      SUBCTRLCODE, CCY, FLAG, FLAG1, REPAYORDER, RATETYPE, BALD, INTRATE, LASTBAL, CURRBAL, 
+      CTRLBAL, ACCUM, BEGINDATE, PRECHGRATEDATE, PRECALCINTDATE, NEXTCALCDATE, PRETRANDATE, 
+      DAC, BEGINCACUDATE, ENDCACUDATE, PRECACUDAYS, CACUDAYS, YEARSTARTBAL, FLAGRES11, 
+      DATERES01, DATERES02, AMOUNTRES1, AMOUNTRES2, ACCUMRES, ACCTNORES01, ACCTNORES02, 
+      ORDNU, MODIFYDATE, MODIFYTIME
+      from LNSACCOUNTDYNINFO
+      where ACCTNO = :acctno
+        and ACCTSTAT = :acctstat
+        and PROFITBRC = :profitbrc
+    ]]>
+  </sql>
+
+  <sql id="queryByAcctNo">
+    <![CDATA[
+      select ACCTNO, ACCTSTAT, PROFITBRC, STATUS, PRDCODE, INACCTNO, OPENACCTBRC, ACCTYPE,
+      SUBCTRLCODE, CCY, FLAG, FLAG1, REPAYORDER, RATETYPE, BALD, INTRATE, LASTBAL, CURRBAL,
+      CTRLBAL, ACCUM, BEGINDATE, PRECHGRATEDATE, PRECALCINTDATE, NEXTCALCDATE, PRETRANDATE,
+      DAC, BEGINCACUDATE, ENDCACUDATE, PRECACUDAYS, CACUDAYS, YEARSTARTBAL, FLAGRES11,
+      DATERES01, DATERES02, AMOUNTRES1, AMOUNTRES2, ACCUMRES, ACCTNORES01, ACCTNORES02,
+      ORDNU, MODIFYDATE, MODIFYTIME
+      from LNSACCOUNTDYNINFO
+      where ACCTNO = :acctno
+        and ACCTSTAT in (${acctstat})
+        and PROFITBRC = :profitbrc
+    ]]>
+  </sql>
+
+
+</sqlMap>

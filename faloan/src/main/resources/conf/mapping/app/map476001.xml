@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-null="false" map-id="map431" type="one-way">
+		<class-a>com.suning.fab.loan.account.FaLoanPubDict</class-a>
+		<class-b> com.suning.fab.loan.workunit.Lns431</class-b>
+		<field>
+			<a>contractAmt</a>
+			<b>loanAgreement.contract.contractAmt</b>
+		</field>
+		<field>
+			<a>ccy</a>
+			<b>loanAgreement.contract.ccy</b>
+		</field>
+		<field>
+			<a>repayDate</a>
+			<b>loanAgreement.contract.repayDate</b>
+		</field>
+		<field>
+			<a>startIntDate</a>
+			<b>loanAgreement.contract.contractStartDate</b>
+		</field>
+		<field>
+			<a>startIntDate</a>
+			<b>loanAgreement.contract.startIntDate</b>
+		</field>
+		<field>
+			<a>endDate</a>
+			<b>loanAgreement.contract.contractEndDate</b>
+		</field>
+	</mapping>
+	
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp476001</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns432.pkgList</a>
+			<b key="pkgList">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns431.finalAmt</a>
+			<b key="finalAmt">this</b>
+ 		</field>
+		<field>
+			<a is-accessible="true">lns431.finalPrin</a>
+			<b key="finalPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns431.rentAmt</a>
+			<b key="rentAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns431.rentPrin</a>
+			<b key="rentPrin">this</b>
+		</field> 
+	</mapping>
+</mappings>

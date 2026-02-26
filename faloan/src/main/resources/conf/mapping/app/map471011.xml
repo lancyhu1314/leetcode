@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp471011</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns260.forfeetAmt</a>
+			<b key="forfeetAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.damagesAmt</a>
+			<b key="damagesAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.endFlag</a>
+			<b key="endFlag">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns242.adjustFee</a>
+			<b key="adjustFee">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns533.adjustDamage</a>
+			<b key="adjustDamage">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.repayList</a>
+			<b key="pkgList">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.damagesAmt</a>
+			<b key="damageAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.couponFeeAmt</a>
+			<b key="couponFeeAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns260.discountfeeFlag</a>
+			<b key="discountfeeFlag">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns470.reduceList</a>
+			<b key="pkgList2">this</b>
+		</field>
+	</mapping>
+
+
+</mappings>

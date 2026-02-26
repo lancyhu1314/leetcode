@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsreceipt">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSRECEIPT
+      where ACCTNO = :acctno
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSRECEIPT (ACCTNO, MID, CUSTOMID, CUSTTYPE, SUBSYS, OPENDATE, CLOSEDATE, STATUS, 
+        SUMDEINT, SUMDEFINT, SUMFEE, SUMGRMNT, REMNT1, REMNT2, REVERSE1, REVERSE2, 
+        BRC, SUMRINT, SUMRFINT, SUMDELINT, SUMDELFINT)
+      values (:acctno, :mid, :customid, :custtype, :subsys, :opendate, :closedate, :status, 
+        :sumdeint, :sumdefint, :sumfee, :sumgrmnt, :remnt1, :remnt2, :reverse1, :reverse2, 
+        :brc, :sumrint, :sumrfint, :sumdelint, :sumdelfint)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSRECEIPT
+      set MID = :mid,
+        CUSTOMID = :customid,
+        CUSTTYPE = :custtype,
+        SUBSYS = :subsys,
+        OPENDATE = :opendate,
+        CLOSEDATE = :closedate,
+        STATUS = :status,
+        SUMDEINT = :sumdeint,
+        SUMDEFINT = :sumdefint,
+        SUMFEE = :sumfee,
+        SUMGRMNT = :sumgrmnt,
+        REMNT1 = :remnt1,
+        REMNT2 = :remnt2,
+        REVERSE1 = :reverse1,
+        REVERSE2 = :reverse2,
+        BRC = :brc,
+        SUMRINT = :sumrint,
+        SUMRFINT = :sumrfint,
+        SUMDELINT = :sumdelint,
+        SUMDELFINT = :sumdelfint
+      where ACCTNO = :acctno
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, MID, CUSTOMID, CUSTTYPE, SUBSYS, OPENDATE, CLOSEDATE, STATUS, SUMDEINT, 
+      SUMDEFINT, SUMFEE, SUMGRMNT, REMNT1, REMNT2, REVERSE1, REVERSE2, BRC, SUMRINT, SUMRFINT, 
+      SUMDELINT, SUMDELFINT
+      from LNSRECEIPT
+      where ACCTNO = :acctno
+    ]]>
+  </sql>
+</sqlMap>

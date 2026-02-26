@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsprovisionreg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPROVISIONREG
+      where RECEIPTNO = :receiptno
+        and INTERTYPE = :intertype
+        and PERIOD = :period
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPROVISIONREG (RECEIPTNO, INTERTYPE, PERIOD, TRANDATE, SERSEQNO, TXNSEQ, BRC, TELLER, 
+        BILLTYPE, CCY, TOTALINTEREST, TOTALTAX, TAXRATE, INTEREST, TAX, BEGINDATE, 
+        ENDDATE, INTERFLAG, SENDFLAG, SENDNUM, CANCELFLAG, TIMESTAMP, RESERV1, 
+        RESERV2)
+      values (:receiptno, :intertype, :period, :trandate, :serseqno, :txnseq, :brc, :teller, 
+        :billtype, :ccy, :totalinterest, :totaltax, :taxrate, :interest, :tax, :begindate, 
+        :enddate, :interflag, :sendflag, :sendnum, :cancelflag, current timestamp, :reserv1, 
+        :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPROVISIONREG
+      set TRANDATE = :trandate,
+        SERSEQNO = :serseqno,
+        TXNSEQ = :txnseq,
+        BRC = :brc,
+        TELLER = :teller,
+        BILLTYPE = :billtype,
+        CCY = :ccy,
+        TOTALINTEREST = :totalinterest,
+        TOTALTAX = :totaltax,
+        TAXRATE = :taxrate,
+        INTEREST = :interest,
+        TAX = :tax,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        INTERFLAG = :interflag,
+        SENDFLAG = :sendflag,
+        SENDNUM = :sendnum,
+        CANCELFLAG = :cancelflag,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where RECEIPTNO = :receiptno
+        and INTERTYPE = :intertype
+        and PERIOD = :period
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select RECEIPTNO, INTERTYPE, PERIOD, TRANDATE, SERSEQNO, TXNSEQ, BRC, TELLER, BILLTYPE, 
+      CCY, TOTALINTEREST, TOTALTAX, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, INTERFLAG, 
+      SENDFLAG, SENDNUM, CANCELFLAG, TIMESTAMP, RESERV1, RESERV2
+      from LNSPROVISIONREG
+      where RECEIPTNO = :receiptno
+        and INTERTYPE = :intertype
+        and PERIOD = :period
+    ]]>
+  </sql>
+  
+  <sql id="select_all">
+    <![CDATA[
+      select * from LNSPROVISIONREG
+      where RECEIPTNO = :receiptno
+        and BRC = :brc
+    ]]>
+  </sql>
+
+  <sql id="query_billtype_lastperiod">
+    <![CDATA[
+			SELECT RECEIPTNO, INTERTYPE, PERIOD, TRANDATE, SERSEQNO, TXNSEQ, BRC, TELLER, BILLTYPE,
+			      CCY, TOTALINTEREST, TOTALTAX, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, INTERFLAG,
+			      SENDFLAG, SENDNUM, CANCELFLAG, TIMESTAMP, RESERV1, RESERV2
+			      FROM LNSPROVISIONREG
+		     WHERE RECEIPTNO = :receiptno
+		       AND INTERTYPE = :intertype
+		       AND BILLTYPE = :billtype
+		       AND PERIOD = (SELECT max(PERIOD) FROM LNSPROVISIONREG
+		       				  WHERE RECEIPTNO = :receiptno
+	                			AND INTERTYPE = :intertype
+	                			 AND BILLTYPE = :billtype)
+		]]>
+  </sql>
+
+</sqlMap>

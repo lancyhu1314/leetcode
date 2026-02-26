@@ -1,0 +1,2116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap jdbcTimeout="2" namespace="CUSTOMIZE">
+
+
+    <sql id="query_lnsbasicinfo_111">
+        <![CDATA[
+		SELECT * FROM lnsbasicinfo WHERE
+			loanstat != :loanstat
+   	]]>
+    </sql>
+
+    <sql id="update_spssysctrlinfo">
+
+        <![CDATA[
+		update spssysctrlinfo set
+			trandate = :trandate,
+			predate = :predate,
+			nextdate = :nextdate
+
+			where trandate = :accdate
+
+	]]>
+    </sql>
+
+    <sql id="update_spssysctrlinfo_test">
+
+        <![CDATA[
+		update spssysctrlinfo set
+			trandate = :trandate,
+			predate = :predate,
+			nextdate = :nextdate
+	]]>
+    </sql>
+
+
+
+    <sql id="update_settlefeebill_211">
+        <![CDATA[
+			update lnsbill
+			   set billproperty = 'COMPEN' ,settleflag = 'CLOSE'  , lastbal = billBal ,billBal = 0.00  ,timestamp = char(CURRENT TIMESTAMP)
+		     where acctno = :acctno
+		       and brc= :brc
+		       and billtype in ('SQFE','ISFE','RMFE')
+			  and settleflag = 'RUNNING'
+   	]]>
+    </sql>
+
+
+    <sql id="query_lnsrpyinfo_254">
+        <![CDATA[
+		SELECT SUM(TRANAMT) FROM LNSRPYINFO WHERE
+			ACCTNO = :acctno
+			AND BRC= :brc
+			AND LOANTYPE1='2'
+			AND SUBSTR(acctstat,1,4) IN ('PRIN','NINT','GINT','DINT','CINT')
+   	]]>
+    </sql>
+    <sql id="query_lnsrpyinfofee_254">
+        <![CDATA[
+		SELECT SUM(TRANAMT) FROM LNSRPYINFO WHERE
+			ACCTNO = :acctno
+			AND BRC= :brc
+			AND LOANTYPE1='2'
+			AND SUBSTR(acctstat,1,4) IN  (${feetypes})
+   	]]>
+    </sql>
+
+
+    <sql id="query_lnsbasicinfo_470020">
+        <![CDATA[
+		select current timestamp(6) FROM LNSBASICINFO WHERE acctno = :acctno and OPENBRC = :openbrc for read only
+	]]>
+    </sql>
+
+    <sql id="query_lnsinterface_208">
+        <![CDATA[
+		SELECT * FROM LNSINTERFACE WHERE
+			SERSEQNO = :serseqno
+			AND ACCDATE = :trandate 
+			AND TRANCODE in ('473004','479000','473005','473007')
+	]]>
+    </sql>
+    <sql id="query_lnsinterface_108">
+        <![CDATA[
+		SELECT * FROM LNSINTERFACE WHERE
+			SERSEQNO = :serseqno
+			AND ACCDATE = :trandate
+			AND TRANCODE in ('473004','479000','473005','473006','473007')
+	]]>
+    </sql>
+    <sql id="query_lnsbasicinfo_521">
+        <![CDATA[
+      	select * FROM LNSBASICINFO WHERE ACCTNO=:acctno for read only
+
+    ]]>
+    </sql>
+
+
+    <sql id="query_lnspenintprovregdtl">
+        <![CDATA[
+      select * from LNSPENINTPROVREGDTL
+      where receiptno = :acctno
+      order by period,trandate
+    ]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfo_rate605">
+        <![CDATA[
+			update lnsbasicinfo set 
+									<#if rateType == "1">
+										NORMALRATE = :rate,
+									</#if>
+									<#if rateType == "2">
+										OVERDUERATE = :rate,
+									</#if>
+									<#if rateType == "3">
+										OVERDUERATE1 = :rate,
+									</#if>
+									flag1 = :flag1,
+									modifytime = char(CURRENT TIMESTAMP)
+		                      WHERE   acctno = :acctno  
+		                        and  openbrc = :openbrc
+   	]]>
+    </sql>
+
+    <sql id="query_PPIncome">
+        <![CDATA[
+			select * from lnsprovisionreg 
+			where receiptno = :acctno 
+			order by period desc 
+			FETCH FIRST 1 ROWS ONLY
+		]]>
+    </sql>
+    <sql id="query_festivalDetailinfo">
+        <![CDATA[
+			select * from LNSHOLIDAY 
+			where FESTIVAL IN (SELECT DISTINCT FESTIVAL 
+			FROM LNSHOLIDAY WHERE HOLIDAYDATE >= :startdate
+			AND HOLIDAYDATE <= :enddate) 
+			or workflag = 1 
+			order by HOLIDAYDATE
+		]]>
+    </sql>
+
+    <sql id="update_lnsdiscountaccount">
+        <![CDATA[
+			update LNSDISCOUNTACCOUNT 
+			   set BALANCE= BALANCE - :repayamt,timestamp = char(CURRENT TIMESTAMP)
+		      where brc = :brc
+        		and acctno = :acctno
+        		and ACCTTYPE = :accttype
+		]]>
+    </sql>
+
+    <sql id="update_lnsbill_oneday">
+        <![CDATA[
+	update lnsbill 
+	   set billamt = billamt + :amt,
+	  	   timestamp = char(CURRENT TIMESTAMP)
+     where acctno = :acctno
+       and trandate = :date
+	   and serseqno in (select serseqno 
+	   					  from lnsbill 
+	   					 where acctno = :acctno 
+	   					   and billtype = 'PRIN' 
+	   					   and begindate = :date 
+	   					   and enddate = :date fetch first rows only)
+   	]]>
+    </sql>
+
+    <sql id="query_nintbillsum_512">
+        <![CDATA[
+			SELECT SUM(billamt)
+			  FROM LNSBILL
+		     WHERE ACCTNO = :acctno
+		       AND BRC = :brc
+		       AND (BILLTYPE = :billtype1
+		       <#if billtype2?exists && billtype2 != "">
+				OR  BILLTYPE = :billtype2
+			   </#if>)
+		]]>
+    </sql>
+
+    <sql id="query_sumbalance">
+        <![CDATA[
+	select nvl(sum(BALANCE),0) 
+	from LNSDISCOUNTACCOUNT 
+	where acctno = :acctno
+	]]>
+    </sql>
+
+    <sql id="query_lnsbillpeninttype">
+        <![CDATA[
+		select * from lnsbill
+		where acctno = :acctno
+		and brc = :openbrc
+		and billtype in ('GINT','DINT','CINT')
+		]]>
+    </sql>
+
+
+    <sql id="query_lnsinterface">
+        <![CDATA[
+			SELECT * FROM LNSINTERFACE 
+			WHERE BRC = :brc
+			<#if acctno?exists && acctno != "">
+				AND ACCTNO = :acctno 
+			</#if>
+			<#if trancode?exists && trancode != "">
+				AND TRANCODE = :trancode 
+			</#if>
+			<#if startdate?exists && startdate != "">
+				AND ACCDATE >= :startdate
+			</#if>
+			<#if enddate?exists && enddate != "">
+				AND ACCDATE <= :enddate
+			</#if>
+			ORDER BY ACCDATE
+   		]]>
+    </sql>
+
+
+    <sql id="query_lnszlamortizeplan">
+        <![CDATA[
+			SELECT * FROM lnszlamortizeplan	 where ACCTNO = :acctno and brc = :brc
+   	]]>
+    </sql>
+    <sql id="update_lnszlamortizeplan_cx">
+        <![CDATA[
+			update lnszlamortizeplan 
+			   set status='CLOSE',timestamp = char(CURRENT TIMESTAMP)
+		     where acctno = :acctno
+		       and brc= :brc
+   	]]>
+    </sql>
+
+
+    <sql id="update_rent_bill">
+        <![CDATA[
+			update lnsbill 
+			   set billbal = 0.00,
+			   	   lastdate = :lastdate, 
+				   lastbal = :lastbal,  
+	               settleflag = 'CLOSE',
+	               timestamp = char(CURRENT TIMESTAMP)
+		     where acctno = :acctno 
+		       and brc= :brc 
+		       and period= :period
+   	]]>
+    </sql>
+
+    <sql id="query_lnsrentreg">
+        <![CDATA[
+      select ACCDATE, SERSEQNO, TRANDATE, SERIALNO, ACCTNO, REQMAP, RSQMAP, TIMESTAMP
+      from LNSRENTREG
+      where ACCTNO = :acctno
+        and brc = :brc
+    ]]>
+    </sql>
+
+    <sql id="query_lnsnonstdplan_bill">
+        <![CDATA[
+			SELECT * FROM LNSNONSTDPLAN
+	      	WHERE ACCTNO = :acctno 
+	          AND OPENBRC = :openbrc 
+	          order by repayterm
+   	]]>
+    </sql>
+    <sql id="update_lnsnonstdplan_bill">
+        <![CDATA[
+			update lnsnonstdplan 
+			   set termprin = :termprin ,modifytime = char(CURRENT TIMESTAMP)
+		     where acctno = :acctno 
+		       and openbrc= :openbrc 
+		       and intedate= :intedate
+   	]]>
+    </sql>
+
+
+    <sql id="query_pubcustaccinfo">
+        <![CDATA[
+			SELECT mid FROM pubcustaccinfo where acctno = :acctno
+   		]]>
+    </sql>
+
+    <sql id="query_customid">
+        <![CDATA[
+			SELECT  customid from LNSPREFUNDACCOUNT
+	      	WHERE BRC = :brc 
+	          AND ACCSRCCODE = :accsrccode
+	          AND ACCTNO = :acctno 
+	          
+   	]]>
+    </sql>
+
+    <sql id="query_oldrepayacctno">
+        <![CDATA[
+			SELECT  acctno from LNSPREFUNDACCOUNT
+	      	WHERE BRC = :brc 
+	          AND accsrccode = :accsrccode
+	          AND customid = :customid 
+	          
+   	]]>
+    </sql>
+
+    <sql id="query_oldrepayacctno_fromdis">
+        <![CDATA[
+			SELECT  acctno from LNSDISCOUNTACCOUNT
+	      	WHERE BRC = :brc
+	          AND ACCTTYPE = :accttype
+	          AND customid = :customid
+
+   	]]>
+    </sql>
+
+    <sql id="query_pubcustglsinfo">
+        <![CDATA[
+			SELECT acctno,custtype,subsys FROM OLD TABLE (update pubcustglsinfo set status = '9' where mid = :mid and status <> '9')
+   		]]>
+    </sql>
+
+    <sql id="query_glsinbalacctinfo">
+        <![CDATA[
+			SELECT brc, accname, opendate, currbal FROM glsinbalacctinfo where acctno = :acctno
+   		]]>
+    </sql>
+
+    <sql id="query_lnsprovisionreg">
+        <![CDATA[
+			SELECT count(1) as amornum, sum(intamt) as allproamt, max(trandate) as lastdate, brc, acctno, memo FROM lnsprecalintreg where acctno = :acctno and stat = '1' 
+			group by brc, acctno, memo
+   		]]>
+    </sql>
+
+    <sql id="query_lnsacctamorplan">
+        <![CDATA[
+			SELECT opendate, contduedate, contractamt, amtres2 FROM lnsacctinfo 
+			where acctno = :acctno and memo = '1' 
+   		]]>
+    </sql>
+
+    <sql id="query_lnsrpylist">
+        <![CDATA[
+      select ACCTNO, REPAYTERM, ACCTSTAT, TRANDATE, SEQNO, BRC, PROFITBRC, DIACCT, CCY, 
+      TRANAMT, FLAG, LOANTYPE1, LOANTYPE2, LOANTYPE3, RPYFLAG, REPAYAMT, NORETAMT, BDATE, 
+      EDATE, EXECURATE
+      from LNSRPYLIST
+      where ACCTNO = :acctno
+      	]]>
+    </sql>
+
+    <sql id="update_lnsmerchant">
+        <![CDATA[
+			update lnsmerchant set remnt1 = remnt1 + :tranamt 
+		    WHERE mid = :acctno or acctno = :acctno 
+   	]]>
+    </sql>
+    <sql id="update_lnsinterface_repay">
+        <![CDATA[
+			update lnsinterface set sumrfint = :sumrfint, sumrint = :sumrint, sumramt = :sumramt,  
+		    tranamt = :sumrfint+:sumrint+:sumramt, acctflag = :acctflag,timestamp = char(CURRENT TIMESTAMP)  
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+    <sql id="update_lnsinterface_fc_repay">
+        <![CDATA[
+			update lnsinterface set sumrfint = :sumrfint, sumrint = :sumrint, sumramt = :sumramt,  
+		    reserv2 = :status,timestamp = char(CURRENT TIMESTAMP)  
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+
+    <sql id="update_lnsinterface_leaseRefund">
+        <![CDATA[
+			update lnsinterface set sumrfint = :sumrfint, sumrint = :sumrint, sumramt = :sumramt,
+			 reserv4 = :reserv4, 
+		    tranamt = :sumrfint+:sumrint+:sumramt, acctflag = :acctflag,timestamp = char(CURRENT TIMESTAMP)  
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+
+    <sql id="update_lnsinterface_fdd">
+        <![CDATA[
+			update lnsinterface set tranamt = :tranamt,
+			 acctflag = :acctflag,
+			 <#if reserv3?exists && reserv3 != "">
+			 reserv3 = :reserv3,
+			</#if>
+			<#if reserv4?exists && reserv4 != "">
+			 reserv4 = :reserv4,
+			</#if>
+			<#if sumrint?exists && sumrint != "">
+			 sumrint = :sumrint,
+			</#if>
+			<#if sumrfint?exists && sumrfint != "">
+			 sumrfint = :sumrfint,
+			</#if>
+			 timestamp = char(CURRENT TIMESTAMP)  
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+
+    <sql id="update_lnsinterface_251">
+        <![CDATA[
+			update lnsinterface set sumrfint = :sumrfint, sumrint = :sumrint, sumramt = :sumramt,  
+		    tranamt = :sumrfint+:sumrint+:sumramt+:feeamt, acctflag = :acctflag ,reserv3 = :reserv3,timestamp = char(CURRENT TIMESTAMP) 
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+    <sql id="update_lnsinterface_114">
+        <![CDATA[
+			update lnsinterface set sumdelint = :sumdelint, sumdelfint = :sumdelfint, reserv4 = :reserv4,timestamp = char(CURRENT TIMESTAMP) 
+		    WHERE serialno = :serialno and trancode = :trancode  
+   	]]>
+    </sql>
+    <sql id="update_lnsinterface_off">
+        <![CDATA[
+   			UPDATE LNSINTERFACE SET ACCTNAME = :acctname, ACCTNO = :acctno, TRANAMT = :tranamt, 
+   				RESERV5 = :reserv5, BANKNO = :memo,timestamp = char(CURRENT TIMESTAMP)
+			WHERE SERIALNO = :serialno AND TRANCODE = :trancode
+   	]]>
+    </sql>
+    <sql id="query_lnsdiscountaccount">
+        <![CDATA[
+			SELECT * from LNSDISCOUNTACCOUNT
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno 
+	          AND STATUS = '0'
+   	]]>
+    </sql>
+    <sql id="query_lnsprefundaccount">
+        <![CDATA[
+			SELECT acctno, customid, name, custtype, opendate, balance from LNSPREFUNDACCOUNT
+	      	WHERE BRC = :brc 
+	          AND ACCSRCCODE = :accsrccode
+	          <#if acctno?exists && acctno != "">
+	          AND ACCTNO = :acctno 
+	          </#if>
+	          <#if customid?exists && customid != "">
+	          AND CUSTOMID = :customid 
+	          </#if>
+	          
+   	]]>
+    </sql>
+    <sql id="query_rpyinfo">
+        <![CDATA[
+			SELECT 	b.trandate, 
+					trim(b.brc) as brc, 
+					trim(b.acctno) as acctno, 
+					trim(b.trancode) as trancode, 
+					trim(b.reserv5) as channeltype, 
+					trim(a.customid) as customid, 
+					trim(a.name) as customname, 
+					a.prdcode, a.loanstat, 
+					trim(a.acctno1) as receiptno, 
+					(case when b.trancode<>'471011' then b.sumrint else 0.00 end )  as intamt, 
+					b.sumramt as prinamt, 
+					(case when b.trancode<>'471011' then b.sumrfint else 0.00 end )  as forfeitamt, 
+					(case when b.trancode='471011' then b.sumrint else 0.00 end ) as feeamt,
+					b.tranamt, 
+					trim(b.reserv3) as serviceFee
+			FROM LNSBASICINFO a join LNSINTERFACE b 
+			  ON a.acctno = b.acctno 
+		   WHERE b.accdate BETWEEN :begindate AND :enddate
+			<#if brc?exists && brc != "">
+			 AND a.openbrc = :brc
+			</#if> 	
+			<#if acctno?exists && acctno != "">
+			 AND a.acctno = :acctno
+			</#if> 
+			<#if acctno1?exists && acctno1 != "">
+			 AND a.acctno1 = :acctno1
+			</#if>
+			<#if customid?exists && customid != "">
+			 AND a.customid = :customid
+			</#if> 
+			<#if prdcode?exists && prdcode != "">
+			 AND a.prdcode = :prdcode
+			</#if>
+			<#if loanstat?exists && loanstat != "">
+			 AND a.loanstat = :loanstat
+			</#if>
+			 AND trancode in ('471007','471008','471009','471010','471011','471012','471013','SWITCH')
+			ORDER BY b.TRANDATE
+   	]]>
+    </sql>
+    <sql id="query_prefund">
+        <![CDATA[
+			SELECT a.trandate, a.brc, case a.trancode when '176002' then '贷' else '借' end as cdflag, 
+			a.tranamt, a.timestamp, b.customid, b.name as customname
+			from LNSINTERFACE a join LNSPREFUNDACCOUNT as b 
+			ON a.userno = b.acctno and a.brc = b.brc 
+	      	WHERE a.accdate >= :begindate AND a.accdate <= :enddate 
+	      	AND a.TRANCODE IN ('176002', '176001') AND b.accsrccode = 'N' 
+			<#if brc?exists && brc != ""> 
+			AND a.brc = :brc 
+			</#if> 	
+			<#if customid?exists && customid != "">
+			AND b.customid = :customid
+			</#if> 
+	        ORDER BY a.TRANDATE  
+   	]]>
+    </sql>
+    <sql id="query_carAccountDetails">
+        <![CDATA[
+			(
+			SELECT a.accdate, a.brc, a.magacct as acctNo, b.name as customname, b.accttype as chargeType,  
+			case a.trancode when '176005' then '收' else '支' end as cdflag, a.tranamt, a.timestamp
+			from LNSINTERFACE a join LNSDISCOUNTACCOUNT as b 
+			ON a.magacct = b.acctno AND a.brc = b.brc AND a.userno=b.accttype
+	      	WHERE a.accdate >= :begindate AND a.accdate <= :enddate 
+	      	AND a.TRANCODE IN ('176005', '176004') AND a.MAGACCT = :acctno AND a.BRC =:brc
+			<#if userno?exists && userno != ""> 
+			AND a.userno = :userno 
+			</#if> 	
+	        ORDER BY a.accdate
+	        ) 
+	        union all
+	        (
+	        SELECT a.accdate, a.brc, a.acctno, b.name as customname, b.accttype as chargeType,  
+			case a.trancode when '471012' then '支' else '收' end as cdflag, a.tranamt, a.timestamp
+			from LNSINTERFACE a join LNSDISCOUNTACCOUNT as b 
+			ON a.acctno = b.acctno AND a.brc = b.brc 
+			AND case a.reserv5 when 10 then 2 when 11 then 3 when 13 then 1 end = b.accttype
+	      	WHERE a.accdate >= :begindate AND a.accdate <= :enddate 
+	      	AND a.TRANCODE = '471012' AND a.RESERV5 in ('10', '11', '13')
+	      	AND a.ACCTNO = :acctno AND a.BRC =:brc
+			<#if reserv5?exists && reserv5 != ""> 
+			AND a.reserv5 = :reserv5 
+			</#if> 	
+	        ORDER BY a.accdate
+	        )
+   	]]>
+    </sql>
+    <sql id="update_lnsdiscountaccount_add">
+        <![CDATA[
+   			SELECT * FROM NEW TABLE (
+			UPDATE LNSDISCOUNTACCOUNT SET BALANCE = BALANCE + :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno 
+	          AND ACCTTYPE = :accttype )
+   	]]>
+    </sql>
+    <sql id="update_lnsprefundaccount_add">
+        <![CDATA[
+   			SELECT * FROM NEW TABLE (
+			UPDATE LNSPREFUNDACCOUNT SET BALANCE = BALANCE + :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno
+	          AND ACCSRCCODE = :accsrccode )
+   	]]>
+    </sql>
+    <sql id="update_lnsprefundaccountcustom_add">
+        <![CDATA[
+   			SELECT * FROM NEW TABLE (
+			UPDATE LNSPREFUNDACCOUNT SET BALANCE = BALANCE + :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND customid = :customid
+	          AND ACCSRCCODE = :accsrccode )
+   	]]>
+    </sql>
+    <sql id="update_lnsdiscountaccount_sub">
+        <![CDATA[
+			SELECT * FROM NEW TABLE (
+			UPDATE LNSDISCOUNTACCOUNT SET BALANCE = BALANCE - :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno 
+	          AND ACCTTYPE = :accttype )
+   	]]>
+    </sql>
+    <sql id="update_lnsprefundaccount_sub">
+        <![CDATA[
+			SELECT * FROM NEW TABLE (
+			UPDATE LNSPREFUNDACCOUNT SET BALANCE = BALANCE - :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno 
+	          AND ACCSRCCODE = :accsrccode )
+   	]]>
+    </sql>
+    <sql id="query_lnsprefundaccount_customid">
+        <![CDATA[
+			SELECT customid FROM LNSPREFUNDACCOUNT 
+	      	WHERE BRC = :brc 
+	          AND ACCTNO = :acctno
+	          AND ACCSRCCODE = :accsrccode
+   	]]>
+    </sql>
+    <sql id="query_lnsbasicinfo_customid">
+        <![CDATA[
+			select CUSTOMID,CUSTTYPE,NAME FROM LNSBASICINFO WHERE CUSTOMID = :customid and OPENBRC = :brc for read only
+   	]]>
+    </sql>
+    <sql id="update_lnsprefundaccount_repay">
+        <![CDATA[
+   			SELECT BALANCE,CUSTOMID,CUSTTYPE FROM NEW TABLE (
+			UPDATE LNSPREFUNDACCOUNT SET BALANCE = BALANCE - :balance ,timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE BRC = :brc 
+	          AND ACCSRCCODE = :accsrccode
+			  <#if accsrccode == "N">
+	           AND ACCTNO = :acctno )
+		      </#if>
+	          <#if accsrccode == "D">
+	           AND CUSTOMID = :acctno )
+		      </#if>
+   	]]>
+    </sql>
+    <sql id="query_custglsinfo">
+        <![CDATA[
+			SELECT acctno, status, remnt1 FROM pubcustglsinfo 
+			                             WHERE (mid = :mid OR acctno = :acctno)
+						                   AND subsys = :subsys
+						                   AND brc = :brc for read only
+   	]]>
+    </sql>
+    <sql id="query_hisbills">
+        <![CDATA[
+			SELECT * FROM lnsbill	 where ACCTNO = :acctno and brc = :brc order by trandate,serseqno,txseq for read only
+   	]]>
+   	</sql>
+    <sql id="query_lnsbill_enddate">
+        <![CDATA[
+			SELECT enddate FROM lnsbill
+			where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+   	]]>
+    </sql>
+    <sql id="query_lnsbill_cancelflag">
+        <![CDATA[
+			SELECT cancelflag FROM lnsbill
+			where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+   	]]>
+    </sql>
+    <sql id="query_hisbillbaks">
+        <![CDATA[
+			SELECT * FROM LNSBILLBAK	 where ACCTNO = :acctno and brc = :brc order by trandate,serseqno,txseq for read only
+   	]]>
+    </sql>
+    <sql id="query_runingprinintbills">
+        <![CDATA[
+			SELECT * FROM lnsbill	 where ACCTNO = :acctno and brc = :brc and billtype in ('PRIN','NINT'
+			 <#if feetypes?exists && feetypes != "">
+			 	,${feetypes}
+			 </#if>
+			 ) and  settleflag = 'RUNNING'  order by trandate,serseqno,txseq for read only
+   	]]>
+    </sql>
+
+    <sql id="query_runingbills">
+        <![CDATA[
+			SELECT * FROM lnsbill	 where ACCTNO = :acctno and brc = :brc and  settleflag = 'RUNNING'  order by trandate,serseqno,txseq for read only
+   	]]>
+    </sql>
+
+    <sql id="query_custominfo">
+        <![CDATA[
+			select CUSTOMID,CUSTTYPE,NAME,acctno1 from LNSBASICINFO where ACCTNO= :acctno and OPENBRC= :brc for read only
+   	]]>
+    </sql>
+
+
+    <sql id="query_prdcode">
+        <![CDATA[
+				select prdcode from lnsaccountdyninfo where acctno = :acctno and acctstat= :acctstat and openacctbrc= :brc
+				and  profitbrc = :profitbrc
+				and ccy= :ccy
+		]]>
+    </sql>
+    <sql id="update_hisbill">
+        <![CDATA[
+				update LNSBILL set ACCUMULATE = :accumulate,intedate=:intedate1, timestamp = char(CURRENT TIMESTAMP)
+			  			where trandate =:trandate and serseqno = :serseqno and txseq =:txseq and intedate =:intedate
+		]]>
+    </sql>
+    <sql id="update_hisbill_513">
+        <![CDATA[
+				update LNSBILL set intedate=:intedate1, timestamp = char(CURRENT TIMESTAMP)
+			  			where trandate =:trandate and serseqno = :serseqno and txseq =:txseq 
+		]]>
+    </sql>
+    <sql id="update_lnsbill_cancelflag">
+        <![CDATA[
+				update LNSBILL set cancelflag=:cancelflag, timestamp = char(CURRENT TIMESTAMP)
+			  			where trandate =:trandate and serseqno = :serseqno and txseq =:txseq 
+		]]>
+    </sql>
+    <sql id="update_lnsbill_cancelflag_FYJ">
+        <![CDATA[
+				update LNSBILL
+				set
+				    <#if cancelflag?exists && cancelflag != "">
+                        cancelflag=:cancelflag,
+                    </#if>
+				    <#if begindate?exists && begindate != "">
+                        begindate = :begindate,
+                    </#if>
+                    <#if billproperty?exists && billproperty != "">
+                        billproperty = :billproperty,
+                    </#if>
+                    <#if billamt?exists && billamt != "">
+                        billamt = :billamt,
+                    </#if>
+                    <#if billbal?exists && billbal != "">
+                        billbal = :billbal,
+                    </#if>
+				        timestamp = char(CURRENT TIMESTAMP)
+			  	where trandate =:trandate and serseqno = :serseqno and txseq =:txseq
+		]]>
+    </sql>
+
+    <sql id="update_hisbillstatus">
+        <![CDATA[
+				update LNSBILL set BILLSTATUS=:billStatus, statusbdate=:statusbDate, timestamp = char(CURRENT TIMESTAMP)
+			  			where trandate =:trandate and serseqno = :serseqno and txseq =:txseq
+		]]>
+    </sql>
+    <sql id="query_update_dyninfo">
+        <![CDATA[
+				SELECT	* FROM NEW TABLE (
+				UPDATE	lnsaccountdyninfo 
+				SET pretrandate = max(nvl(pretrandate,'1970-01-01'),:trandate),
+					lastbal = 
+					CASE
+						WHEN nvl(pretrandate,'1970-01-01') < :trandate
+						THEN currbal
+						ELSE lastbal 
+					END,
+					currbal = currbal + :tranamt,
+					ordnu = ordnu + :listcount,
+					modifydate = :trandate,
+					modifytime = char(CURRENT TIMESTAMP)
+				WHERE acctno = :acctno
+				  AND openacctbrc = :brc
+				  AND profitbrc = :profitbrc
+				  AND acctstat = :acctstat )
+		]]>
+    </sql>
+    <sql id="query_period">
+        <![CDATA[
+			select max(period) from  LNSBILL 
+		     	 where acctno = :acctno
+		        	and brc = :brc 
+		 ]]>
+    </sql>
+    <sql id="query_lnsbill_repay">
+        <![CDATA[
+	select TRANDATE, SERSEQNO, TXSEQ, BRC, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL, 
+      LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE, 
+      FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS, 
+      STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+      from LNSBILL 
+      where acctno = :acctno 
+        and brc = :brc 
+        and settleflag = 'RUNNING' 
+        	]]>
+    </sql>
+
+    <sql id="query_lnsbill_nint">
+        <![CDATA[
+			SELECT TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL, 
+		      	   LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, REPAYEDATE, 
+		      	   SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, 
+		      	   DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+		      FROM LNSBILL 
+		     WHERE ACCTNO = :acctno 
+		       AND BRC = :brc
+		       AND BILLTYPE = 'NINT'
+		       AND SETTLEFLAG = 'RUNNING' 
+        	]]>
+    </sql>
+    <sql id="query_lnsbill_dint">
+        <![CDATA[
+			SELECT TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL, 
+		      	   LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, REPAYEDATE, 
+		      	   SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, 
+		      	   DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+		      FROM LNSBILL 
+		     WHERE ACCTNO = :acctno 
+		       AND BRC = :brc
+		       AND BILLTYPE in( 'DINT','GINT','CINT')
+		       AND SETTLEFLAG = 'RUNNING' 
+        	]]>
+    </sql>
+
+
+    <sql id="update_lnsbill_repay">
+        <![CDATA[
+	SELECT min(billbal,:tranamt) as minamt, billbal FROM OLD TABLE ( 
+	update LNSBILL set billbal = billbal - min(billbal,:tranamt), 
+	timestamp = char(CURRENT TIMESTAMP),
+	lastdate = case when settleflag='CLOSE' or (billbal=0.00 and billamt=0.00) then lastdate else max(:actrandate, nvl(lastdate, '1899-12-31')) end,
+	lastbal = case when nvl(lastdate,'1899-12-31')=:actrandate or settleflag='CLOSE' then lastbal else billbal end,  
+	settledate = case when :tranamt < billbal or settleflag = 'CLOSE' then settledate else :actrandate end, 
+	settleflag = case when :tranamt < billbal then settleflag else 'CLOSE' end
+	<#if billproperty?exists && billproperty != "">
+	,	billproperty = :billproperty
+	</#if>
+	where trandate = :trandate 
+			and serseqno = :serseqno 
+			and txseq = :txseq )
+   	]]>
+    </sql>
+
+    <sql id="update_lnsbill_dcrepay">
+        <![CDATA[
+	SELECT min(billbal,:tranamt) as minamt, billbal FROM OLD TABLE ( 
+	update LNSBILL set billbal = billbal - min(billbal,:tranamt), 
+	timestamp = char(CURRENT TIMESTAMP),
+	BILLPROPERTY = :billproperty,
+	lastdate = case when settleflag='CLOSE' then lastdate else max(:actrandate, nvl(lastdate, '1899-12-31')) end, 
+	lastbal = case when nvl(lastdate,'1899-12-31')=:actrandate or settleflag='CLOSE' then lastbal else billbal end,  
+	settledate = case when :tranamt < billbal or settleflag = 'CLOSE' then settledate else :actrandate end, 
+	settleflag = case when :tranamt < billbal then settleflag else 'CLOSE' end  
+	where trandate = :trandate 
+			and serseqno = :serseqno 
+			and txseq = :txseq )
+   	]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfo_loanstat">
+        <![CDATA[
+			update lnsbasicinfo set loanstat = :loanstat,
+									modifydate = :modifyDate,
+           							modifytime = char(CURRENT TIMESTAMP) 
+		                      WHERE   acctno = :acctno  
+		                        and  openbrc = :openbrc
+		                       <#if oldloanstat?exists && oldloanstat != "">
+	    						and	loanstat = :oldloanstat
+							   </#if>
+   	]]>
+    </sql>
+
+
+    <sql id="update_lnsbasicinfo_repaydate">
+        <![CDATA[
+			update lnsbasicinfo set PRINPERFORMULA = :prinPerformula,
+									INTPERFORMULA = :intPerformula,
+									<#if flag1?exists && flag1 != "">
+	    								FLAG1 = :flag1,
+							   		</#if>
+							   		<#if lastprindate?exists && lastprindate != "">
+	    								lastprindate = :lastprindate,
+							   		</#if>
+							   		<#if lastintdate?exists && lastintdate != "">
+	    								lastintdate = :lastintdate,
+							   		</#if>
+           							CONTDUEDATE = :contduedate,
+           							modifytime = char(CURRENT TIMESTAMP)
+		                      WHERE   acctno = :acctno  
+		                        and  openbrc = :openbrc
+   	]]>
+    </sql>
+
+    <sql id="update_lnsnonstdplan_loanstat">
+        <![CDATA[
+			update lnsnonstdplan set loanstat = :loanstat,
+									modifydate = :modifyDate,
+           							modifytime = char(CURRENT TIMESTAMP) 
+		                      WHERE   acctno = :acctno  
+		                        and  openbrc = :openbrc
+		                       <#if oldloanstat?exists && oldloanstat != "">
+	    						and	loanstat = :oldloanstat
+							   </#if>
+   	]]>
+    </sql>
+    <sql id="update_lnsbasicinfo">
+        <![CDATA[
+        		update lnsbasicinfo set
+	        		<#if lastPrinDate?exists && lastPrinDate != "">
+	        		    lastprindate = :lastPrinDate,
+					</#if>
+					<#if lastIntDate?exists && lastIntDate != "">
+	        		    lastintdate = :lastIntDate,
+					</#if>
+	        		<#if prinTerm?exists && (prinTerm > 0)>
+	        			 curprinterm = curprinterm + :prinTerm,
+	        		</#if> 
+	        		<#if intTerm?exists && (intTerm > 0)>
+	        			  curintterm = curintterm + :intTerm,
+	        		</#if> 
+	        		<#if tranAmt?exists >
+	        			 contractbal = contractbal - :tranAmt,
+	        		</#if>
+	        		<#if loanStat?exists && loanStat != "">
+	        		    loanstat = :loanStat,
+					</#if>
+	        			  modifydate = :modifyDate,
+	        			  modifytime = char(CURRENT TIMESTAMP) 
+	        	 where acctno = :acctNo
+	        	   and openbrc = :brc
+	        	   and (lastprindate = :oldPrinDate or lastprindate = '')
+	        	   and (lastintdate = :oldIntDate or lastintdate = '')
+        		
+		]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfo_238">
+        <![CDATA[
+        		update lnsbasicinfo set
+	        		<#if tranAmt?exists >
+	        			 contractbal = contractbal - :tranAmt,
+	        		</#if>
+	        			  modifydate = :modifyDate,
+	        			  modifytime = char(CURRENT TIMESTAMP) 
+	        	 where acctno = :acctNo
+	        	   and openbrc = :brc
+        		
+		]]>
+    </sql>
+    <sql id="update_lnsbasicinfo_252">
+        <![CDATA[
+        		update lnsbasicinfo set
+	        			  memo = :memo,
+	        			  modifydate = :modifyDate,
+	        			  modifytime = char(CURRENT TIMESTAMP)
+	        	 where acctno = :acctno
+	        	   and openbrc = :brc
+
+		]]>
+    </sql>
+    <sql id="update_lnsbasicinfo_606">
+        <![CDATA[
+        		update lnsbasicinfo set
+	        		<#if contduedate?exists >
+	        			 CONTDUEDATE = :contduedate,
+	        		</#if>
+	        		<#if prinperformula?exists >
+	        			 prinperformula = :prinperformula,
+	        		</#if>
+	        		<#if intperformula?exists >
+	        			 intperformula = :intperformula,
+	        		</#if>
+	        			  flag1 = :flag1,
+	        			  extnums = :extnums,
+	        			  modifydate = :modifyDate,
+	        			  modifytime = char(CURRENT TIMESTAMP) 
+	        	 where acctno = :acctno
+	        	   and openbrc = :brc
+        		
+		]]>
+    </sql>
+
+
+    <sql id="query_lnsamortizeplan">
+        <![CDATA[
+   		SELECT 
+   			A.CONTRACTBAL, A.LOANSTAT, B.TAXRATE, B.TOTALAMT, B.AMORTIZEAMT, B.TOTALTAXAMT, B.AMORTIZETAX, B.LASTDATE, 
+   			B.BEGINDATE, B.ENDDATE, B.STATUS, B.PERIOD, B.AMORTIZEFORMULA  
+		FROM 
+			LNSBASICINFO A, LNSAMORTIZEPLAN B 
+		WHERE 
+			A.ACCTNO=B.ACCTNO 
+			AND A.OPENBRC=B.BRC 
+			AND B.BRC = :brc 
+			AND B.ACCTNO = :acctno
+			<#if amortizetype?exists && amortizetype != "">
+				AND B.AMORTIZETYPE = :amortizetype
+                </#if>
+
+   	]]>
+    </sql>
+
+
+    <sql id="query_lnszlamortizeplan">
+        <![CDATA[
+   		SELECT 
+   			A.CONTRACTBAL, A.LOANSTAT, B.TAXRATE, B.TOTALAMT, B.AMORTIZEAMT, B.TOTALTAXAMT, B.AMORTIZETAX, B.LASTDATE, 
+   			B.BEGINDATE, B.ENDDATE, B.STATUS, B.PERIOD ,B.CONTRACTAMT ,B.RENTAMT ,B.MONRATE
+		FROM 
+			LNSBASICINFO A, LNSZLAMORTIZEPLAN B 
+		WHERE 
+			A.ACCTNO=B.ACCTNO AND A.OPENBRC=B.BRC AND B.BRC = :brc AND B.ACCTNO = :acctno
+   	]]>
+    </sql>
+
+    <sql id="update_lnszlamortizeplan">
+        <![CDATA[
+			UPDATE 
+				LNSZLAMORTIZEPLAN 
+			SET 
+				AMORTIZEAMT = AMORTIZEAMT + :amortizamt, 
+				AMORTIZETAX = AMORTIZETAX + :taxamt,
+				LASTDATE = :lastdate,
+				<#if chargeamt?exists && chargeamt != "">
+				  CHARGEAMT = :chargeamt,
+                </#if>
+				PERIOD = PERIOD + 1,
+				STATUS = :status,
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE 
+	      		BRC = :brc 
+   				AND ACCTNO = :acctno 
+   	]]>
+    </sql>
+
+    <sql id="update_lnsamortizeplan">
+        <![CDATA[
+			UPDATE 
+				LNSAMORTIZEPLAN 
+			SET 
+				AMORTIZEAMT = AMORTIZEAMT + :amortizamt, 
+				AMORTIZETAX = AMORTIZETAX + :taxamt,
+				LASTDATE = :lastdate,
+				PERIOD = PERIOD + 1,
+				STATUS = :status,
+				<#if amortizeformula?exists && amortizeformula != "">
+				AMORTIZEFORMULA = :amortizeformula,
+				</#if>
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE 
+	      		BRC = :brc 
+   				AND ACCTNO = :acctno 
+   				<#if amortizetype?exists && amortizetype != "">
+   				AND AMORTIZETYPE = :amortizetype 
+   				</#if>
+   	]]>
+
+    </sql>
+    <sql id="update_lnsamortizeplan_status">
+        <![CDATA[
+			UPDATE
+				LNSAMORTIZEPLAN
+			SET
+				STATUS = :status,
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE
+	      		BRC = :brc
+   				AND ACCTNO = :acctno
+   				<#if amortizetype?exists && amortizetype != "">
+				AND amortizetype = :amortizetype
+				</#if>
+   	]]>
+    </sql>
+    <sql id="update_lnsamortizeplan_enddate">
+        <![CDATA[
+			UPDATE
+				LNSAMORTIZEPLAN
+			SET
+				enddate = :enddate,
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE
+	      		BRC = :brc
+   				AND ACCTNO = :acctno
+   	]]>
+    </sql>
+
+    <sql id="update_lnsamortizeplan_463">
+        <![CDATA[
+			UPDATE
+				LNSAMORTIZEPLAN
+			SET
+				TOTALAMT = TOTALAMT + :adjustamt, 
+				TOTALTAXAMT = TOTALTAXAMT + :adjustamttax,
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE
+	      		BRC = :brc
+   				AND ACCTNO = :acctno
+   				AND AMORTIZETYPE = :amortizetype 
+   	]]>
+    </sql>
+
+    <sql id="query_lnsprovision_lastperiod">
+        <![CDATA[
+			SELECT RECEIPTNO, INTERTYPE, PERIOD, TRANDATE, SERSEQNO, TXNSEQ, BRC, TELLER, BILLTYPE, 
+			      CCY, TOTALINTEREST, TOTALTAX, TAXRATE, INTEREST, TAX, BEGINDATE, ENDDATE, INTERFLAG, 
+			      SENDFLAG, SENDNUM, CANCELFLAG, TIMESTAMP, RESERV1, RESERV2
+			      FROM LNSPROVISIONREG
+		     WHERE RECEIPTNO = :receiptno
+		       AND INTERTYPE = :intertype
+		       AND PERIOD = (SELECT max(PERIOD) FROM LNSPROVISIONREG 
+		       				  WHERE RECEIPTNO = :receiptno 
+	                			AND INTERTYPE = :intertype)
+		]]>
+    </sql>
+
+    <sql id="query_lnsprovision_max">
+        <![CDATA[
+			SELECT *
+			      FROM LNSPROVISION
+		     WHERE acctno = :receiptno
+		       AND INTERTYPE = :intertype
+		          AND billtype = :billtype
+		      
+		]]>
+    </sql>
+
+    <sql id="query_nintbillsum">
+        <![CDATA[
+			SELECT SUM(billamt)
+			  FROM LNSBILL
+		     WHERE ACCTNO = :acctno
+		       AND BRC = :openbrc
+		       AND BILLTYPE = 'NINT'
+		     FOR READ ONLY
+		]]>
+    </sql>
+    <sql id="query_serfeebillsum">
+        <![CDATA[
+			SELECT SUM(billamt)
+			  FROM LNSBILL
+		     WHERE ACCTNO = :acctno
+		       AND BRC = :openbrc
+		       AND BILLTYPE = 'AFEE'
+		     FOR READ ONLY
+		]]>
+    </sql>
+    <sql id="query_lnsbill_nintall">
+        <![CDATA[
+			SELECT TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL, 
+			      LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE, 
+			      FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS, 
+			      STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+			      from LNSBILL
+		     WHERE ACCTNO = :acctno
+		       AND BRC = :openbrc
+		       AND BILLTYPE = 'NINT'
+		     FOR READ ONLY
+		]]>
+    </sql>
+    <sql id="update_lnsbasicinfo_provisionflag">
+        <![CDATA[
+        		UPDATE LNSBASICINFO SET
+	        		   PROVISIONFLAG = :provisionflag ,modifytime = char(CURRENT TIMESTAMP)
+	        	 WHERE ACCTNO = :acctno 
+	        	   AND OPENBRC = :brc
+		]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfo_loanstatEx">
+        <![CDATA[
+        	UPDATE LNSBASICINFO SET 
+        		LOANSTAT = :loanstat, 
+        		PROVISIONFLAG = 'CLOSE',
+        		modifytime = char(CURRENT TIMESTAMP)
+	        WHERE ACCTNO = :acctno AND OPENBRC = :brc
+		]]>
+    </sql>
+    <sql id="update_lnsbasicinfo_loanstatEx_115">
+        <![CDATA[
+        	UPDATE LNSBASICINFO SET
+        		LOANSTAT = :loanstat,
+        		modifytime = char(CURRENT TIMESTAMP)
+        		<#if flag1?exists && flag1 != "">
+	        	,flag1=:flag1
+			</#if>
+	        WHERE ACCTNO = :acctno AND OPENBRC = :brc
+		]]>
+    </sql>
+    <sql id="update_lnsbasicinfo_flag">
+        <![CDATA[
+        	UPDATE LNSBASICINFO SET
+        		modifytime = char(CURRENT TIMESTAMP)
+	        	,flag1=:flag1
+	        WHERE ACCTNO = :acctno AND OPENBRC = :brc
+		]]>
+    </sql>
+
+    <sql id="query_billplan">
+        <![CDATA[
+			SELECT * FROM lnsbillplan where ACCTNO = :acctno and BRC = :brc order by trandate,serseqno,txseq for read only
+   	]]>
+    </sql>
+
+    <sql id="query_lnseventreg">
+        <![CDATA[
+			SELECT 
+				* 
+			FROM 
+				LNSEVENTREG 
+			WHERE 
+				SERSEQNO = :serseqno
+			<#if eventcode?exists && eventcode != "">
+				AND EVENTCODE = :eventcode
+			</#if>
+			<#if trandate?exists && trandate != "">
+	        	AND TRANDATE = :trandate
+			</#if>
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+			order by txnseq 
+   		]]>
+    </sql>
+    <sql id="query_lnsamortizeplan_off">
+        <![CDATA[
+			SELECT * FROM LNSAMORTIZEPLAN 
+			WHERE SERSEQNO = :serseqno 
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+    <sql id="query_lnszlamortizeplan_off">
+        <![CDATA[
+			SELECT * FROM LNSZLAMORTIZEPLAN 
+			WHERE SERSEQNO = :serseqno 
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+    <sql id="query_lnsamortizeplan_off_old">
+        <![CDATA[
+			SELECT * FROM LNSAMORTIZEPLAN 
+			WHERE ACCTNO = :acctno 
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+    <sql id="update_lnsamortizeplan_off">
+        <![CDATA[
+			UPDATE 
+				LNSAMORTIZEPLAN 
+			SET 
+				AMORTIZEAMT = 0, 
+				AMORTIZETAX = 0,
+				LASTDATE = :lastdate,
+				PERIOD = 0,
+				STATUS = 'CLOSE',
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE 
+	      		SERSEQNO = :serseqno 
+	      	<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+    <sql id="update_lnszlamortizeplan_off">
+        <![CDATA[
+			UPDATE 
+				LNSZLAMORTIZEPLAN 
+			SET 
+				AMORTIZEAMT = 0, 
+				AMORTIZETAX = 0,
+				LASTDATE = :lastdate,
+				PERIOD = 0,
+				STATUS = 'CLOSE',
+				timestamp = char(CURRENT TIMESTAMP)
+	      	WHERE 
+	      		SERSEQNO = :serseqno 
+	      	<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+
+    <sql id="query_lnsrpyinfo_count">
+        <![CDATA[
+			SELECT COUNT(1) AS NUM FROM LNSRPYINFO 
+			WHERE ACCTNO = :acctno  
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+			AND ACCTSTAT NOT IN ('SQFE.N','SQFE.O','FEEA.N','FEEA.O')
+   		]]>
+    </sql>
+
+    <sql id="query_lnsbill_info">
+        <![CDATA[
+			SELECT BILLAMT, BILLBAL, ENDDATE, BILLSTATUS FROM LNSBILL 
+			WHERE ACCTNO = :acctno 
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+			and billtype not in  ('SQFE','ISFE','RMFE','FWFE','WBRD')
+   		]]>
+    </sql>
+    <sql id="query_lnsbill_grace">
+        <![CDATA[
+			SELECT BILLTYPE FROM LNSBILL 
+			WHERE ACCTNO = :acctno 
+			<#if brc?exists && brc != "">
+				AND BRC = :brc
+			</#if>
+   		]]>
+    </sql>
+    <!--    	<sql id="delete_lnsaccountlist">
+               <![CDATA[
+                DELETE FROM LNSACCOUNTLIST WHERE ACCTNO = :acctno AND BRC = :brc
+               ]]>
+           </sql> -->
+    <sql id="delete_lnsacclist">
+        <![CDATA[
+			DELETE FROM LNSACCLIST WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsamortizeplan">
+        <![CDATA[
+			DELETE FROM LNSAMORTIZEPLAN WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsinterface">
+        <![CDATA[
+			DELETE FROM LNSINTERFACE WHERE SERSEQNO = :serseqno AND ACCDATE = :trandate 
+   		]]>
+    </sql>
+    <sql id="insert_lnsbasicinfocal">
+        <![CDATA[
+   			INSERT INTO LNSBASICINFOCAL SELECT * FROM LNSBASICINFO WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="insert_lnsbasicinfoback">
+        <![CDATA[
+   			INSERT INTO LNSBASICINFOBACK SELECT * FROM LNSBASICINFO WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsbasicinfo">
+        <![CDATA[
+			DELETE FROM LNSBASICINFO WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsbasicinfoex">
+        <![CDATA[
+			DELETE FROM LNSBASICINFOEX WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsbasicinfodyn">
+        <![CDATA[
+			DELETE FROM LNSBASICINFODYN WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+
+    <sql id="delete_lnsbasicinfoback">
+        <![CDATA[
+			DELETE FROM LNSBASICINFOBACK WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsnonstdplan">
+        <![CDATA[
+			DELETE FROM LNSNONSTDPLAN WHERE ACCTNO = :acctno AND OPENBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsaccountdyninfo">
+        <![CDATA[
+			DELETE FROM LNSACCOUNTDYNINFO WHERE ACCTNO = :acctno AND OPENACCTBRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsreceipt">
+        <![CDATA[
+			DELETE FROM lnsreceipt WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsprovision">
+        <![CDATA[
+			DELETE FROM LNSPROVISIONREG WHERE RECEIPTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnspenintprovreg">
+        <![CDATA[
+			DELETE FROM LNSPENINTPROVREG WHERE RECEIPTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnspenintprovregdtl">
+        <![CDATA[
+			DELETE FROM LNSPENINTPROVREGDTL WHERE RECEIPTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsrpyplan_off">
+        <![CDATA[
+			DELETE FROM LNSRPYPLAN WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+
+    <sql id="delete_lnsrpyplan_606">
+        <![CDATA[
+			DELETE FROM LNSRPYPLAN WHERE ACCTNO = :acctno AND BRC = :brc and repayterm > :repayterm
+   		]]>
+    </sql>
+
+    <sql id="delete_lnsbill_off">
+        <![CDATA[
+			DELETE FROM LNSBILL WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+
+    <sql id="delete_lnsnonstdplan">
+        <![CDATA[
+			DELETE FROM LNSNONSTDPLAN WHERE ACCTNO = :acctno AND BRC = :brc
+   		]]>
+    </sql>
+    <sql id="delete_lnsrentreg">
+        <![CDATA[
+			DELETE FROM LNSRENTREG WHERE ACCTNO = :acctno
+   		]]>
+    </sql>
+
+    <sql id="delete_lnszlamortizeplan">
+        <![CDATA[
+			DELETE FROM LNSZLAMORTIZEPLAN WHERE ACCTNO = :acctno
+   		]]>
+    </sql>
+
+
+    <sql id="query_lnsprovision_provision">
+        <![CDATA[
+			SELECT * FROM LNSPROVISIONREG WHERE RECEIPTNO = :acctno AND INTERTYPE = 'PROVISION' AND BRC = :brc
+        		AND PERIOD = (
+        			SELECT MAX(PERIOD) FROM LNSPROVISIONREG 
+        			WHERE RECEIPTNO = :acctno AND BRC = :brc AND INTERTYPE = 'PROVISION')
+   		]]>
+    </sql>
+
+    <sql id="query_accountinfo">
+        <![CDATA[
+			SELECT 
+				TRIM(B.ACCTNO) AS ACCTNO, TRIM(B.ACCTNO1) AS RECEIPTNO, B.OPENDATE, TRIM(B.NAME) AS CUSTOMNAME, B.CUSTOMID, 
+				A.PRDCODE, A.ACCTSTAT, A.CURRBAL, A.LASTBAL, A.PRETRANDATE 
+			FROM 
+				LNSACCOUNTDYNINFO A, LNSBASICINFO B 
+			WHERE 
+				A.ACCTNO=B.ACCTNO
+			<#if brc?exists && brc != "">
+			   AND B.OPENBRC = :brc
+			</#if>
+			<#if serialType?exists && serialType == "0">
+				AND B.ACCTNO = :acctno
+			<#else>
+				AND B.ACCTNO1 = :acctno
+			</#if>
+   		]]>
+    </sql>
+
+    <!-- 				LNSBASICINFO A, LNSACCOUNTLIST B  -->
+    <sql id="query_accountdetailinfo">
+        <![CDATA[
+			SELECT 
+				TRIM(A.CUSTOMID) AS CUSTOMID, TRIM(A.NAME) AS CUSTOMNAME, A.PRDCODE, TRIM(A.ACCTNO1) AS RECEIPTNO, B.BRC AS OPENBRC, B.TRANDATE, 
+				TRIM(B.ACCTNO) AS ACCTNO, B.ACCTSTAT, B.CDFLAG, B.TRANAMT, B.BAL, TRIM(B.MEMONAME) AS MEMONAME, 
+				TRIM(B.OPPACCTNO) AS OPPACCTNO 
+			FROM 
+					LNSBASICINFO A, LNSACCLIST B
+			WHERE 
+				B.TRANDATE BETWEEN :startdate AND :enddate
+				AND A.ACCTNO = B.ACCTNO 
+				AND A.OPENBRC = B.BRC
+			<#if loanstat?exists && loanstat != "">	
+				AND A.LOANSTAT = :loanstat
+			</#if>
+			<#if brc?exists && brc != "">
+				AND B.BRC = :brc
+			</#if>
+			<#if serialType?exists && serialType == "0">
+				AND A.ACCTNO = :acctno
+			<#else>
+				AND A.ACCTNO1 = :acctno
+			</#if>
+			<#if customid?exists && customid != "">
+				AND A.CUSTOMID = :customid
+			</#if>
+			<#if prdcode?exists && prdcode != "">
+				AND A.PRDCODE = :prdcode
+			</#if>
+			<#if acctstat?exists && acctstat != "">
+				AND B.ACCTSTAT = :acctstat
+			</#if>
+   		]]>
+    </sql>
+    <sql id="query_billinfo">
+        <![CDATA[
+			SELECT * FROM LNSBILL 
+			WHERE ACCTNO = :acctno 
+			<#if startdate?exists && startdate != "">
+				AND TRANDATE >= :startdate
+			</#if>
+			<#if enddate?exists && enddate != "">
+				AND TRANDATE <= :enddate
+			</#if>
+   		]]>
+    </sql>
+
+    <sql id="query_provamor">
+        <![CDATA[
+			SELECT C.*,TRIM(D.TOTALAMT) AS TOTALAMT FROM(
+			SELECT TRIM(A.BRC) AS BRC,TRIM(B.PRDCODE) AS PRODUCTCODE,TRIM(B.CUSTOMID) AS CUSTOMID,TRIM(B.NAME) AS CUSTOMNAME,TRIM(A.RECEIPTNO) AS RECEIPTNO,
+				   TRIM(A.BEGINDATE) AS STARTDATE,TRIM(A.ENDDATE) AS ENDDATE,TRIM(A.TRANDATE) AS REPAYDATE,TRIM(A.INTEREST) AS INTAMT,TRIM(A.TAX) AS AMT,
+				   TRIM(A.TOTALINTEREST) AS TOTALINTEREST
+			  from LNSPROVISIONREG A,LNSBASICINFO B
+			 WHERE A.TRANDATE >= :begindate 
+			   AND A.TRANDATE <= :enddate
+			   AND A.BRC = :brc 
+			   AND A.INTERTYPE = :intertype
+			  <#if receiptno?exists && receiptno != "">
+			   AND A.RECEIPTNO = :receiptno
+			  </#if>
+			   AND A.RECEIPTNO = B.acctno
+			   AND A.BRC = B.openbrc  
+			  <#if customid?exists && customid != "">
+			   AND B.CUSTOMID = :customid
+			  </#if>
+			  <#if productcode?exists && productcode != "">
+			   AND B.PRDCODE = :productcode
+			  </#if>
+			  		) C LEFT JOIN lnsamortizeplan D on C.RECEIPTNO = D.acctno AND C.BRC = D.brc
+			  ORDER BY C.REPAYDATE
+   		]]>
+    </sql>
+
+    <sql id="query_openaccountinfo_count">
+        <![CDATA[
+			SELECT 
+				OPENBRC,PRDCODE,CUSTOMID,NAME as CUSTOMNAME,acctno1 as RECEIPTNO,
+				ACCTNO,LOANSTAT,OPENDATE,CONTDUEDATE,BEGININTDATE,PRINTERMS,INTTERMS,
+				GRACEDAYS,REPAYWAY,NORMALRATE,CONTRACTAMT,DEDUCTIONAMT,CONTRACTBAL,CHANNELTYPE
+			FROM 
+				LNSBASICINFO
+			WHERE 
+				1=1
+			<#if startdate?exists && startdate != "" && enddate?exists && enddate != "">
+			   AND OPENDATE BETWEEN :startdate AND :enddate
+			</#if>
+			<#if customid?exists && customid != "">
+			   AND CUSTOMID = :customid
+			</#if>
+			<#if receiptno?exists && receiptno != "">
+			   AND ACCTNO = :receiptno
+			</#if>
+			<#if acctno?exists && acctno != "">
+			   AND ACCTNO = :acctno
+			</#if>
+			<#if openbrc?exists && openbrc != "">
+			   AND OPENBRC = :openbrc
+			</#if>
+			<#if productcode?exists && productcode != "">
+			   AND PRDCODE = :productcode
+			</#if>
+			<#if loanstat?exists && loanstat != "">
+			   AND LOANSTAT = :loanstat
+			</#if>
+   		]]>
+    </sql>
+    <sql id="query_lnsrpyplan_420">
+        <![CDATA[
+			SELECT * FROM lnsrpyplan 
+			where ACCTNO = :acctno 
+			<#if repayterm?exists && repayterm != "">
+				AND repayterm =:repayterm
+			</#if>
+			for read only
+   	]]>
+    </sql>
+    <sql id="update_lnsrpyplan">
+        <![CDATA[
+			update lnsrpyplan set actrepaydate = :termretdate ,modifytime = char(CURRENT TIMESTAMP) 
+			WHERE acctno = :acctno 
+			and repayintbdate < :termretdate
+			and actrepaydate > :termretdate  
+   	]]>
+    </sql>
+
+    <sql id="query_lnsrepayplan">
+        <![CDATA[
+			SELECT * FROM lnsrepayplan where ACCTNO = :acctno AND brc = :brc for read only
+   	]]>
+    </sql>
+    <sql id="query_lnsrpyplan">
+        <![CDATA[
+			SELECT * FROM lnsrpyplan where ACCTNO = :acctno AND brc = :brc order by repayintbdate for read only
+   	]]>
+    </sql>
+
+    <sql id="query_lnsrpyplan_603">
+        <![CDATA[
+			SELECT * FROM lnsrpyplan where ACCTNO = :acctno AND brc = :brc order by repayterm desc FETCH FIRST 1 ROWS ONLY
+   	]]>
+    </sql>
+
+    <sql id="query_lnsrpyplanlist">
+        <![CDATA[
+			SELECT * FROM lnsrpyplan where ACCTNO = :acctno AND brc = :brc
+   	]]>
+    </sql>
+
+    <sql id="query_lnsaccountdyninfo">
+        <![CDATA[
+			SELECT * FROM lnsaccountdyninfo 
+			        where ACCTNO = :acctno 
+			          AND openacctbrc = :brc
+			        <#if acctstat?exists && acctstat != "">
+				      AND substr(acctstat,1,4) = :acctstat
+					</#if> 
+   	]]>
+    </sql>
+
+    <sql id="delete_lnsrpyplan">
+        <![CDATA[
+			DELETE FROM lnsrpyplan where repayintbdate=:termretdate and acctno = :acctno and brc = :brc
+   	]]>
+    </sql>
+
+    <sql id="update_trandate">
+        <![CDATA[
+			update spssysctrlinfo set trandate = :trandate
+   	]]>
+    </sql>
+
+    <sql id="query_lnsacctdyninfo">
+        <![CDATA[
+			select * from lnsacctdyninfo where acctno = :acctno  and acctstat!='53' order by acctstat desc
+   	]]>
+    </sql>
+
+    <sql id="query_lnsacctlist">
+        <![CDATA[
+   			select * from lnsacctlist where acctno = :acctno  and acctstat!='53' order by acctstat, ordnu
+	]]>
+    </sql>
+
+    <sql id="query_pubinterfaceinfo">
+        <![CDATA[
+			SELECT * FROM pubinterfaceinfo
+   		]]>
+    </sql>
+
+    <sql id="query_lnsacctrpyplan">
+        <![CDATA[
+			SELECT * FROM lnsacctrpyplan where acctno = :acctno order by repayterm
+   		]]>
+    </sql>
+
+    <sql id="query_lnsrpylist_8">
+        <![CDATA[
+			SELECT * FROM lnsrpylist where acctno = :acctno order by trandate,seqno
+   		]]>
+    </sql>
+
+    <sql id="query_lnsrpylist_2">
+        <![CDATA[
+			SELECT sum(tranamt) as amt FROM lnsrpylist
+   			 WHERE acctno = :acctno
+			   AND trandate = :trandate
+			   AND acctstat = :acctstat
+ 		]]>
+    </sql>
+
+    <sql id="update_lnsaccountdyninfo">
+        <![CDATA[
+			update lnsaccountdyninfo set currbal = currbal + :amt,modifytime = char(CURRENT TIMESTAMP)
+			where acctno = :acctno and profitbrc = :brc and acctstat='NINT.N'
+   	]]>
+    </sql>
+
+    <sql id="query_lnsinterface_old">
+        <![CDATA[
+		SELECT ACCTNO, TRANAMT, ORGID, RESERV1, BANKNO FROM LNSINTERFACE WHERE
+			SERSEQNO = :serseqno
+			AND ACCDATE = :trandate 
+			AND TRANCODE = '473004' 
+			AND BRC = :brc
+   	]]>
+    </sql>
+
+    <sql id="query_acctno">
+        <![CDATA[
+		SELECT acctno FROM LNSBASICINFO WHERE ACCTNO1= :acctno1 AND OPENBRC= :brc for read only
+   	]]>
+    </sql>
+
+    <sql id="query_acctno_exist">
+        <![CDATA[
+		SELECT acctno FROM LNSBASICINFO WHERE ACCTNO1= :acctno1 for read only
+   	]]>
+    </sql>
+
+    <sql id="query_non_acctno">
+        <![CDATA[
+		SELECT * FROM LNSBASICINFO WHERE ACCTNO1= :acctno1 AND OPENBRC= :openbrc order by oldprinterm for read only
+   	]]>
+    </sql>
+
+    <sql id="query_JXOFF">
+        <![CDATA[
+		SELECT * FROM LNSEVENTREG 
+		WHERE RECEIPTNO = :acctno AND EVENTCODE = :eventcode AND TRANCODE = '479002' AND BRC = :brc 
+		ORDER BY TIMESTAMP DESC FETCH FIRST 1 ROWS ONLY
+   	]]>
+    </sql>
+    <sql id="query_txseq">
+        <![CDATA[
+		select nvl(max(TXSEQ),0) from LNSBILL where trandate = :trandate and serseqno= :serSeqNo
+   	]]>
+    </sql>
+
+    <sql id="insert_lnsbasicinfo">
+        <![CDATA[
+      insert into LNSBASICINFO (ACCTNO, OPENBRC, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, PRDCODE, 
+        FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, LOANSTAT, 
+        PROFITBRC, ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, PRINPERFORMULA, 
+        PRINFORMULA, LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, PRINTERMS, 
+        INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, 
+        OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, 
+        BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, 
+        OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG, 
+        MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, 
+        TRANDATE, RESERV1, RESERVAMT1)
+      values (:ACCTNO, :OPENBRC, :ACCTYPE, :CCY, :CUSTTYPE, :CUSTOMID, :NAME, :PRDCODE, 
+        :FLAG1, :PRINMINDAYS, :INTMINDAYS, :ISCALINT, :REPAYWAY, :LOANTYPE1, :LOANSTAT, 
+        :PROFITBRC, :ACCTNO1, :FIRSTPRINDATE, :FIRSTINTDATE, :FIRSTINTFLAG, :PRINPERFORMULA, 
+        :PRINFORMULA, :LASTPRINDATE, :INTPERFORMULA, :INTFORMULA, :LASTINTDATE, :PRINTERMS, 
+        :INTTERMS, :CURPRINTERM, :CURINTTERM, :OLDPRINTERM, :OLDINTTERM, :CONTRACTBAL, 
+        :OPENDATE, :BEGININTDATE, :GRACEDAYS, :CONTDUEDATE, :INTENDDATE, :EXTNUMS, :INTRATEPLAN, 
+        :BJTXBL, :TXACCTNO, :DIACCT, :INVESTEE, :INVESTMODE, :CHANNELTYPE, :FUNDCHANNEL, 
+        :OUTSERIALNO, :CONTRASCTNO, :CONTRACTAMT, :OPENFEE, :DEDUCTIONAMT, :PROVISIONFLAG, 
+        :MEMO, :NORMALRATE, :OVERDUERATE, :OVERDUERATE1, :MODIFYDATE, CURRENT TIMESTAMP, 
+        :TRANDATE, :RESERV1, :RESERVAMT1)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsbill">
+        <![CDATA[
+      insert into LNSBILL (TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BRC, BILLTYPE, PERIOD, BILLAMT, 
+        BILLBAL, LASTBAL, LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, 
+        CURENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY, 
+        CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY, 
+        INTRECORDFLAG, CANCELFLAG, SETTLEFLAG, TIMESTAMP)
+      values (:TRANDATE, :SERSEQNO, :TXSEQ, :ACCTNO, :BRC, :BILLTYPE, :PERIOD, :BILLAMT, 
+        :BILLBAL, :LASTBAL, :LASTDATE, :PRINBAL, :BILLRATE, :ACCUMULATE, :BEGINDATE, :ENDDATE, 
+        :CURENDDATE, :REPAYEDATE, :SETTLEDATE, :INTEDATE, :FINTEDATE, :CINTEDATE, :REPAYWAY, 
+        :CCY, :DERTRANDATE, :DERSERSEQNO, :DERTXSEQ, :BILLSTATUS, :STATUSBDATE, :BILLPROPERTY, 
+        :INTRECORDFLAG, :CANCELFLAG, :SETTLEFLAG, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsbillplan">
+        <![CDATA[
+      insert into LNSBILLPLAN (ACCTNO, BRC, BILLTYPE, PERIOD, TRANDATE, SERSEQNO, TXSEQ, BILLAMT, 
+        PRINBAL, BEGINDATE, ENDDATE, REPAYEDATE, TIMESTAMP)
+      values (:ACCTNO, :BRC, :BILLTYPE, :PERIOD, :TRANDATE, :SERSEQNO, :TXSEQ, :BILLAMT, 
+        :PRINBAL, :BEGINDATE, :ENDDATE, :REPAYEDATE, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsbasicinfoex">
+        <![CDATA[
+      insert into LNSBASICINFOEX (ACCTNO, OPENBRC, KEY, VALUE1, VALUE2, MODIFYTIME)
+      values (:acctno, :brc, :key, :value1, :value2, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsbasicinfoex_118">
+        <![CDATA[
+      insert into LNSBASICINFOEX (ACCTNO, OPENBRC, KEY, VALUE1, VALUE2, VALUE3,MODIFYTIME)
+      values (:acctno, :brc, :key,:value1, :value2, :value3, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsbasicinfodyn_118">
+        <![CDATA[
+      insert into LNSBASICINFODYN (ACCTNO, OPENBRC, SUMPRIN, SUMINT, SUMDINT, SUMCINT, SUMGINT,MODIFYTIME,SUMLBCDINT,TRANDATE
+      <#if tunneldata?exists && tunneldata != "">
+		,TUNNELDATA
+      </#if>)
+      values (:acctno, :brc, :sumprin,:sumint, :sumdint, :sumcint, :sumgint, CURRENT TIMESTAMP, :sumlbcdint,:trandate
+      <#if tunneldata?exists && tunneldata != "">
+		,:tunneldata
+      </#if>)
+    ]]>
+    </sql>
+
+
+    <sql id="insert_lnsbasicinfoex_202">
+        <![CDATA[
+      insert into LNSBASICINFOEX (ACCTNO, OPENBRC, KEY, VALUE1, VALUE2, VALUE3, tunneldata, modifytime)
+      values (:acctno, :brc, :key, :value1, :value2, :value3 , :tunneldata, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+
+    <sql id="update_lnsbasicinfoex_501">
+        <![CDATA[
+      update LNSBASICINFOEX set value2 = value2 + :amt,MODIFYTIME = CURRENT TIMESTAMP
+      where acctno = :acctno and OPENBRC = :brc and key =:key
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsaccountdyninfo">
+        <![CDATA[
+      insert into LNSACCOUNTDYNINFO (ACCTNO, ACCTSTAT, PROFITBRC, STATUS, PRDCODE, INACCTNO, OPENACCTBRC, 
+        ACCTYPE, SUBCTRLCODE, CCY, FLAG, FLAG1, REPAYORDER, RATETYPE, BALD, INTRATE, 
+        LASTBAL, CURRBAL, CTRLBAL, ACCUM, BEGINDATE, PRECHGRATEDATE, PRECALCINTDATE, 
+        NEXTCALCDATE, PRETRANDATE, DAC, BEGINCACUDATE, ENDCACUDATE, PRECACUDAYS, 
+        CACUDAYS, YEARSTARTBAL, FLAGRES11, DATERES01, DATERES02, AMOUNTRES1, AMOUNTRES2, 
+        ACCUMRES, ACCTNORES01, ACCTNORES02, ORDNU, MODIFYDATE, MODIFYTIME)
+      values (:ACCTNO, :ACCTSTAT, :PROFITBRC, :STATUS, :PRDCODE, :INACCTNO, :OPENACCTBRC, 
+        :ACCTYPE, :SUBCTRLCODE, :CCY, :FLAG, :FLAG1, :REPAYORDER, :RATETYPE, :BALD, :INTRATE, 
+        :LASTBAL, :CURRBAL, :CTRLBAL, :ACCUM, :BEGINDATE, :PRECHGRATEDATE, :PRECALCINTDATE, 
+        :NEXTCALCDATE, :PRETRANDATE, :DAC, :BEGINCACUDATE, :ENDCACUDATE, :PRECACUDAYS, 
+        :CACUDAYS, :YEARSTARTBAL, :FLAGRES11, :DATERES01, :DATERES02, :AMOUNTRES1, :AMOUNTRES2, 
+        :ACCUMRES, :ACCTNORES01, :ACCTNORES02, :ORDNU, :MODIFYDATE, CURRENT TIMESTAMP)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsnonstdplan">
+        <![CDATA[
+      insert into LNSNONSTDPLAN (ACCTNO, OPENBRC, REPAYTERM, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, 
+        PRDCODE, FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, 
+        LOANSTAT, PROFITBRC, ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, 
+        PRINPERFORMULA, PRINFORMULA, LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, 
+        PRINTERMS, INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, 
+        OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, 
+        BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, 
+        OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG, 
+        MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, 
+        TRANDATE, RESERV1, RESERVAMT1, TERMBDATE, TERMEDATE, INTBDATE, INTEDATE, 
+        TERMPRIN, TERMINT, BALANCE, DAYS, CALCINTFLAG1, CALCINTFLAG2, RATETYPE, TERMRETDATE, 
+        REPAYPRINFLAG, REPAYINTFLAG)
+      values (:ACCTNO, :OPENBRC, :REPAYTERM, :ACCTYPE, :CCY, :CUSTTYPE, :CUSTOMID, :NAME, 
+        :PRDCODE, :FLAG1, :PRINMINDAYS, :INTMINDAYS, :ISCALINT, :REPAYWAY, :LOANTYPE1, 
+        :LOANSTAT, :PROFITBRC, :ACCTNO1, :FIRSTPRINDATE, :FIRSTINTDATE, :FIRSTINTFLAG, 
+        :PRINPERFORMULA, :PRINFORMULA, :LASTPRINDATE, :INTPERFORMULA, :INTFORMULA, :LASTINTDATE, 
+        :PRINTERMS, :INTTERMS, :CURPRINTERM, :CURINTTERM, :OLDPRINTERM, :OLDINTTERM, :CONTRACTBAL, 
+        :OPENDATE, :BEGININTDATE, :GRACEDAYS, :CONTDUEDATE, :INTENDDATE, :EXTNUMS, :INTRATEPLAN, 
+        :BJTXBL, :TXACCTNO, :DIACCT, :INVESTEE, :INVESTMODE, :CHANNELTYPE, :FUNDCHANNEL, 
+        :OUTSERIALNO, :CONTRASCTNO, :CONTRACTAMT, :OPENFEE, :DEDUCTIONAMT, :PROVISIONFLAG, 
+        :MEMO, :NORMALRATE, :OVERDUERATE, :OVERDUERATE1, :MODIFYDATE, CURRENT TIMESTAMP, 
+        :TRANDATE, :RESERV1, :RESERVAMT1, :TERMBDATE, :TERMEDATE, :INTBDATE, :INTEDATE, 
+        :TERMPRIN, :TERMINT, :BALANCE, :DAYS, :CALCINTFLAG1, :CALCINTFLAG2, :RATETYPE, :TERMRETDATE, 
+        :REPAYPRINFLAG, :REPAYINTFLAG)
+    ]]>
+    </sql>
+
+    <sql id="insert_lnsrpyplan">
+        <![CDATA[
+       insert into LNSRPYPLAN(select * from lnsrepayplan where BRC=:brc and ACCTNO=:acctno)
+    ]]>
+    </sql>
+
+
+    <sql id="update_lnsrpyplan_sumrfint">
+        <![CDATA[
+       update LNSRPYPLAN set sumrfint =sumrfint + :sumrfint ,modifytime = char(CURRENT TIMESTAMP)
+       where ACCTNO=:acctno and repayterm =:repayterm
+    ]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfodyn_512">
+        <![CDATA[
+       update lnsbasicinfodyn set modifytime = char(CURRENT TIMESTAMP) 
+       ,trandate = :trandate
+        <#if sumdint?exists && sumdint != "">
+       ,SUMDINT =SUMDINT+ :sumdint
+       
+       </#if>
+       <#if sumcint?exists && sumcint != "">
+				,SUMCINT = SUMCINT+ :sumcint
+	   </#if>
+	   <#if sumlbcdint?exists && sumlbcdint != "">
+				,SUMLBCDINT = :sumlbcdint
+	   </#if>
+       where ACCTNO=:acctno and openbrc = :openbrc
+    ]]>
+    </sql>
+
+
+    <sql id="update_lnsbasicinfodyn_common">
+        <![CDATA[
+       update lnsbasicinfodyn set modifytime = char(CURRENT TIMESTAMP) 
+       ,trandate = :trandate
+        <#if tunneldata?exists && tunneldata != "">
+       ,TUNNELDATA =:tunneldata
+       
+       </#if>
+       where ACCTNO=:acctno and openbrc = :openbrc
+    ]]>
+    </sql>
+
+    <sql id="update_lnsrpyplan_605">
+        <![CDATA[
+       update LNSRPYPLAN set modifytime = char(CURRENT TIMESTAMP) 
+        <#if termretint?exists && termretint != "">
+       ,termretint =:termretint
+       
+       </#if>
+       <#if termretprin?exists && termretprin != "">
+				,termretprin = :termretprin,
+				balance = :balance
+	   </#if>
+	   <#if repayownbdate?exists && repayownbdate != "">
+				,repayownbdate = :repayownbdate
+				,repayownedate = :repayownedate
+				,repayintedate = :repayintedate
+				,actrepaydate = :actrepaydate
+	   </#if>
+	   <#if repayintbdate?exists && repayintbdate != "">
+	   			,repayintbdate = :repayintbdate
+ 	   </#if>
+       where ACCTNO=:acctno and repayterm =:repayterm and brc = :brc
+    ]]>
+    </sql>
+
+    <sql id="update_lnsrpyplan_603">
+        <![CDATA[
+			update lnsrpyplan set modifytime = char(CURRENT TIMESTAMP) ,
+			repayownbdate =:repayownbdate,
+			repayownedate =:repayownedate,
+			repayintedate =:repayintedate,
+			<#if repayintbdate?exists && repayintbdate != "">
+				repayintbdate = :repayintbdate,
+	   		</#if>
+			actrepaydate =:actrepaydate
+			 where ACCTNO =:acctno AND brc = :brc and repayterm =:repayterm
+   	]]>
+    </sql>
+
+    <sql id="update_lnsbill_603">
+        <![CDATA[
+			update lnsbill set timestamp = char(CURRENT TIMESTAMP),
+			enddate =:enddate,
+			curenddate =:curenddate,
+			repayedate =:repayedate,
+			intedate =:intedate,
+			<#if begindate?exists && begindate != "">
+				begindate = :begindate,
+	   		</#if>
+			statusbdate =:statusbdate
+			 where ACCTNO =:acctno AND brc = :brc and period =:period
+   	]]>
+    </sql>
+    
+    <sql id="update_lnsbill_intedate">
+        <![CDATA[
+			UPDATE lnsbill
+		SET timestamp = char(CURRENT TIMESTAMP),
+			intedate =:intedate
+			WHERE trandate =:trandate AND 
+			serseqno = :serseqno AND 
+			txseq =:txseq
+   	]]>
+    </sql>
+
+    <sql id="update_lnsbasicinfoback">
+        <![CDATA[
+			update lnsbasicinfoback set modifytime = char(CURRENT TIMESTAMP) ,memo =:memo
+			 where ACCTNO =:acctno AND openbrc = :brc
+   	]]>
+    </sql>
+
+    <sql id="update_lnsbill_606">
+        <![CDATA[
+			update lnsbill set timestamp = char(CURRENT TIMESTAMP),
+			curenddate =:curenddate,
+			repayedate =:repayedate,
+			statusbdate =:statusbdate
+			 where ACCTNO =:acctno AND brc = :brc and period =:period
+   	]]>
+    </sql>
+
+    <sql id="update_dyninfo_603">
+        <![CDATA[
+				UPDATE	lnsaccountdyninfo 
+				SET modifydate = :trandate,
+					modifytime = char(CURRENT TIMESTAMP)
+				WHERE acctno = :acctno
+				  AND PROFITBRC = :brc
+		]]>
+    </sql>
+
+    <sql id="update_lnsrpyplan_intamt">
+        <![CDATA[
+       update LNSRPYPLAN set intamt =intamt + :intamt ,modifytime = char(CURRENT TIMESTAMP)
+       where ACCTNO=:acctno and repayterm =:repayterm
+    ]]>
+    </sql>
+    <sql id="update_lnsrpyplan_reserve2">
+        <![CDATA[
+       update LNSRPYPLAN set reserve2 =:reserve2 ,modifytime = char(CURRENT TIMESTAMP)
+        where ACCTNO=:acctno and repayterm =:repayterm
+    ]]>
+    </sql>
+    <sql id="del_lnsrepayplan">
+        <![CDATA[
+      delete from LNSREPAYPLAN
+      where ACCTNO = :acctno and BRC = :brc
+    ]]>
+    </sql>
+    <sql id="query_lnsinterface_243">
+        <![CDATA[
+			SELECT * FROM LNSINTERFACE
+			WHERE ACCTNO = :acctno
+				AND TRANCODE = :trancode
+
+   		]]>
+    </sql>
+    <sql id="query_lnsbasicinfoex_666">
+        <![CDATA[
+			SELECT * FROM LNSBASICINFOEX
+					WHERE ACCTNO = :acctNo
+					  AND KEY = :key
+   		]]>
+    </sql>
+    <sql id="query_lnsinterfaceex_666">
+        <![CDATA[
+			SELECT * FROM LNSINTERFACEEX
+					WHERE ACCTNO = :acctNo
+					  AND KEY = :key
+   		]]>
+    </sql>
+    <sql id="query_lnsprovisionreg_666">
+        <![CDATA[
+			SELECT 	NVL(SUM(CASE INTERFLAG WHEN 'POSITIVE' THEN INTEREST
+		                               WHEN 'NEGATIVE' THEN -1.00*INTEREST END),0.00) AS TOTALINT ,
+		            NVL(SUM(CASE INTERFLAG WHEN 'POSITIVE' THEN TAX
+		                               WHEN 'NEGATIVE' THEN -1.00*TAX END),0.00) AS TOTALTAX ,
+		        COUNT(1) AS PERIOD,
+		        MAX(TRANDATE) AS LASTDATE
+		            FROM LNSPROVISIONREG 
+		           WHERE RECEIPTNO = :acctNo
+		             AND INTERTYPE in( 'SECURITFEE')
+        ]]>
+    </sql>
+
+    <sql id="query_feemanagereg_666">
+        <![CDATA[
+		select * from feemanagereg where brc= :openbrc and acctno = :acctno order by REPAYTERM
+
+	]]>
+    </sql>
+
+
+    <sql id="query_lnsrpyplanperiod">
+        <![CDATA[
+			select max(repayterm) from  lnsrpyplan
+		     	 where acctno = :acctno
+		        	and brc = :brc
+		 ]]>
+    </sql>
+
+
+    <sql id="query_lnsinterface000">
+        <![CDATA[
+			SELECT * FROM LNSINTERFACE
+			WHERE BRC = :brc AND ACCTNO = :acctno
+				AND TRANCODE in ('471008','471007')
+				AND ACCDATE > :enddate
+				order by accdate,trancode desc
+   		]]>
+    </sql>
+    <!--获取最大还款日期-->
+    <sql id="query_lnsinterfaceMaxRepayDate">
+        SELECT max(accdate) as accdate FROM LNSINTERFACE
+        WHERE BRC = :brc AND ACCTNO = :acctno
+        AND TRANCODE in ('471008','471007')
+    </sql>
+
+
+    <sql id="query_orgPrin">
+        <![CDATA[
+			select sum(currbal) from faloan.lnsaccountdyninfo
+			where ACCTNO = :acctno
+			and acctstat in ('PRIN.N','PRIN.O','PRIN.L','PRIN.B','PRIN.C')
+		 ]]>
+    </sql>
+
+    <sql id="deleteDpa_faloan_repayplan_ed">
+        delete from dpa_faloan_repayplan_ed
+        where acctno=:acctno
+        and brc = :openbrc
+    </sql>
+
+    <sql id="insert_dpa">
+        INSERT INTO DPA_FALOAN_REPAYPLAN_ED (BRC, ACCTNO, REPAYTERM, REPAYOWNBDATE, REPAYOWNEDATE, REPAYINTBDATE,
+        REPAYINTEDATE, TERMRETPRIN, TERMRETINT, DEDUCTIONAMT, PRINAMT, INTAMT, NORETAMT, NORETINT, TERMFINT, TERMCINT,
+        SUMFINT, SUMCINT, DAYS, TERMCDINT, BALANCE, SUMRFINT, SUMRCINT, TERMRETDATE, TERMSTATUS, SETTLEFLAG, FEEAMT,
+        NORETFEE, TERMRETFEE, PENALTYAMT, SUMDELINT, SUMDELFINT, FEEFLAG, CURRENTSTAT, FUNDSOURCE, TERMCDFEE,
+        NORETPENALTY, TERMRETPENALTY)
+        VALUES
+        (:brc,:acctno,:repayterm,:repayownbdate,:repayownedate,:repayintbdate,:repayintedate,:termretprin,:termretint,:deductionamt,:prinAmt,:intAmt,:noretamt,:noretint,:termfint,:termcint,:sumfint,:sumcint,:days,:termcdint,:balance,:sumrfint,:sumrcint,:termretdate,:termstatus,:settleflag,:feeamt,:noretfee,:termretfee,:penaltyamt,:sumdelint,:sumdelfint,:feeflag,:currentstat,:fundsource,:termcdfee,:noretpenalty,:termretpenalty)
+    </sql>
+
+
+	<sql id="query_lnsrpyplanperiod">
+		<![CDATA[
+			select max(repayterm) from  lnsrpyplan
+		     	 where acctno = :acctno
+		        	and brc = :brc
+		 ]]>
+	</sql>
+	
+	<sql id="query_sumunrpyprin">
+		<![CDATA[
+			select sum(billbal) from  lnsbill
+		     	 where acctno = :acctno
+		        	and brc = :brc
+		        	and billtype = 'PRIN'
+		 ]]>
+	</sql>
+
+
+	<sql id="query_lnsinterface000">
+		<![CDATA[
+			SELECT * FROM LNSINTERFACE
+			WHERE BRC = :brc AND ACCTNO = :acctno
+				AND TRANCODE in ('471008','471007')
+				AND ACCDATE > :enddate
+				order by accdate,trancode desc
+   		]]>
+	</sql>
+	<!--获取最大还款日期-->
+	<sql id="query_lnsinterfaceMaxRepayDate">
+		SELECT max(accdate) as accdate FROM LNSINTERFACE
+		WHERE BRC = :brc AND ACCTNO = :acctno
+		AND TRANCODE in ('471008','471007')
+	</sql>
+
+
+	<sql id="query_orgPrin">
+		<![CDATA[
+			select sum(currbal) from faloan.lnsaccountdyninfo
+			where ACCTNO = :acctno
+			and acctstat in ('PRIN.N','PRIN.O','PRIN.L','PRIN.B','PRIN.C')
+		 ]]>
+	</sql>
+
+</sqlMap>

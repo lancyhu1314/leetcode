@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsnonstdplan">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSNONSTDPLAN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSNONSTDPLAN (ACCTNO, OPENBRC, REPAYTERM, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, 
+        PRDCODE, FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, 
+        LOANSTAT, PROFITBRC, ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, 
+        PRINPERFORMULA, PRINFORMULA, LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, 
+        PRINTERMS, INTTERMS, CURPRINTERM, CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, 
+        OPENDATE, BEGININTDATE, GRACEDAYS, CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, 
+        BJTXBL, TXACCTNO, DIACCT, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, 
+        OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, DEDUCTIONAMT, PROVISIONFLAG, 
+        MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, MODIFYTIME, 
+        TRANDATE, RESERV1, RESERVAMT1, TERMBDATE, TERMEDATE, INTBDATE, INTEDATE, 
+        TERMPRIN, TERMINT, BALANCE, DAYS, CALCINTFLAG1, CALCINTFLAG2, RATETYPE, TERMRETDATE, 
+        REPAYPRINFLAG, REPAYINTFLAG)
+      values (:acctno, :openbrc, :repayterm, :acctype, :ccy, :custtype, :customid, :name, 
+        :prdcode, :flag1, :prinmindays, :intmindays, :iscalint, :repayway, :loantype1, 
+        :loanstat, :profitbrc, :acctno1, :firstprindate, :firstintdate, :firstintflag, 
+        :prinperformula, :prinformula, :lastprindate, :intperformula, :intformula, :lastintdate, 
+        :printerms, :intterms, :curprinterm, :curintterm, :oldprinterm, :oldintterm, :contractbal, 
+        :opendate, :beginintdate, :gracedays, :contduedate, :intenddate, :extnums, :intrateplan, 
+        :bjtxbl, :txacctno, :diacct, :investee, :investmode, :channeltype, :fundchannel, 
+        :outserialno, :contrasctno, :contractamt, :openfee, :deductionamt, :provisionflag, 
+        :memo, :normalrate, :overduerate, :overduerate1, :modifydate, current timestamp, 
+        :trandate, :reserv1, :reservamt1, :termbdate, :termedate, :intbdate, :intedate, 
+        :termprin, :termint, :balance, :days, :calcintflag1, :calcintflag2, :ratetype, :termretdate, 
+        :repayprinflag, :repayintflag)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSNONSTDPLAN
+      set ACCTYPE = :acctype,
+        CCY = :ccy,
+        CUSTTYPE = :custtype,
+        CUSTOMID = :customid,
+        NAME = :name,
+        PRDCODE = :prdcode,
+        FLAG1 = :flag1,
+        PRINMINDAYS = :prinmindays,
+        INTMINDAYS = :intmindays,
+        ISCALINT = :iscalint,
+        REPAYWAY = :repayway,
+        LOANTYPE1 = :loantype1,
+        LOANSTAT = :loanstat,
+        PROFITBRC = :profitbrc,
+        ACCTNO1 = :acctno1,
+        FIRSTPRINDATE = :firstprindate,
+        FIRSTINTDATE = :firstintdate,
+        FIRSTINTFLAG = :firstintflag,
+        PRINPERFORMULA = :prinperformula,
+        PRINFORMULA = :prinformula,
+        LASTPRINDATE = :lastprindate,
+        INTPERFORMULA = :intperformula,
+        INTFORMULA = :intformula,
+        LASTINTDATE = :lastintdate,
+        PRINTERMS = :printerms,
+        INTTERMS = :intterms,
+        CURPRINTERM = :curprinterm,
+        CURINTTERM = :curintterm,
+        OLDPRINTERM = :oldprinterm,
+        OLDINTTERM = :oldintterm,
+        CONTRACTBAL = :contractbal,
+        OPENDATE = :opendate,
+        BEGININTDATE = :beginintdate,
+        GRACEDAYS = :gracedays,
+        CONTDUEDATE = :contduedate,
+        INTENDDATE = :intenddate,
+        EXTNUMS = :extnums,
+        INTRATEPLAN = :intrateplan,
+        BJTXBL = :bjtxbl,
+        TXACCTNO = :txacctno,
+        DIACCT = :diacct,
+        INVESTEE = :investee,
+        INVESTMODE = :investmode,
+        CHANNELTYPE = :channeltype,
+        FUNDCHANNEL = :fundchannel,
+        OUTSERIALNO = :outserialno,
+        CONTRASCTNO = :contrasctno,
+        CONTRACTAMT = :contractamt,
+        OPENFEE = :openfee,
+        DEDUCTIONAMT = :deductionamt,
+        PROVISIONFLAG = :provisionflag,
+        MEMO = :memo,
+        NORMALRATE = :normalrate,
+        OVERDUERATE = :overduerate,
+        OVERDUERATE1 = :overduerate1,
+        MODIFYDATE = :modifydate,
+        MODIFYTIME = current timestamp,
+        TRANDATE = :trandate,
+        RESERV1 = :reserv1,
+        RESERVAMT1 = :reservamt1,
+        TERMBDATE = :termbdate,
+        TERMEDATE = :termedate,
+        INTBDATE = :intbdate,
+        INTEDATE = :intedate,
+        TERMPRIN = :termprin,
+        TERMINT = :termint,
+        BALANCE = :balance,
+        DAYS = :days,
+        CALCINTFLAG1 = :calcintflag1,
+        CALCINTFLAG2 = :calcintflag2,
+        RATETYPE = :ratetype,
+        TERMRETDATE = :termretdate,
+        REPAYPRINFLAG = :repayprinflag,
+        REPAYINTFLAG = :repayintflag
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, OPENBRC, REPAYTERM, ACCTYPE, CCY, CUSTTYPE, CUSTOMID, NAME, PRDCODE, 
+      FLAG1, PRINMINDAYS, INTMINDAYS, ISCALINT, REPAYWAY, LOANTYPE1, LOANSTAT, PROFITBRC, 
+      ACCTNO1, FIRSTPRINDATE, FIRSTINTDATE, FIRSTINTFLAG, PRINPERFORMULA, PRINFORMULA, 
+      LASTPRINDATE, INTPERFORMULA, INTFORMULA, LASTINTDATE, PRINTERMS, INTTERMS, CURPRINTERM, 
+      CURINTTERM, OLDPRINTERM, OLDINTTERM, CONTRACTBAL, OPENDATE, BEGININTDATE, GRACEDAYS, 
+      CONTDUEDATE, INTENDDATE, EXTNUMS, INTRATEPLAN, BJTXBL, TXACCTNO, DIACCT, INVESTEE, 
+      INVESTMODE, CHANNELTYPE, FUNDCHANNEL, OUTSERIALNO, CONTRASCTNO, CONTRACTAMT, OPENFEE, 
+      DEDUCTIONAMT, PROVISIONFLAG, MEMO, NORMALRATE, OVERDUERATE, OVERDUERATE1, MODIFYDATE, 
+      MODIFYTIME, TRANDATE, RESERV1, RESERVAMT1, TERMBDATE, TERMEDATE, INTBDATE, INTEDATE, 
+      TERMPRIN, TERMINT, BALANCE, DAYS, CALCINTFLAG1, CALCINTFLAG2, RATETYPE, TERMRETDATE, REPAYPRINFLAG, 
+      REPAYINTFLAG
+      from LNSNONSTDPLAN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+        and REPAYTERM = :repayterm
+    ]]>
+  </sql>
+</sqlMap>

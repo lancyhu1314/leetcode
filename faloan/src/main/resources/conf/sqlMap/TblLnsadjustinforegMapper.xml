@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsadjustinforeg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSADJUSTINFOREG
+      where TRANDATE = :trandate
+        and SERIALNO = :serialno
+        and CHANNELID = :channelid
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSADJUSTINFOREG (TRANDATE, SERIALNO, CHANNELID, TXNSEQ, ACCDATE, SERSEQNO, TRANSOURCE, 
+        BRC, CCY, TRANAMT, AMT1, AMT2, AMT3, AMT4, AMT5, AMT6, TRANCODE, TELLER, 
+        BRIEFCODE, TRANBRIEF, RECEIPTNO, ACCSTAT, ACCTNO, MERCHANTNO, TOACCSTAT, 
+        TOACCOUNTNO, TOMERCHANTNO, TIMESTAMP, FLAG, BANKCHANNEL, RESERV0, 
+        RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, RESERV7, RESERV8, 
+        RESERV9, TUNNELDATA)
+      values (:trandate, :serialno, :channelid, :txnseq, :accdate, :serseqno, :transource, 
+        :brc, :ccy, :tranamt, :amt1, :amt2, :amt3, :amt4, :amt5, :amt6, :trancode, :teller, 
+        :briefcode, :tranbrief, :receiptno, :accstat, :acctno, :merchantno, :toaccstat, 
+        :toaccountno, :tomerchantno, current timestamp, :flag, :bankchannel, :reserv0, 
+        :reserv1, :reserv2, :reserv3, :reserv4, :reserv5, :reserv6, :reserv7, :reserv8, 
+        :reserv9, :tunneldata)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSADJUSTINFOREG
+      set ACCDATE = :accdate,
+        SERSEQNO = :serseqno,
+        TRANSOURCE = :transource,
+        BRC = :brc,
+        CCY = :ccy,
+        TRANAMT = :tranamt,
+        AMT1 = :amt1,
+        AMT2 = :amt2,
+        AMT3 = :amt3,
+        AMT4 = :amt4,
+        AMT5 = :amt5,
+        AMT6 = :amt6,
+        TRANCODE = :trancode,
+        TELLER = :teller,
+        BRIEFCODE = :briefcode,
+        TRANBRIEF = :tranbrief,
+        RECEIPTNO = :receiptno,
+        ACCSTAT = :accstat,
+        ACCTNO = :acctno,
+        MERCHANTNO = :merchantno,
+        TOACCSTAT = :toaccstat,
+        TOACCOUNTNO = :toaccountno,
+        TOMERCHANTNO = :tomerchantno,
+        TIMESTAMP = current timestamp,
+        FLAG = :flag,
+        BANKCHANNEL = :bankchannel,
+        RESERV0 = :reserv0,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2,
+        RESERV3 = :reserv3,
+        RESERV4 = :reserv4,
+        RESERV5 = :reserv5,
+        RESERV6 = :reserv6,
+        RESERV7 = :reserv7,
+        RESERV8 = :reserv8,
+        RESERV9 = :reserv9,
+        TUNNELDATA = :tunneldata
+      where TRANDATE = :trandate
+        and SERIALNO = :serialno
+        and CHANNELID = :channelid
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select TRANDATE, SERIALNO, CHANNELID, TXNSEQ, ACCDATE, SERSEQNO, TRANSOURCE, BRC, 
+      CCY, TRANAMT, AMT1, AMT2, AMT3, AMT4, AMT5, AMT6, TRANCODE, TELLER, BRIEFCODE, TRANBRIEF, 
+      RECEIPTNO, ACCSTAT, ACCTNO, MERCHANTNO, TOACCSTAT, TOACCOUNTNO, TOMERCHANTNO, TIMESTAMP, 
+      FLAG, BANKCHANNEL, RESERV0, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, 
+      RESERV7, RESERV8, RESERV9, TUNNELDATA
+      from LNSADJUSTINFOREG
+      where TRANDATE = :trandate
+        and SERIALNO = :serialno
+        and CHANNELID = :channelid
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+</sqlMap>

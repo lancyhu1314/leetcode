@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsfeeinfo">
+
+    <sql id="insert">
+        <![CDATA[
+      INSERT INTO LNSFEEINFO (OPENBRC, ACCTNO, CCY, REPAYWAY, FEETYPE, FEEBRC, PROVISIONRULE, LASTFEEDATE,FEEPERIOD, ADVANCESETTLE,FEEBASE, DEDUCETIONAMT, FEEFORMULA,CALCULATRULE, PROVISIONFLAG,
+      FEERATE, OVERRATE, TRANDATE, TRANTIME, OPENDATE, FEESTAT, AMOUNT, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5,modifytime) VALUES
+      (:openbrc, :acctno, :ccy, :repayway, :feetype, :feebrc, :provisionrule, :lastfeedate, :feeperiod, :advancesettle, :feebase, :deducetionamt, :feeformula,:calculatrule, :provisionflag,
+      :feerate, :overrate, :trandate, :trantime, :opendate, :feestat, :amount, :reserv1, :reserv2, :reserv3, :reserv4, :reserv5,char(CURRENT TIMESTAMP))
+    ]]>
+    </sql>
+    <sql id="select">
+        <![CDATA[
+         SELECT *
+         FROM LNSFEEINFO WHERE OPENBRC = :openbrc AND ACCTNO = :acctno ORDER BY REPAYWAY DESC
+       ]]>
+    </sql>
+    <sql id="updateStat">
+        <![CDATA[
+         UPDATE LNSFEEINFO SET FEESTAT = :feestat,modifytime = char(CURRENT TIMESTAMP)  WHERE OPENBRC = :openbrc
+          <#if feetype?exists && feetype != "">
+          AND feetype = :feetype
+         </#if>
+          <#if repayway?exists && repayway != "">
+          AND repayway = :repayway
+         </#if>
+         AND ACCTNO = :acctno
+         AND FEESTAT !=:feestat
+       ]]>
+    </sql>
+
+    <sql id="update_provisionflag">
+        <![CDATA[
+        		UPDATE LNSFEEINFO SET
+	        		   PROVISIONFLAG = :provisionflag ,modifytime = char(CURRENT TIMESTAMP)
+	        	 	 WHERE OPENBRC = :openbrc
+	        	   AND feetype = :feetype
+	        	   AND repayway = :repayway
+	        	   AND ACCTNO = :acctno
+		]]>
+    </sql>
+
+    <sql id="update_lastfeedate">
+        <![CDATA[
+        		UPDATE LNSFEEINFO SET
+        		<#if lastfeedate?exists && lastfeedate != "">
+	        		   lastfeedate = :lastfeedate ,
+	        	</#if>
+	        		    feeperiod = :feeperiod ,modifytime = char(CURRENT TIMESTAMP)
+	        	 WHERE OPENBRC = :brc
+	        	   AND feetype = :feetype
+	        	   AND repayway = :repayway
+	        	   AND ACCTNO = :acctno
+
+		]]>
+    </sql>
+    <sql id="queryFeeBills">
+        <![CDATA[
+        		select * from lnsbill where brc= :brc and billtype in (${feetypes}) and acctno = :acctno
+		]]>
+    </sql>
+
+    <sql id="update_feeinfo_loanstatEx">
+    <![CDATA[
+        	UPDATE lnsfeeinfo SET
+        		FEESTAT = :feestat,
+        		PROVISIONFLAG = :provisionflag,
+        		modifytime = char(CURRENT TIMESTAMP)
+	        WHERE OPENBRC = :brc AND ACCTNO = :acctno
+		]]>
+</sql>
+    <sql id="insert_feeinfocal">
+        <![CDATA[
+        	INSERT INTO lnsfeeinfocal SELECT * FROM lnsfeeinfo WHERE  OPENBRC = :brc AND ACCTNO = :acctno
+		]]>
+    </sql>
+
+    <sql id="delete">
+        <![CDATA[
+        		delete from LNSFEEINFO where  OPENBRC = :brc and  acctno = :acctno
+		]]>
+    </sql>
+    <sql id="updatebillAmt">
+        <![CDATA[
+        		update lnsbill set billamt = :amt,billbal = :amt where trandate = :trandate and serseqno = :serseqno and txseq = :txseq
+		]]>
+    </sql>
+
+    <sql id="update_formula">
+        <![CDATA[
+        		UPDATE LNSFEEINFO SET
+	        		   FEEFORMULA = :feeformula ,modifytime = char(CURRENT TIMESTAMP)
+	        	 	 WHERE OPENBRC = :openbrc
+	        	   AND ACCTNO = :acctno
+		]]>
+    </sql>
+    <sql id = "selectCount">
+        select count(*) count from LNSFEEINFO
+        where OPENBRC = :openbrc
+        AND ACCTNO = :acctno
+    </sql>
+</sqlMap>

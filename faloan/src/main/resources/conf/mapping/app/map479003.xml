@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp479003</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns536.settleAmt</a>
+			<b key="settleAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.compensateDint</a>
+			<b key="compensateDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.nonAccrualPrin</a>
+			<b key="nonAccrualPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.nChargeAginstInt</a>
+			<b key="nChargeAginstInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.nChargeAginstDint</a>
+			<b key="nChargeAginstDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.comeInDint</a>
+			<b key="comeInDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.nChargeCAInt</a>
+			<b key="nChargeCAInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.chargeAginstDint</a>
+			<b key="chargeAginstDint">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns536.chargeAginstInt</a>
+			<b key="chargeAginstInt">this</b>
+		</field>
+
+	</mapping>
+
+</mappings>

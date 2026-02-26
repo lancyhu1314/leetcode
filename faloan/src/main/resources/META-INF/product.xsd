@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fa:schema xmlns:tns="http://www.suning.com/product" xmlns:fa="http://www.w3.org/2001/XMLSchema"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	targetNamespace="http://www.suning.com/product" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<fa:import namespace="http://www.springframework.org/schema/beans" />
+
+	<fa:element name="LnPrd">
+		<fa:complexType>
+			<fa:complexContent>
+				<fa:extension base="beans:identifiedType">
+					<fa:sequence>
+						<fa:element name="rateAgreement" type="tns:RateAgreement"></fa:element>
+						<fa:element name="feeAgreement" type="tns:FeeAgreement"></fa:element>
+						<fa:element name="repayOrder" type="fa:string"></fa:element>
+						<fa:element name="rangeLimit" type="tns:RangeLimit"></fa:element>
+						<fa:element name="grantAgreement" type="tns:GrantAgreement"></fa:element>
+						<fa:element name="openAgreement" type="tns:OpenAgreement"></fa:element>
+						<fa:element name="interestAgreement" type="tns:InterestAgreement"></fa:element>
+						<fa:element name="withdrawAgreement" type="tns:WithdrawAgreement"></fa:element>
+					</fa:sequence>
+					<fa:attribute name="prdId" type="fa:string"></fa:attribute>
+					<fa:attribute name="prdName" type="fa:string"></fa:attribute>
+				</fa:extension>
+			</fa:complexContent>
+		</fa:complexType>
+	</fa:element>
+	<fa:complexType name="RateAgreement">
+		<fa:sequence>
+		<fa:element name="normalRate" type="tns:Rate"></fa:element>
+		<fa:element name="overdueRate" type="tns:Rate"></fa:element>
+		<fa:element name="compoundRate" type="tns:Rate"></fa:element>
+		</fa:sequence>
+	</fa:complexType>
+	<fa:complexType name="Rate">
+		<fa:attribute name="rate" type="fa:double"></fa:attribute>
+		<fa:attribute name="daysPerYear" type="fa:int"></fa:attribute>
+		<fa:attribute name="daysPerMonth" type="fa:int"></fa:attribute>
+		<!-- 利率类型:Y-年  M-月  D-日 -->
+		<fa:attribute name="rateUnit" type="fa:string"></fa:attribute>
+	</fa:complexType>
+	<fa:complexType name="FeeAgreement">
+		<!-- 管理费类型:AFEE费用1 BFEE费用2 CFEE费用3 ...... -->
+		<fa:attribute name="feeType" type="fa:string"></fa:attribute>
+	</fa:complexType>
+	<fa:complexType name="RangeLimit">
+	</fa:complexType>
+	<fa:complexType name="GrantAgreement">
+		<fa:attribute name="acctStat" type="fa:string"></fa:attribute>
+	</fa:complexType>
+	<fa:complexType name="OpenAgreement">
+	</fa:complexType>
+	<fa:complexType name="InterestAgreement">
+		<!-- 是否计正常利息息标志  YES-计息  NO-不计息 -->
+		<fa:attribute name="isCalInt" use="optional">
+			<fa:simpleType>
+				<fa:restriction base="fa:string">
+					<fa:enumeration value="YES"></fa:enumeration>
+					<fa:enumeration value="NO"></fa:enumeration>
+				</fa:restriction>
+			</fa:simpleType>
+		</fa:attribute>
+		<!-- 是否收取罚息标识 -->
+		<fa:attribute name="collectDefaultInterestFlag" type="fa:boolean"></fa:attribute>
+		<!-- 本金是否收取罚息标识 -->
+		<fa:attribute name="collectDefaultInterestPrin" type="fa:boolean"></fa:attribute>
+		<!-- 利息是否收取罚息标识 -->
+		<fa:attribute name="collectDefaultInterestInt" type="fa:boolean"></fa:attribute>
+		<!-- 是否转列标识-->
+		<fa:attribute name="needRisksClassificationFlag" type="fa:boolean"></fa:attribute>
+		<!-- 本金是否转列标识-->
+		<fa:attribute name="needRisksClassificationPrin" type="fa:boolean"></fa:attribute>
+		<!-- 利息是否转列标识-->
+		<fa:attribute name="needRisksClassificationInt" type="fa:boolean"></fa:attribute>
+		<!-- 罚息计算基数标识 1账单剩余本金 2合同余额 3合同金额 -->
+		<fa:attribute name="dintSource" type="fa:string"></fa:attribute>
+		<!-- 封顶计息 -->
+		<fa:attribute name="capRate" type="fa:double"></fa:attribute>
+		<!-- 动态封顶计息 -->
+		<fa:attribute name="dynamicCapRate" type="fa:string"></fa:attribute>
+		<!-- 日期是否算尾 -->
+		<fa:attribute name="isCalTail" type="fa:boolean"></fa:attribute>
+		<!-- 是否代偿开户 -->
+		<fa:attribute name="isCompensatory" type="fa:boolean"></fa:attribute>
+		<!-- 宽限期是否计息 -->
+		<fa:attribute name="isCalGrace" type="fa:boolean"></fa:attribute>
+		<!-- 是否允许提前还款重新生成还款计划 -->
+		<fa:attribute name="isAdvanceRepay" type="fa:boolean"></fa:attribute>
+		<!-- 还款展示明细 -->
+		<fa:attribute name="showRepayList" type="fa:boolean"></fa:attribute>
+		<!-- 是否记违约金 -->
+		<fa:attribute name="isPenalty" type="fa:boolean"></fa:attribute>
+		
+		<!-- 周期公式:3Y3MA2Y1M0410 -->
+		<fa:attribute name="periodFormula" type="fa:string"></fa:attribute>
+		<!-- 计息基础:ACT-实际天数  YMD-对年对月对日 -->
+		<fa:attribute name="intBase" type="fa:string"></fa:attribute>
+		<!-- 扣息周期  -->
+		<fa:attribute name="intPeriod" type="fa:int"></fa:attribute>
+		<!-- 扣息周期单位  Y-年    M-月  D-日   H-半年  X-旬 -->
+		<fa:attribute name="periodUnit" type="fa:string"></fa:attribute>
+		<!-- 指定还款日: 1...31-->
+		<fa:attribute name="optDate" type="fa:string"></fa:attribute>
+		<!-- 利息公式:1-等额本息公式  2-其他-->
+		<fa:attribute name="intFormula" type="fa:string"></fa:attribute>
+		<!-- 周期最小天数 -->
+		<fa:attribute name="periodMinDays" type="fa:int"></fa:attribute>
+		<!-- 贴息标识 -->
+		<fa:attribute name="discountFlag" type="fa:boolean"></fa:attribute>
+		<!-- 贴息比例 -->
+		<fa:attribute name="discountRatio" type="fa:double"></fa:attribute>
+		<!-- 贴息部分入账账户形态 -->
+		<fa:attribute name="discountIntAcctStat" type="fa:string"></fa:attribute>
+		<!-- 批量解析标识 -->
+		<fa:attribute name="batchIntFlag" type="fa:boolean"></fa:attribute>
+		<!-- 入息账户形态 -->
+		<fa:attribute name="intAcctStat" type="fa:string"></fa:attribute>
+		<!-- 是否有到期日 YES 有  NO 内有-->
+		<fa:attribute name="needDueDate" use="optional">
+			<fa:simpleType>
+				<fa:restriction base="fa:string">
+					<fa:enumeration value="YES"></fa:enumeration>
+					<fa:enumeration value="NO"></fa:enumeration>
+				</fa:restriction>
+			</fa:simpleType>
+		</fa:attribute>
+		<!--提前结清 手续费收取方式 user:chenchao-->
+		<fa:attribute name="advanceFeeType" type="fa:string"></fa:attribute>
+		<!-- 最低还款额  -->
+		<fa:attribute name="minimumPayment" type="fa:boolean"></fa:attribute>
+		<!--核销后违约金是否通知核销-->
+		<fa:attribute name="ignoreOffDint" type="fa:boolean"></fa:attribute>
+
+
+	</fa:complexType>
+	<fa:complexType name="WithdrawAgreement">
+		<!-- 周期公式:3Y3MA2Y1M0410 -->
+		<fa:attribute name="periodFormula" type="fa:string"></fa:attribute>
+		<!-- 还款渠道 -->
+		<fa:attribute name="repayChannel" type="fa:string"></fa:attribute>
+		<!-- 是否允许提前还款 -->
+		<fa:attribute name="isPrepay" type="fa:boolean"></fa:attribute>
+		<!-- 还款间隔周期 -->
+		<fa:attribute name="repayPeriod" type="fa:int"></fa:attribute>
+		<!-- 还款周期单位 -->
+		<fa:attribute name="periodUnit" type="fa:string"></fa:attribute>
+		<!-- 还款日期选择: MONTHHEAD-月初    MONTHEND-月末     OPENDATE-开户日  OPTDATE-指定日期 -->
+		<fa:attribute name="repayDateOpt" type="fa:string"></fa:attribute>
+		<!-- 还款日期 -->
+		<fa:attribute name="repayDate" type="fa:string"></fa:attribute>
+		<!-- 周期最小天数 -->
+		<fa:attribute name="periodMinDays" type="fa:int"></fa:attribute>
+		<!-- 还款金额公式:1-等额本息  2-其他 -->
+		<fa:attribute name="repayAmtFormula" type="fa:string"></fa:attribute>
+		<!-- 是否允许部分还款 -->
+		<fa:attribute name="isAgreePartRepay" type="fa:boolean"></fa:attribute>
+		<!-- 何时生成当期还款计划 REPAYDATENEXT-还款日期次日 GRACEDATENEXT-宽限期次日 -->
+		<fa:attribute name="genCurrRepayPlanOpt" type="fa:string"></fa:attribute>
+		<!-- 还款日期选择：MONTHHEAD-月初    MONTHEND-月末     OPENDATE-   开户日 OPTDATE-指定日期 -->
+		<fa:attribute name="repayWay" type="fa:string"></fa:attribute>
+		<!-- 扣息周期	 -->
+		<fa:attribute name="intIssueS" type="fa:string"></fa:attribute>
+		<!-- 期限类型 -->
+		<fa:attribute name="issueType" type="fa:string"></fa:attribute>
+		<!-- 允许使用的还款方式 -->
+		<fa:attribute name="useRepayWay" type="fa:string"></fa:attribute>
+		<!-- 首期是否需要加上周期月数 -->
+		<fa:attribute name="firstTermMonth" type="fa:boolean"></fa:attribute>
+		<!-- 中间期是否需要合并 -->
+		<fa:attribute name="middleTermMonth" type="fa:boolean"></fa:attribute>
+		<!-- 最后一期是否需要合并 -->
+		<fa:attribute name="lastTermMerge" type="fa:boolean"></fa:attribute>
+		<!-- 宽限期按工作日延期 -->
+		<fa:attribute name="endDateDelay" type="fa:boolean"></fa:attribute>
+
+	</fa:complexType>
+
+	<fa:simpleType name="DeifineBoolean">
+		<fa:restriction base="fa:string">
+			<fa:enumeration value="YES"></fa:enumeration>
+			<fa:enumeration value="NO"></fa:enumeration>
+		</fa:restriction>
+	</fa:simpleType>
+</fa:schema>

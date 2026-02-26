@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsassistdyninfo">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSASSISTDYNINFO
+      where BRC = :brc
+        and FEETYPE = :feetype
+        and CUSTOMID = :customid
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSASSISTDYNINFO (BRC, FEETYPE, CUSTOMID, ACCTNO, CCY, CUSTTYPE, LASTBAL, CURRBAL, 
+        PRETRANDATE, STATUS, ORDNU, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, 
+        RESERV6, TUNNELDATA, CREATETIME, MODIFYTIME)
+      values (:brc, :feetype, :customid, :acctno, :ccy, :custtype, :lastbal, :currbal, 
+        :pretrandate, :status, :ordnu, :reserv1, :reserv2, :reserv3, :reserv4, :reserv5, 
+        :reserv6, :tunneldata, 
+		<#if createtime?exists && createtime != "">
+        :createtime,
+        <#else>
+        current timestamp,
+        </#if>
+         current timestamp)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSASSISTDYNINFO
+      set ACCTNO = :acctno,
+        CCY = :ccy,
+        CUSTTYPE = :custtype,
+        LASTBAL = 
+		CASE
+            WHEN nvl(PRETRANDATE,'1970-01-01') < :trandate
+            THEN currbal
+            ELSE lastbal
+        END,
+        CURRBAL = :currbal,
+        PRETRANDATE = max(nvl(PRETRANDATE,'1970-01-01'),:trandate),
+        STATUS = :status,
+        ORDNU = :ordnu,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2,
+        RESERV3 = :reserv3,
+        RESERV4 = :reserv4,
+        RESERV5 = :reserv5,
+        RESERV6 = :reserv6,
+        TUNNELDATA = :tunneldata,
+        CREATETIME = :createtime,
+        MODIFYTIME = current timestamp
+      where BRC = :brc
+        and FEETYPE = :feetype
+        and ACCTNO = :acctno
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select BRC, FEETYPE, CUSTOMID, ACCTNO, CCY, CUSTTYPE, LASTBAL, CURRBAL, PRETRANDATE, 
+      STATUS, ORDNU, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5, RESERV6, TUNNELDATA, 
+      CREATETIME, MODIFYTIME
+      from LNSASSISTDYNINFO
+      where 
+		BRC = :brc
+        and FEETYPE = :feetype
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+    ]]>
+  </sql>
+  
+  <sql id="update_ordnu">
+    <![CDATA[
+      update LNSASSISTDYNINFO
+      set ORDNU = ORDNU+1,
+      PRETRANDATE = max(nvl(PRETRANDATE,'1970-01-01'),:trandate),
+        LASTBAL=
+        CASE
+            WHEN nvl(PRETRANDATE,'1970-01-01') < :trandate
+            THEN currbal
+            ELSE lastbal
+        END,
+        <#if cdflag == "add" >
+			CURRBAL=CURRBAL+:currbal,
+		</#if>
+      	 <#if cdflag == "sub" >
+			CURRBAL=CURRBAL-:currbal,
+		</#if>
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and FEETYPE = :feetype
+    ]]>
+  </sql>
+  
+  <sql id="update_brc">
+    <![CDATA[
+    SELECT * FROM NEW TABLE (
+      update LNSASSISTDYNINFO
+      set reserv2 = :switchbrc,
+        MODIFYTIME = current timestamp
+      where ACCTNO = :acctno
+        and BRC = :brc
+        and FEETYPE = :feetype )
+    ]]>
+  </sql>
+
+  <sql id = "updateByExist">
+    <![CDATA[
+    SELECT * FROM NEW TABLE(
+      update LNSASSISTDYNINFO
+      set ORDNU = ORDNU+1,
+        PRETRANDATE = max(nvl(PRETRANDATE,'1970-01-01'),:trandate),
+        LASTBAL=
+        CASE
+            WHEN nvl(PRETRANDATE,'1970-01-01') < :trandate
+            THEN currbal
+            ELSE lastbal
+        END,
+        <#if cdflag == "add" >
+			CURRBAL=CURRBAL+:currbal,
+		</#if>
+      	 <#if cdflag == "sub" >
+			CURRBAL=CURRBAL-:currbal,
+		</#if>
+        MODIFYTIME = current timestamp
+      where
+        BRC = :brc
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+        and FEETYPE = :feetype)
+
+     ]]>
+  </sql>
+  
+  <sql id = "updateByExistFC">
+    <![CDATA[
+    SELECT * FROM NEW TABLE(
+      update LNSASSISTDYNINFO
+      set ORDNU = ORDNU+1,
+        PRETRANDATE = max(nvl(PRETRANDATE,'1970-01-01'),:trandate),
+        LASTBAL=
+        CASE
+            WHEN nvl(PRETRANDATE,'1970-01-01') < :trandate
+            THEN currbal
+            ELSE lastbal
+        END,
+        <#if cdflag == "add" >
+			CURRBAL=CURRBAL+:currbal,
+		</#if>
+      	 <#if cdflag == "sub" >
+			CURRBAL=CURRBAL-:currbal,
+		</#if>
+			STATUS = case when CURRBAL-:currbal=0.00 and :cdflag = 'sub' then 'CA' else STATUS end,
+		<#if feefuncode?exists && feefuncode != "">
+            RESERV1 = :feefuncode,
+        </#if>
+        MODIFYTIME = current timestamp
+      where
+        BRC = :brc
+        <#if acctno?exists && acctno != "">
+          and ACCTNO = :acctno
+        </#if>
+        <#if customid?exists && customid != "">
+          and CUSTOMID = :customid
+        </#if>
+        and FEETYPE = :feetype)
+
+     ]]>
+  </sql>
+  
+</sqlMap>

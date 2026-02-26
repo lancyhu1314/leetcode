@@ -1,0 +1,280 @@
+package com.suning.fab.loan.workunit;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+
+import com.suning.fab.loan.account.LnsAcctInfo;
+import com.suning.fab.loan.la.FundInvest;
+import com.suning.fab.loan.utils.ConstantDeclare;
+import com.suning.fab.loan.utils.LoanEventOperateProvider;
+import com.suning.fab.tup4j.amount.FabAmount;
+import com.suning.fab.tup4j.base.FabException;
+import com.suning.fab.tup4j.base.TranCtx;
+import com.suning.fab.tup4j.base.WorkUnit;
+import com.suning.fab.tup4j.currency.FabCurrency;
+import com.suning.fab.tup4j.loopmsg.ListMap;
+import com.suning.fab.tup4j.utils.DbAccessUtil;
+import com.suning.fab.tup4j.utils.VarChecker;
+
+/**
+ * @author 	LH
+ *
+ * @version V1.0.1
+ *
+ * @see 	债务公司预收充退
+ *
+ * @param	serialNo		业务流水号
+ *			channelType		预收渠道
+ *			fundChannel		借方总账科目
+ *			repayAcctNo		贷方账号
+ *			ccy				币种
+ *			amt				金额
+ *			outSerialNo		外部流水号
+ *			memo			摘要信息
+ *			receiptNo		出帐编号
+ *			pkgList			循环报文
+ *			debtCompany		债务公司代码
+ *			debtAmt			债务公司保理金额
+ *
+ * @return
+ *
+ * @exception
+ */
+@Scope("prototype")
+@Repository
+public class Lns217 extends WorkUnit {
+
+	String  serialNo;
+	String	channelType;
+	String	fundChannel;
+	String  repayAcctNo;
+	String  ccy;
+	FabAmount amt;
+	String  outSerialNo;
+	String  memo;
+	String  receiptNo;
+	ListMap pkgList;
+
+	String debtCompany;
+	FabAmount debtAmt;
+
+	@Autowired
+	LoanEventOperateProvider eventProvider;
+
+	@Override
+	public void run() throws Exception {
+		TranCtx ctx = getTranctx();
+
+		if(debtAmt.isNegative() || debtAmt.isZero()){
+			throw new FabException("LNS014");
+		}
+
+		if(VarChecker.isEmpty(debtCompany)){
+			throw new FabException("LNS015");
+		}
+
+		if(VarChecker.isEmpty(channelType)){
+			throw new FabException("LNS039");
+		}
+
+		/**
+		 * 20190604债务公司事件优化去掉
+		 */
+		if("51050000".equals(ctx.getBrc()) || "51310000".equals(ctx.getBrc())) {
+			LnsAcctInfo lnsAcctInfo = null;
+			if ("F".equals(channelType)) {
+				if (!VarChecker.isEmpty(receiptNo)) {
+					//处理老数据acctno与acctno1不一致
+					Map<String, Object> paramMap = new HashMap<String, Object>();
+					paramMap.put("acctno1", receiptNo);
+					paramMap.put("brc", ctx.getBrc());
+
+					Map<String, Object> custominfo = DbAccessUtil.queryForMap("CUSTOMIZE.query_acctno", paramMap);
+					if (custominfo != null) {
+						receiptNo = custominfo.get("acctno").toString();
+						lnsAcctInfo = new LnsAcctInfo(receiptNo, ConstantDeclare.BILLTYPE.BILLTYPE_PRIN, ConstantDeclare.LOANSTATUS.LOANSTATUS_NORMAL, new FabCurrency());
+					}
+				}
+				FundInvest fundInvest = new FundInvest("", "", channelType, fundChannel, outSerialNo);
+				//写事件
+				eventProvider.createEvent(ConstantDeclare.EVENT.BACKDEBTCO, debtAmt, lnsAcctInfo, null,
+						fundInvest, ConstantDeclare.BRIEFCODE.ZWCT, ctx,
+						getRepayAcctNo(), debtCompany, ConstantDeclare.ACCOUNT.CUSTOMERTYPE.COMPANY);
+			}
+		}
+	}
+
+	/**
+	 * @return the serialNo
+	 */
+	public String getSerialNo() {
+		return serialNo;
+	}
+
+	/**
+	 * @param serialNo the serialNo to set
+	 */
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
+	}
+
+	/**
+	 * @return the channelType
+	 */
+	public String getChannelType() {
+		return channelType;
+	}
+
+	/**
+	 * @param channelType the channelType to set
+	 */
+	public void setChannelType(String channelType) {
+		this.channelType = channelType;
+	}
+
+	/**
+	 * @return the fundChannel
+	 */
+	public String getFundChannel() {
+		return fundChannel;
+	}
+
+	/**
+	 * @param fundChannel the fundChannel to set
+	 */
+	public void setFundChannel(String fundChannel) {
+		this.fundChannel = fundChannel;
+	}
+
+	/**
+	 * @return the repayAcctNo
+	 */
+	public String getRepayAcctNo() {
+		return repayAcctNo;
+	}
+
+	/**
+	 * @param repayAcctNo the repayAcctNo to set
+	 */
+	public void setRepayAcctNo(String repayAcctNo) {
+		this.repayAcctNo = repayAcctNo;
+	}
+
+	/**
+	 * @return the ccy
+	 */
+	public String getCcy() {
+		return ccy;
+	}
+
+	/**
+	 * @param ccy the ccy to set
+	 */
+	public void setCcy(String ccy) {
+		this.ccy = ccy;
+	}
+
+	/**
+	 * @return the amt
+	 */
+	public FabAmount getAmt() {
+		return amt;
+	}
+
+	/**
+	 * @param amt the amt to set
+	 */
+	public void setAmt(FabAmount amt) {
+		this.amt = amt;
+	}
+
+	/**
+	 * @return the outSerialNo
+	 */
+	public String getOutSerialNo() {
+		return outSerialNo;
+	}
+
+	/**
+	 * @param outSerialNo the outSerialNo to set
+	 */
+	public void setOutSerialNo(String outSerialNo) {
+		this.outSerialNo = outSerialNo;
+	}
+
+	/**
+	 * @return the memo
+	 */
+	public String getMemo() {
+		return memo;
+	}
+
+	/**
+	 * @param memo the memo to set
+	 */
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	/**
+	 * @return the receiptNo
+	 */
+	public String getReceiptNo() {
+		return receiptNo;
+	}
+
+	/**
+	 * @param receiptNo the receiptNo to set
+	 */
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
+	}
+
+	/**
+	 * @return the pkgList
+	 */
+	public ListMap getPkgList() {
+		return pkgList;
+	}
+
+	/**
+	 * @param pkgList the pkgList to set
+	 */
+	public void setPkgList(ListMap pkgList) {
+		this.pkgList = pkgList;
+	}
+
+	/**
+	 * @return the debtCompany
+	 */
+	public String getDebtCompany() {
+		return debtCompany;
+	}
+
+	/**
+	 * @param debtCompany the debtCompany to set
+	 */
+	public void setDebtCompany(String debtCompany) {
+		this.debtCompany = debtCompany;
+	}
+
+	/**
+	 * @return the debtAmt
+	 */
+	public FabAmount getDebtAmt() {
+		return debtAmt;
+	}
+
+	/**
+	 * @param debtAmt the debtAmt to set
+	 */
+	public void setDebtAmt(FabAmount debtAmt) {
+		this.debtAmt = debtAmt;
+	}
+
+
+}

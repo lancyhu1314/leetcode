@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470007</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns404.prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.cleanPrin</a>
+			<b key="cleanPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.intAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.cleanInt</a>
+			<b key="cleanInt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.forfeitAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.cleanForfeit</a>
+			<b key="cleanForfeit">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.feeAmt</a>
+			<b key="feeAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.contractAmt</a>
+			<b key="contractAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns404.status</a>
+			<b key="status">this</b>
+		</field>
+	</mapping>
+</mappings>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+<!--	<mapping map-null="false" map-id="map501" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns501</class-b>
+	</mapping>
+	<mapping map-null="false" map-id="map503" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns503</class-b>
+	</mapping>
+
+	<mapping map-null="false" map-id="map504" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns504</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>
+
+	<mapping map-null="false" map-id="map211" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns211</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+
+	</mapping>
+	<mapping map-null="false" map-id="map212" type="one-way">
+		<class-a>java.util.Map</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns212</class-b>
+	</mapping>-->
+ <!--  -->
+<!-- 	<mapping map-null="false" map-id="map211" type="one-way">
+		<class-a>
+			com.suning.fab.loan.account.FaLoanPubDict
+		</class-a>
+		<class-b> com.suning.fab.loan.workunit.Lns211</class-b>
+	
+		</mapping> -->
+
+	<mapping wildcard="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp471014</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns211.nintAmt</a>
+			<b key="intAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns211.prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns211.dintAmt</a>
+			<b key="forfeitAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns213.feeAmt</a>
+			<b key="feeAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns211.endFlag</a>
+			<b key="endFlag">this</b>
+		</field>	
+		<field>
+			<a is-accessible="true">lns514.nintRed</a>
+			<b key="reduceIntAmt">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns514.dintRed</a>
+			<b key="reduceFintAmt">this</b>
+		</field>	
+		<field>
+			<a is-accessible="true">lns213.feeRed</a>
+			<b key="adjustFeetAmt">this</b>
+		</field>	
+	</mapping>
+	<!--<mapping map-null="false" map-id="map221" type="one-way">
+		<class-a>com.suning.fab.loan.workunit.Lns501</class-a>
+		<class-b>com.suning.fab.loan.workunit.Lns247</class-b>
+		<field>
+			<a>lnsBillStatistics.billNo</a>
+			<b>subNo</b>
+		</field>
+		<field>
+			<a>lnsBillStatistics</a>
+			<b>billStatistics</b>
+		</field>
+	</mapping>-->
+
+</mappings>

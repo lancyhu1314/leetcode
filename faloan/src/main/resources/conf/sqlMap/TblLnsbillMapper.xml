@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbill">
+	<sql id="deleteByUk">
+		<![CDATA[
+      delete from LNSBILL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+    ]]>
+	</sql>
+	<sql id="insert">
+		<![CDATA[
+      insert into LNSBILL (TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BRC, BILLTYPE, PERIOD, BILLAMT, 
+        BILLBAL, LASTBAL, LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, 
+        CURENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY, 
+        CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY, 
+        INTRECORDFLAG, CANCELFLAG, SETTLEFLAG, TIMESTAMP)
+      values (:trandate, :serseqno, :txseq, :acctno, :brc, :billtype, :period, :billamt, 
+        :billbal, :lastbal, :lastdate, :prinbal, :billrate, :accumulate, :begindate, :enddate, 
+        :curenddate, :repayedate, :settledate, :intedate, :fintedate, :cintedate, :repayway, 
+        :ccy, :dertrandate, :derserseqno, :dertxseq, :billstatus, :statusbdate, :billproperty, 
+        :intrecordflag, :cancelflag, :settleflag, current timestamp)
+    ]]>
+	</sql>
+	<sql id="updateByUk">
+		<![CDATA[
+      update LNSBILL
+      set ACCTNO = :acctno,
+        BRC = :brc,
+        BILLTYPE = :billtype,
+        PERIOD = :period,
+        BILLAMT = :billamt,
+        BILLBAL = :billbal,
+        LASTBAL = :lastbal,
+        LASTDATE = :lastdate,
+        PRINBAL = :prinbal,
+        BILLRATE = :billrate,
+        ACCUMULATE = :accumulate,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        CURENDDATE = :curenddate,
+        REPAYEDATE = :repayedate,
+        SETTLEDATE = :settledate,
+        INTEDATE = :intedate,
+        FINTEDATE = :fintedate,
+        CINTEDATE = :cintedate,
+        REPAYWAY = :repayway,
+        CCY = :ccy,
+        DERTRANDATE = :dertrandate,
+        DERSERSEQNO = :derserseqno,
+        DERTXSEQ = :dertxseq,
+        BILLSTATUS = :billstatus,
+        STATUSBDATE = :statusbdate,
+        BILLPROPERTY = :billproperty,
+        INTRECORDFLAG = :intrecordflag,
+        CANCELFLAG = :cancelflag,
+        SETTLEFLAG = :settleflag,
+        TIMESTAMP = current timestamp
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+    ]]>
+	</sql>
+	<sql id="selectByUk">
+		<![CDATA[
+      select TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BRC, BILLTYPE, PERIOD, BILLAMT, BILLBAL, 
+      LASTBAL, LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE, CURENDDATE, 
+      REPAYEDATE, SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, 
+      DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, 
+      SETTLEFLAG, TIMESTAMP
+      from LNSBILL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+    ]]>
+	</sql>
+	<sql id="selectByPeriod">
+		<![CDATA[
+      select * from LNSBILL where acctno = :acctno and brc = :brc and settleflag = 'RUNNING'
+		        	and billtype = 'PRIN' and period = :period
+    ]]>
+	</sql>
+
+	<sql id="query_lnsbill_txseq">
+		<![CDATA[
+      select max(TXSEQ)
+      from LNSBILL
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno      
+    ]]>
+	</sql>
+	<sql id="bill_Consolidated_update">
+		<![CDATA[
+        UPDATE faloan.lnsbill  bill SET
+                    (BILLAMT,BILLBAL,LASTBAL,LASTDATE,BEGINDATE,SETTLEFLAG,timestamp) =
+                    (SELECT  temp.BILLAMT,temp.BILLBAL,temp.LASTBAL, temp.LASTDATE,temp.BEGINDATE,temp.SETTLEFLAG,temp.TIMESTAMP
+                        FROM (  SELECT
+                                    SUM(BILLAMT)         BILLAMT,
+                                    SUM(BILLBAL)         BILLBAL,
+                                    SUM( LASTBAL)        LASTBAL,
+                                    MAX(LASTDATE)     LASTDATE ,
+                                    MIN(BEGINDATE)      BEGINDATE,
+                                    MAX(SETTLEFLAG)  SETTLEFLAG,
+                                    CURRENT TIMESTAMP AS TIMESTAMP,
+                                    DERTRANDATE ,  DERSERSEQNO,  DERTXSEQ, BRC,  ACCTNO, BILLTYPE, PERIOD
+                                FROM
+                                    (SELECT  * FROM faloan.lnsbill WHERE BILLTYPE IN ('CINT',  'DINT') AND acctno =:acctno AND brc = :brc  )
+                                GROUP BY DERTRANDATE , DERSERSEQNO, DERTXSEQ, BRC,  ACCTNO, BILLTYPE, PERIOD )temp
+                        where temp.DERTRANDATE = bill.DERTRANDATE
+                        AND temp.DERSERSEQNO = bill.DERSERSEQNO
+                        AND temp.DERTXSEQ = bill.DERTXSEQ
+                        AND temp.BRC = bill.BRC
+                        AND temp.ACCTNO = bill.ACCTNO
+                        AND temp.BILLTYPE = bill.BILLTYPE
+                        AND temp.PERIOD = bill.PERIOD )
+                        where    bill.BILLTYPE IN ('CINT',  'DINT') AND bill.acctno =:acctno AND brc = :brc
+    ]]>
+	</sql>
+	<sql id="bill_Consolidated_delete">
+		<![CDATA[
+        DELETE FROM
+          ( select  DELBILL.*    ,row_number() over(partition by DERTRANDATE ,  DERSERSEQNO,  DERTXSEQ, BRC, ACCTNO, BILLTYPE,   PERIOD
+          		 order by ENDDATE desc ) AS ROW_NO FROM faloan.lnsbill DELBILL
+          		 where DELBILL.BILLTYPE in ('CINT','DINT')  AND DELBILL.acctno = :acctno  AND DELBILL.brc = :brc
+          )  WHERE ROW_NO>1
+    ]]>
+	</sql>
+	<sql id="bill_bak_insert">
+		<![CDATA[
+         insert into LNSBILLBAK (TRANDATE, SERSEQNO, TXSEQ, ACCTNO, BRC, BILLTYPE, PERIOD, BILLAMT,
+        BILLBAL, LASTBAL, LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE,
+        CURENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE, FINTEDATE, CINTEDATE, REPAYWAY,
+        CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS, STATUSBDATE, BILLPROPERTY,
+        INTRECORDFLAG, CANCELFLAG, SETTLEFLAG, TIMESTAMP)
+      values (:TRANDATE, :SERSEQNO, :TXSEQ, :ACCTNO, :BRC, :BILLTYPE, :PERIOD, :BILLAMT,
+        :BILLBAL, :LASTBAL, :LASTDATE, :PRINBAL, :BILLRATE, :ACCUMULATE, :BEGINDATE, :ENDDATE,
+        :CURENDDATE, :REPAYEDATE, :SETTLEDATE, :INTEDATE, :FINTEDATE, :CINTEDATE, :REPAYWAY,
+        :CCY, :DERTRANDATE, :DERSERSEQNO, :DERTXSEQ, :BILLSTATUS, :STATUSBDATE, :BILLPROPERTY,
+        :INTRECORDFLAG, :CANCELFLAG, :SETTLEFLAG, current timestamp)
+    ]]>
+	</sql>
+
+	<sql id="bill_prinbal_update">
+		<![CDATA[
+
+          update faloan.lnsbill bill set (prinbal,timestamp) =
+			(select  billbak.prinbal , CURRENT TIMESTAMP AS TIMESTAMP
+					from faloan.lnsbillbak billbak
+					where bill.TRANDATE = billbak.TRANDATE
+					and bill.SERSEQNO = billbak.SERSEQNO
+					and bill.TXSEQ = billbak.TXSEQ
+				   )
+			where bill.BILLTYPE IN ('CINT',  'DINT') and bill.acctno = :acctno
+			and bill.brc = :brc
+			and exists (
+			             select  * from
+			                 faloan.lnsbillbak bak
+			                where bill.TRANDATE = bak.TRANDATE
+					and bill.SERSEQNO = bak.SERSEQNO
+					and bill.TXSEQ = bak.TXSEQ
+			)
+    ]]>
+	</sql>
+	<sql id="query_maxperiod_lnsbill">
+		<![CDATA[
+      	SELECT * FROM lnsbill	where ACCTNO = :acctno and brc = :brc
+      	and period = (select max(period) from lnsbill	where ACCTNO = :acctno and brc = :brc and billtype in ('PRIN','NINT') and  settleflag = 'RUNNING' )
+      	and billtype in ('PRIN','NINT') order by trandate,serseqno,txseq for read only
+
+    ]]>
+	</sql>
+
+	<!--查询最大期数，最大项目号账单表-->
+	<sql id="query_max_period_txnseqno_lnsbill">
+		select * from faloan.lnsbill where acctno = :acctno and brc = :brc
+		and billtype='PRIN'
+		order by period desc,txseq desc fetch first 1 rows only
+	</sql>
+
+	<sql id="query_billBalSum">
+		<![CDATA[
+			SELECT SUM(billbal)
+			  FROM LNSBILL
+		     WHERE ACCTNO = :acctno
+		       AND BRC = :brc
+		       AND BILLTYPE = :billtype
+		]]>
+	</sql>
+	<sql id="update_date">
+		<![CDATA[
+          update LNSBILL
+          set curenddate=:curenddate,timestamp = current timestamp
+          <#if repayedate?exists && repayedate != "">
+				,repayedate=:repayedate
+		   </#if>
+          <#if intedate?exists && intedate != "">
+				,intedate=:intedate
+		   </#if>
+			<#if begindate?exists && begindate != "">
+				,begindate=:begindate
+		   </#if>
+			<#if enddate?exists && enddate != "">
+				,enddate=:enddate
+		   </#if>
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXSEQ = :txseq
+
+		]]>
+	</sql>
+
+	<sql id="query_feebill_repay">
+		<![CDATA[
+	select TRANDATE, SERSEQNO, TXSEQ, BRC, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL,
+      LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE,CURENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE,
+      FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS,
+      STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+      from LNSBILL
+      where acctno = :acctno
+        and brc = :brc
+        and settleflag = 'RUNNING'
+        	]]>
+	</sql>
+	
+	<sql id="query_bill_adjust">
+		<![CDATA[
+	select TRANDATE, SERSEQNO, TXSEQ, BRC, ACCTNO, BILLTYPE, PERIOD, BILLAMT, BILLBAL, LASTBAL,
+      LASTDATE, PRINBAL, BILLRATE, ACCUMULATE, BEGINDATE, ENDDATE,CURENDDATE, REPAYEDATE, SETTLEDATE, INTEDATE,
+      FINTEDATE, CINTEDATE, REPAYWAY, CCY, DERTRANDATE, DERSERSEQNO, DERTXSEQ, BILLSTATUS,
+      STATUSBDATE, BILLPROPERTY, INTRECORDFLAG, CANCELFLAG, SETTLEFLAG
+      from LNSBILL
+      where acctno = :acctno
+        and brc = :brc
+        and settleflag = 'RUNNING'
+        and billtype in ('PRIN','NINT')
+        and billbal > 0.00
+        	]]>
+	</sql>
+    <!--查询当期最大的罚息行进行依次累加-->
+	<sql id="queryMaxDint">
+	<![CDATA[
+   select trandate,serseqno,txseq from faloan.lnsbill where acctno=:acctno and brc=:brc and settleflag
+ = 'RUNNING' and billtype='DINT' and period=:period order by enddate desc fetch first 1 rows only
+        ]]>
+   </sql>
+   <!--更新最大的罚息行-->
+	<sql id="updateMaxDint">
+		<![CDATA[
+          update LNSBILL
+          set curenddate=:curenddate,timestamp = current timestamp ,billamt=billamt+:billamt,billbal=billbal+:billbal
+          <#if repayedate?exists && repayedate != "">
+				,repayedate=:repayedate
+		   </#if>
+          <#if intedate?exists && intedate != "">
+				,intedate=:intedate
+		   </#if>
+			<#if enddate?exists && enddate != "">
+				,enddate=:enddate
+		   </#if>
+		   <#if dertrandate?exists && dertrandate != "">
+				,dertrandate=:dertrandate
+		   </#if>
+		    <#if derserseqno?exists && derserseqno != "">
+				,derserseqno=:derserseqno
+		   </#if>
+		    <#if dertxseq?exists && dertxseq != "">
+				,dertxseq=:dertxseq
+		   </#if>
+        where TRANDATE = :TRANDATE
+        and SERSEQNO = :SERSEQNO
+        and TXSEQ = :TXSEQ
+		]]>
+	</sql>
+</sqlMap>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping wildcard="false" map-null="false" type="one-way">
+		<class-a>com.suning.fab.loan.service.Tp470011</class-a>
+		<class-b>java.util.Map</class-b>
+		<field>
+			<a is-accessible="true">lns433.cleanPrin</a>
+			<b key="cleanPrin">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns433.cleanTotal</a>
+			<b key="cleanTotal">this</b>
+		</field>
+		<field>
+			<a is-accessible="true">lns433.prinAmt</a>
+			<b key="prinAmt">this</b>
+		</field>
+	</mapping>
+</mappings>

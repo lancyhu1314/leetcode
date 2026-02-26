@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsbasicinfodyn">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSBASICINFODYN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSBASICINFODYN (ACCTNO, OPENBRC, SUMPRIN, SUMINT, SUMDINT, SUMCINT, SUMGINT, TUNNELDATA, 
+        MODIFYTIME, SUMLBCDINT, TRANDATE)
+      values (:acctno, :openbrc, :sumprin, :sumint, :sumdint, :sumcint, :sumgint, :tunneldata, 
+        current timestamp, :sumlbcdint, :trandate)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSBASICINFODYN
+      set SUMPRIN = :sumprin,
+        SUMINT = :sumint,
+        SUMDINT = :sumdint,
+        SUMCINT = :sumcint,
+        SUMGINT = :sumgint,
+        TUNNELDATA = :tunneldata,
+        MODIFYTIME = current timestamp,
+        SUMLBCDINT = :sumlbcdint,
+        TRANDATE = :trandate
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select ACCTNO, OPENBRC, SUMPRIN, SUMINT, SUMDINT, SUMCINT, SUMGINT, TUNNELDATA, MODIFYTIME, 
+      SUMLBCDINT, TRANDATE
+      from LNSBASICINFODYN
+      where ACCTNO = :acctno
+        and OPENBRC = :openbrc
+    ]]>
+  </sql>
+</sqlMap>

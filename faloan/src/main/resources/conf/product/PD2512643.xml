@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fa="http://www.suning.com/product"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.suning.com/product  
+        http://www.suning.com/product.xsd">
+	<fa:LnPrd id="pd2512643" prdId="2512643" prdName="任性贷-消金资产">
+		<fa:rateAgreement>
+			<fa:normalRate   rate="0.06" daysPerYear="360" daysPerMonth="30" rateUnit="Y"></fa:normalRate>
+			<fa:overdueRate  rate="0.08" daysPerYear="360" daysPerMonth="30" rateUnit="Y"></fa:overdueRate>
+			<fa:compoundRate rate="0.09" daysPerYear="360" daysPerMonth="30" rateUnit="Y"></fa:compoundRate>
+		</fa:rateAgreement>
+		<fa:feeAgreement></fa:feeAgreement>
+		<fa:repayOrder></fa:repayOrder>
+		<fa:rangeLimit></fa:rangeLimit>
+		<fa:grantAgreement></fa:grantAgreement>
+		<fa:openAgreement></fa:openAgreement>
+		<fa:interestAgreement intBase = "ACT/ACT" periodFormula="1MA20" intFormula="2" periodMinDays="14" isPenalty="true" showRepayList="true"></fa:interestAgreement>
+		<fa:withdrawAgreement
+				periodFormula="1MA20"
+				repayChannel="GM"
+				isPrepay="true"
+				repayAmtFormula="2"
+				periodMinDays="14"
+				isAgreePartRepay="true"
+				genCurrRepayPlanOpt="REPAYDATENEXT"
+				repayWay="2" intIssueS="D" issueType="Y"
+				firstTermMonth = "false"
+				lastTermMerge = "false"
+				middleTermMonth = "true"
+		></fa:withdrawAgreement>
+	</fa:LnPrd>
+
+</beans>

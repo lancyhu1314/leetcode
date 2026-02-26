@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnseventreg">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSEVENTREG
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSEVENTREG (TRANDATE, SERSEQNO, TXNSEQ, BILLTRANDATE, BILLSERSEQNO, BILLTXNSEQ, 
+        EVENTCODE, BRC, TELLER, RECEIPTNO, ACCTSTAT, MERCHANTNO, CUSTTYPE, PRDCODE, 
+        TORECEIPTNO, TOACCTSTAT, TOMERCHANTNO, TOCUSTTYPE, TOPRDCODE, CCY, TRANAMT, 
+        TRANCODE, SUBTRANCODE, BRIEFCODE, TRANBRIEF, AMT1, AMT2, AMT3, AMT4, AMT5, 
+        BANKCHANNEL, INVESTEE, INVESTMODE, CHANNELTYPE, FUNDCHANNEL, OUTSERIALNO, 
+        OTHERFEETYPE, CHTYPE, PRODUCTCODE, SENDFLAG, SENDNUM, TIMESTAMP, TUNNELDATA, 
+        RESERV1, RESERV2, RESERV3, RESERV4, RESERV5)
+      values (:trandate, :serseqno, :txnseq, :billtrandate, :billserseqno, :billtxnseq, 
+        :eventcode, :brc, :teller, :receiptno, :acctstat, :merchantno, :custtype, :prdcode, 
+        :toreceiptno, :toacctstat, :tomerchantno, :tocusttype, :toprdcode, :ccy, :tranamt, 
+        :trancode, :subtrancode, :briefcode, :tranbrief, :amt1, :amt2, :amt3, :amt4, :amt5, 
+        :bankchannel, :investee, :investmode, :channeltype, :fundchannel, :outserialno, 
+        :otherfeetype, :chtype, :productcode, :sendflag, :sendnum, current timestamp, :tunneldata, 
+        :reserv1, :reserv2, :reserv3, :reserv4, :reserv5)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSEVENTREG
+      set BILLTRANDATE = :billtrandate,
+        BILLSERSEQNO = :billserseqno,
+        BILLTXNSEQ = :billtxnseq,
+        EVENTCODE = :eventcode,
+        BRC = :brc,
+        TELLER = :teller,
+        RECEIPTNO = :receiptno,
+        ACCTSTAT = :acctstat,
+        MERCHANTNO = :merchantno,
+        CUSTTYPE = :custtype,
+        PRDCODE = :prdcode,
+        TORECEIPTNO = :toreceiptno,
+        TOACCTSTAT = :toacctstat,
+        TOMERCHANTNO = :tomerchantno,
+        TOCUSTTYPE = :tocusttype,
+        TOPRDCODE = :toprdcode,
+        CCY = :ccy,
+        TRANAMT = :tranamt,
+        TRANCODE = :trancode,
+        SUBTRANCODE = :subtrancode,
+        BRIEFCODE = :briefcode,
+        TRANBRIEF = :tranbrief,
+        AMT1 = :amt1,
+        AMT2 = :amt2,
+        AMT3 = :amt3,
+        AMT4 = :amt4,
+        AMT5 = :amt5,
+        BANKCHANNEL = :bankchannel,
+        INVESTEE = :investee,
+        INVESTMODE = :investmode,
+        CHANNELTYPE = :channeltype,
+        FUNDCHANNEL = :fundchannel,
+        OUTSERIALNO = :outserialno,
+        OTHERFEETYPE = :otherfeetype,
+        CHTYPE = :chtype,
+        PRODUCTCODE = :productcode,
+        SENDFLAG = :sendflag,
+        SENDNUM = :sendnum,
+        TIMESTAMP = current timestamp,
+        TUNNELDATA = :tunneldata,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2,
+        RESERV3 = :reserv3,
+        RESERV4 = :reserv4,
+        RESERV5 = :reserv5
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+  <sql id="selectByUk">
+    <![CDATA[
+      select TRANDATE, SERSEQNO, TXNSEQ, BILLTRANDATE, BILLSERSEQNO, BILLTXNSEQ, EVENTCODE, 
+      BRC, TELLER, RECEIPTNO, ACCTSTAT, MERCHANTNO, CUSTTYPE, PRDCODE, TORECEIPTNO, TOACCTSTAT, 
+      TOMERCHANTNO, TOCUSTTYPE, TOPRDCODE, CCY, TRANAMT, TRANCODE, SUBTRANCODE, BRIEFCODE, 
+      TRANBRIEF, AMT1, AMT2, AMT3, AMT4, AMT5, BANKCHANNEL, INVESTEE, INVESTMODE, CHANNELTYPE, 
+      FUNDCHANNEL, OUTSERIALNO, OTHERFEETYPE, CHTYPE, PRODUCTCODE, SENDFLAG, SENDNUM, TIMESTAMP, 
+      TUNNELDATA, RESERV1, RESERV2, RESERV3, RESERV4, RESERV5
+      from LNSEVENTREG
+      where TRANDATE = :trandate
+        and SERSEQNO = :serseqno
+        and TXNSEQ = :txnseq
+    ]]>
+  </sql>
+</sqlMap>

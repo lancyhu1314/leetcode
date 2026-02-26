@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap jdbcTimeout="2" namespace="Lnsprovision">
+  <sql id="deleteByUk">
+    <![CDATA[
+      delete from LNSPROVISION
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and BILLTYPE = :billtype
+    ]]>
+  </sql>
+<!--根据账户进行删除-->
+  <sql id="deleteByAcctno">
+    <![CDATA[
+      delete from LNSPROVISION
+      where BRC = :brc
+        and ACCTNO = :acctno
+    ]]>
+  </sql>
+  <sql id="insert">
+    <![CDATA[
+      insert into LNSPROVISION (BRC, ACCTNO, BILLTYPE, CHILDBRC, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, 
+        LASTINTEREST, LASTTAX, LASTBEGINDATE, LASTENDDATE, INTERFLAG, INTERTYPE, 
+        BEGINDATE, ENDDATE, IRR, PROVISIONFLAG, TOTALLIST, TIMESTAMP, RESERV1, 
+        RESERV2)
+      values (:brc, :acctno, :billtype, :childbrc, :ccy, :taxrate, :totalinterest, :totaltax, 
+        :lastinterest, :lasttax, :lastbegindate, :lastenddate, :interflag, :intertype, 
+        :begindate, :enddate, :irr, :provisionflag, :totallist, current timestamp, :reserv1, 
+        :reserv2)
+    ]]>
+  </sql>
+  <sql id="updateByUk">
+    <![CDATA[
+      update LNSPROVISION
+      set CHILDBRC = :childbrc,
+        CCY = :ccy,
+        TAXRATE = :taxrate,
+        TOTALINTEREST = :totalinterest,
+        TOTALTAX = :totaltax,
+        LASTINTEREST = :lastinterest,
+        LASTTAX = :lasttax,
+        LASTBEGINDATE = :lastbegindate,
+        LASTENDDATE = :lastenddate,
+        INTERFLAG = :interflag,
+        INTERTYPE = :intertype,
+        BEGINDATE = :begindate,
+        ENDDATE = :enddate,
+        IRR = :irr,
+        PROVISIONFLAG = :provisionflag,
+        TOTALLIST = :totallist,
+        TIMESTAMP = current timestamp,
+        RESERV1 = :reserv1,
+        RESERV2 = :reserv2
+      where BRC = :brc
+        and ACCTNO = :acctno
+        and BILLTYPE = :billtype
+        and intertype = :intertype
+    ]]>
+  </sql>
+
+  <!--根据主键进行查询-->
+  <sql id="selectByUk">
+    <![CDATA[
+      select BRC, ACCTNO, BILLTYPE, CHILDBRC, CCY, TAXRATE, TOTALINTEREST, TOTALTAX, LASTINTEREST, 
+      LASTTAX, LASTBEGINDATE, LASTENDDATE, INTERFLAG, INTERTYPE, BEGINDATE, ENDDATE, IRR, 
+      PROVISIONFLAG, TOTALLIST, TIMESTAMP, RESERV1, RESERV2
+      from LNSPROVISION
+      where BRC = :brc
+            and ACCTNO = :receiptno
+            and BILLTYPE = :billtype
+            and INTERTYPE=:intertype
+    ]]>
+  </sql>
+</sqlMap>
